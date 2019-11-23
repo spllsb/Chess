@@ -1,3 +1,5 @@
+using System;
+
 namespace Chess.Core.Domain
 {
     public class User

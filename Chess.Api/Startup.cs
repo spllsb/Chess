@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Chess.Core.Repositories;
+using Chess.Infrastructure.Mappers;
+using Chess.Infrastructure.Repositories;
+using Chess.Infrastructure.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +31,10 @@ namespace Chess.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IUserRepository,InMemoryUserRepository>();
+            services.AddScoped<IUserService,UserService>();
+
+            services.AddSingleton(AutoMapperConfig.Initialize());
             // Add framework services.
             services.AddMvc();
         }
