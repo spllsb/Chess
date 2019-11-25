@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Chess.Api
 {
@@ -36,7 +37,8 @@ namespace Chess.Api
 
             services.AddSingleton(AutoMapperConfig.Initialize());
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented); //kosmetyczna zmiana do wyswietlanego jsona
         } 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

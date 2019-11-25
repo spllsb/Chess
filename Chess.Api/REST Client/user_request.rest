@@ -2,3 +2,20 @@ GET http://localhost:5000/api/users/user1@email.com
 
 ###
 
+GET http://localhost:5000/api/users/user111@email.com
+
+###
+
+POST http://localhost:5000/api/users/ HTTP/1.1
+content-type: application/json
+
+{
+    "email": "user100@email.com",
+    "password": "secret",
+    "username": "user100"
+}
+
+###
+GET http://localhost:5000/api/users/user100@email.com
+
+###
