@@ -6,3 +6,8 @@ namespace Chess.Tests
     {
     }
 }
+
+
+
+
+// W testach testujemy repozytoria/serwisy

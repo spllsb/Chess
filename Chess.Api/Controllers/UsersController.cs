@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Chess.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
@@ -17,13 +17,23 @@ namespace Chess.Api.Controllers
         }
 
         [HttpGet("{email}")]
-        public async Task<UserDto> Get(string email)
-                => await _userService.GetAsync(email);
+        public async Task<IActionResult> Get(string email)
+        {
+            var user = await _userService.GetAsync(email);
+            if(user == null)
+            {
+                    return NotFound();
+            }
+            
+            return Json(user);
+        }
 
         [HttpPost]
-        public async Task Post ([FromBody] CreateUser request)
+        public async Task<IActionResult> Post ([FromBody] CreateUser request)
         {
             await _userService.RegisterAsync(request.Email,request.Username,request.Password);
+
+            return Created($"users/{request.Email}",new object());
         }
     }
 }
