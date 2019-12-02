@@ -1,4 +1,4 @@
-namespace Chess.Infrastructure.Commands.User
+namespace Chess.Infrastructure.Commands.Users
 {
     public class CreateUser : ICommand
     {
