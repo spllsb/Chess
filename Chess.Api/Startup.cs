@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Chess.Core.Repositories;
+using Chess.Infrastructure.IoC;
 using Chess.Infrastructure.IoC.Modules;
 using Chess.Infrastructure.Mappers;
 using Chess.Infrastructure.Repositories;
@@ -36,18 +37,13 @@ namespace Chess.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IUserRepository,InMemoryUserRepository>();
-            services.AddScoped<IUserService,UserService>();
-
-            services.AddSingleton(AutoMapperConfig.Initialize());
             // Add framework services.
             services.AddMvc()
                 .AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented); //kosmetyczna zmiana do wyswietlanego jsona
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
-            builder.RegisterModule<CommandModule>();
-            builder.RegisterModule(new SettingsModule(Configuration));
+            builder.RegisterModule(new ContainerModule(Configuration));
             ApplicationContainer = builder.Build();
 
             return new AutofacServiceProvider(ApplicationContainer);

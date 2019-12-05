@@ -5,7 +5,8 @@ using Chess.Core.Domain;
 
 namespace Chess.Core.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository : IRepository
+    
     {
         Task<User> GetAsync(Guid id); 
         Task<User> GetAsync(string email);
