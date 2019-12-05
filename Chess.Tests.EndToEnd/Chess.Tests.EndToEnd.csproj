@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <!-- Dodanie go parametru na ta czesc + na nadrzedny projekt, pomaga nam pozbyc sie problemu z versjami paczek-->
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <!-- <GenerateProgramFile>false</GenerateProgramFile> -->
   </PropertyGroup>
