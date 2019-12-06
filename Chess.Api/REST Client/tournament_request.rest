@@ -1,0 +1,14 @@
+
+GET http://localhost:5000/tournaments/Kadeci
+
+###
+
+POST http://localhost:5000/tournaments HTTP/1.1
+content-type: application/json
+
+{
+    "name": "NowyTurniej",
+    "maxPlayers": 10
+}
+###
+GET http://localhost:5000/tournaments/NowyTurniej

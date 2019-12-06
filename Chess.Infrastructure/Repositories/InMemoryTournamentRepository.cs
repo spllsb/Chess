@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Chess.Core.Domain;
 using Chess.Core.Repositories;
@@ -8,29 +9,34 @@ namespace Chess.Infrastructure.Repositories
 {
     public class InMemoryTournamentRepository : ITournamentRepository
     {
-        public async Task AddAsync(User user)
+        private static ISet<Tournament> _tournaments = new HashSet<Tournament>
+        {
+            new Tournament("Kadeci",10)
+        };
+        
+        public async Task<Tournament> GetAsync(Guid id)
+            => await Task.FromResult(_tournaments.SingleOrDefault(x => x.Id == id));
+        public async Task<Tournament> GetAsync(string name)
+            => await Task.FromResult(_tournaments.SingleOrDefault(x => x.Name == name));
+        public async Task<IEnumerable<Tournament>> GetAllAsync()
+            => await Task.FromResult(_tournaments);
+
+        public async Task AddAsync(Tournament tournament)
         { 
-            throw new NotImplementedException();
+            _tournaments.Add(tournament);
+            await Task.CompletedTask;
         }
-
-        public Task<IEnumerable<Tournament>> GetAllAsync()
+        public Task UpdateAsync(Tournament user)
         {
             throw new NotImplementedException();
         }
-
-        public Task<Tournament> GetAsync(Guid id)
+        public async Task RemoveAsync(Tournament tournament)
         {
-            throw new NotImplementedException();
+            _tournaments.Remove(tournament);
+            await Task.CompletedTask;
         }
 
-        public Task RemoveAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task UpdateAsync(User user)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

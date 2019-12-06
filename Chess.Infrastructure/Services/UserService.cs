@@ -34,7 +34,6 @@ namespace Chess.Infrastructure.Service
             {
                 throw new Exception($"User with email: '{email}' already exists");
             }
-            user = new User(email,username,password,"salt");
             await _userRepository.AddAsync(new User(email,username,password,"salt"));
         }
     }

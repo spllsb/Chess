@@ -9,14 +9,10 @@ using Xunit;
 
 namespace Chess.Tests.EndToEnd.Controllers
 {
-    public class UsersControllerTests : IClassFixture<CustomWebApplicationFactory<Startup>>
+    public class UsersControllerTests : ControllerTestBase
     {
-        private readonly HttpClient _client;
-
-        public UsersControllerTests(CustomWebApplicationFactory<Startup> factory)
+        public UsersControllerTests(CustomWebApplicationFactory<Startup> factory) : base(factory)
         {
-            // Arrange
-            _client = factory.CreateClient();
         }
 
         [Fact]
@@ -24,7 +20,7 @@ namespace Chess.Tests.EndToEnd.Controllers
         {
             // Act
             var email = "user1@email.com";
-            var response = await _client.GetAsync($"users/{email}");
+            var response = await Client.GetAsync($"users/{email}");
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();

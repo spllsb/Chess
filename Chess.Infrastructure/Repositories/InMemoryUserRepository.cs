@@ -30,7 +30,10 @@ namespace Chess.Infrastructure.Repositories
             _users.Add(user);
             await Task.CompletedTask;
         }
-
+        public async Task UpdateAsync(User user)
+        {
+            await Task.CompletedTask;
+        }
         public async Task RemoveAsync(Guid id)
         {
             var user = await GetAsync(id);
@@ -38,9 +41,6 @@ namespace Chess.Infrastructure.Repositories
             await Task.CompletedTask;
         }
         
-        public async Task UpdateAsync(User user)
-        {
-            await Task.CompletedTask;
-        }
+
     }
 }

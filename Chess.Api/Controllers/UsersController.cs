@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Chess.Api.Controllers
 {
-    [Route("[controller]")]
     public class UsersController : ApiControllerBase
     {
         private readonly IUserService _userService;

@@ -9,6 +9,8 @@ namespace Chess.Infrastructure.Mappers
         public static IMapper Initialize()
                 => new MapperConfiguration(cfg =>
                 {
+                    cfg.CreateMap<Tournament,TournamentDto>();
+                    cfg.CreateMap<Tournament,TournamentDetailsDto>();
                     cfg.CreateMap<User,UserDto>();
                 })
                 .CreateMapper();
