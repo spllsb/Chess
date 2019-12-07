@@ -15,6 +15,13 @@ namespace Chess.Api.Controllers
             _tournamentService = tournamentService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var tournament = await _tournamentService.BrowseAsync();
+
+            return Json(tournament);
+        }
 
         [HttpGet("{name}")]
         public async Task<IActionResult> Get(string name)

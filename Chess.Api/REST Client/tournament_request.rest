@@ -12,3 +12,5 @@ content-type: application/json
 }
 ###
 GET http://localhost:5000/tournaments/NowyTurniej
+###
+GET http://localhost:5000/tournaments/

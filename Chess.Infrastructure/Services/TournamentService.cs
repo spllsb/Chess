@@ -38,11 +38,19 @@ namespace Chess.Infrastructure.Services
         }
         public async Task CreateAsync(string name, int maxPlayers)
         {
+            var tournament = await _tournamentRepository.GetAsync(name);
+            if(tournament != null)
+            {
+                throw new Exception($"Tournament with name: '{tournament.Name}' already exists");
+            }
+            
             await _tournamentRepository.AddAsync(new Tournament(name,maxPlayers));
         }
-        public Task<IEnumerable<TournamentDetailsDto>> BrowseAsync()
+        public async Task<IEnumerable<TournamentDto>> BrowseAsync()
         {
-            throw new NotImplementedException();
+            var tournaments = await _tournamentRepository.GetAllAsync();
+
+            return _mapper.Map<IEnumerable<Tournament>,IEnumerable<TournamentDto>>(tournaments);
         }
 
     }

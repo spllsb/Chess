@@ -10,7 +10,7 @@ namespace Chess.Infrastructure.Services
     {
         Task<TournamentDto> GetAsync(Guid tournamentId);
         Task<TournamentDto> GetAsync(string name);
-        Task<IEnumerable<TournamentDetailsDto>> BrowseAsync();
+        Task<IEnumerable<TournamentDto>> BrowseAsync();
         Task CreateAsync(string name,int maxPlayers);
     }
 }
