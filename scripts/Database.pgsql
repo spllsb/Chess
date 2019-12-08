@@ -16,3 +16,13 @@ CREATE TABLE public.users (
 	created_at timestamp NOT NULL,
 	updated_at timestamp NOT null
 );
+
+
+CREATE TABLE public.articles (
+	id uuid NOT null primary key,
+	title varchar(300) NOT NULL,
+	content text NOT NULL,
+	full_name_author varchar(70) not null,
+	created_at timestamp NOT NULL,
+	updated_at timestamp NOT null
+);
