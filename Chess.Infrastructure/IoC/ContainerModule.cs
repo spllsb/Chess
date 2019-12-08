@@ -17,12 +17,12 @@ namespace Chess.Infrastructure.IoC
         {
             builder.RegisterInstance(AutoMapperConfig.Initialize())
                 .SingleInstance();
-            builder.RegisterInstance(new SettingsModule(_configuration));
             builder.RegisterModule<CommandModule>();
             builder.RegisterModule<RepositoryModule>();
-            builder.RegisterModule<PostgresModule>();
-
+            builder.RegisterModule<DatabaseModule>();
             builder.RegisterModule<ServiceModule>();
+            builder.RegisterInstance(new SettingsModule(_configuration));
+
 
         }
     }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chess.Infrastructure.Repositories
 {
-    public class TournamentRepository : ITournamentRepository,  IPostgresRepository
+    public class TournamentRepository : ITournamentRepository, IDatabaseRepository
     {
         private readonly MyDbContext _context;
         public TournamentRepository(MyDbContext context) 

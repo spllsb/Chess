@@ -8,12 +8,9 @@ namespace Chess.Infrastructure.EF
         public DbSet<User> Users { get; set; }
         public DbSet<Tournament> Tournaments { get; set; }
 
-        public MyDbContext()
-        {
-        }
+        // private readonly DatabaseSettings _databaseSettings;
 
-        public MyDbContext(DbContextOptions<MyDbContext> options)
-            : base(options)
+        public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

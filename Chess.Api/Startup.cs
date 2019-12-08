@@ -7,10 +7,6 @@ using Autofac.Extensions.DependencyInjection;
 using Chess.Core.Repositories;
 using Chess.Infrastructure.EF;
 using Chess.Infrastructure.IoC;
-using Chess.Infrastructure.IoC.Modules;
-using Chess.Infrastructure.Mappers;
-using Chess.Infrastructure.Repositories;
-using Chess.Infrastructure.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +39,7 @@ namespace Chess.Api
                 .AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented); //kosmetyczna zmiana do wyswietlanego jsona
             services.AddEntityFrameworkNpgsql()
                 .AddDbContext<MyDbContext>();
+
 
             var builder = new ContainerBuilder();
             builder.Populate(services);

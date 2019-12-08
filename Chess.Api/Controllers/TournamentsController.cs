@@ -3,6 +3,7 @@ using Chess.Infrastructure.Commands;
 using Chess.Infrastructure.Commands.Tournament;
 using Chess.Infrastructure.EF;
 using Chess.Infrastructure.Services;
+using Chess.Infrastructure.Settings;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chess.Api.Controllers

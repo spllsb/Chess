@@ -1,4 +1,3 @@
-###
 GET http://localhost:5000/tournaments/
 ###
 GET http://localhost:5000/tournaments/Kadeci

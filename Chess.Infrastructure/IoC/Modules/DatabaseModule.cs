@@ -4,16 +4,16 @@ using Chess.Infrastructure.EF;
 
 namespace Chess.Infrastructure.IoC.Modules
 {
-    public class PostgresModule : Autofac.Module
+    public class DatabaseModule : Autofac.Module
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var assembly = typeof(PostgresModule)
+            var assembly = typeof(DatabaseModule)
                 .GetTypeInfo()
                 .Assembly;
             
             builder.RegisterAssemblyTypes(assembly)
-                .Where(x => x.IsAssignableTo<IPostgresRepository>())
+                .Where(x => x.IsAssignableTo<IDatabaseRepository>())
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
         }

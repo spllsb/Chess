@@ -5,11 +5,13 @@ using AutoMapper;
 using Chess.Core.Domain;
 using Chess.Core.Repositories;
 using Chess.Infrastructure.DTO;
+using Chess.Infrastructure.Settings;
 
 namespace Chess.Infrastructure.Services
 {
     public class TournamentService : ITournamentService
     {
+
         private readonly ITournamentRepository _tournamentRepository;
         private readonly IMapper _mapper;
 

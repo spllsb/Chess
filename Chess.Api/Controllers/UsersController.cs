@@ -11,8 +11,9 @@ namespace Chess.Api.Controllers
 {
     public class UsersController : ApiControllerBase
     {
+
         private readonly IUserService _userService;
-        public UsersController(IUserService userService, 
+        public UsersController(IUserService userService,
             ICommandDispatcher commandDispatcher) : base(commandDispatcher)
         {
             _userService = userService;
