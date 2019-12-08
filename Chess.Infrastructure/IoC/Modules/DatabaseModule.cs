@@ -1,6 +1,6 @@
 using System.Reflection;
 using Autofac;
-using Chess.Infrastructure.EF;
+using Chess.Infrastructure.Repositories;
 
 namespace Chess.Infrastructure.IoC.Modules
 {

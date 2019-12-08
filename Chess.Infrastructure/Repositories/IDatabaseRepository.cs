@@ -1,4 +1,4 @@
-namespace Chess.Infrastructure.EF
+namespace Chess.Infrastructure.Repositories
 {
     //Marker interface
     public interface IDatabaseRepository

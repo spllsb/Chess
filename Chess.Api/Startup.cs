@@ -9,6 +9,7 @@ using Chess.Infrastructure.EF;
 using Chess.Infrastructure.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -38,9 +39,8 @@ namespace Chess.Api
             services.AddMvc()
                 .AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented); //kosmetyczna zmiana do wyswietlanego jsona
             services.AddEntityFrameworkNpgsql()
-                .AddDbContext<MyDbContext>();
-
-
+                .AddDbContext<MyDbContext>(options => options.UseNpgsql(Configuration.GetValue<string>("Database:ConnectionString")));
+            
             var builder = new ContainerBuilder();
             builder.Populate(services);
             builder.RegisterModule(new ContainerModule(Configuration));

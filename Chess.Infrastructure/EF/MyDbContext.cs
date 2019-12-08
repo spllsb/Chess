@@ -13,8 +13,6 @@ namespace Chess.Infrastructure.EF
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=core_test;Username=postgres;Password=postgres");
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             var tournamentBuilder = modelBuilder.Entity<Tournament>();
