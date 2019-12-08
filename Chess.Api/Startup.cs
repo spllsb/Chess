@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Chess.Core.Repositories;
+using Chess.Infrastructure.EF;
 using Chess.Infrastructure.IoC;
 using Chess.Infrastructure.IoC.Modules;
 using Chess.Infrastructure.Mappers;
@@ -40,6 +41,9 @@ namespace Chess.Api
             // Add framework services.
             services.AddMvc()
                 .AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented); //kosmetyczna zmiana do wyswietlanego jsona
+            services.AddEntityFrameworkNpgsql()
+                .AddDbContext<MyDbContext>();
+
             var builder = new ContainerBuilder();
             builder.Populate(services);
             builder.RegisterModule(new ContainerModule(Configuration));

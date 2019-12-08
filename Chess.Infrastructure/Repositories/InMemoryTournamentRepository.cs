@@ -30,8 +30,9 @@ namespace Chess.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
-        public async Task RemoveAsync(Tournament tournament)
+        public async Task RemoveAsync(Guid id)
         {
+            var tournament = await GetAsync(id);
             _tournaments.Remove(tournament);
             await Task.CompletedTask;
         }

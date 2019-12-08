@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Chess.Infrastructure.Commands;
 using Chess.Infrastructure.Commands.Tournament;
+using Chess.Infrastructure.EF;
 using Chess.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 

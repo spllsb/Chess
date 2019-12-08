@@ -20,7 +20,10 @@ namespace Chess.Infrastructure.IoC
             builder.RegisterInstance(new SettingsModule(_configuration));
             builder.RegisterModule<CommandModule>();
             builder.RegisterModule<RepositoryModule>();
+            builder.RegisterModule<PostgresModule>();
+
             builder.RegisterModule<ServiceModule>();
+
         }
     }
 }

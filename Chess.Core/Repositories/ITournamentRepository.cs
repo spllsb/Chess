@@ -12,6 +12,6 @@ namespace Chess.Core.Repositories
         Task<IEnumerable<Tournament>> GetAllAsync();
         Task AddAsync(Tournament user);
         Task UpdateAsync(Tournament user);
-        Task RemoveAsync(Tournament id);
+        Task RemoveAsync(Guid id);
     }
 }

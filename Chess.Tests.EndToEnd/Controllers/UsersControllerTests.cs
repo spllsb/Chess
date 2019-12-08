@@ -2,10 +2,10 @@
 using System.Net.Http;
 using Chess.Api;
 using Newtonsoft.Json;
-using Chess.Infrastructure.DTO;
 using FluentAssertions;
 using System.Threading.Tasks;
 using Xunit;
+using Chess.Infrastructure.DTO;
 
 namespace Chess.Tests.EndToEnd.Controllers
 {

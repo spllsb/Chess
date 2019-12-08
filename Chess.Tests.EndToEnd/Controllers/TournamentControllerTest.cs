@@ -13,7 +13,7 @@ namespace Chess.Tests.EndToEnd.Controllers
         }
 
         [Fact]
-        public async void TestName()
+        public async void given_valid_tournament_name_should_exist()
         {
         //Given
         var tournamentsName = "Kadeci";
