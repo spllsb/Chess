@@ -27,7 +27,6 @@ namespace Chess.Api.Controllers
             {
                     return NotFound();
             }
-            
             return Json(user);
         }
 
