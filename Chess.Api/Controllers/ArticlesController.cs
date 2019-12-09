@@ -24,10 +24,11 @@ namespace Chess.Api.Controllers
             return Json(articles);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        [HttpGet]
+        [Route("{articleId}")]
+        public async Task<IActionResult> Get(Guid articleId)
         {
-            var article = await _articleService.GetAsync(id);
+            var article = await _articleService.GetAsync(articleId);
             if(article == null)
             {
                     return NotFound();

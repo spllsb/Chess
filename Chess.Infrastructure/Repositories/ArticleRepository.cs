@@ -34,9 +34,10 @@ namespace Chess.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task UpdateAsync(Article user)
+        public async Task UpdateAsync(Article article)
         {
-            throw new NotImplementedException();
+            _context.Articles.Update(article);
+            await _context.SaveChangesAsync();
         }
     }
 }

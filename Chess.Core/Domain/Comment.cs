@@ -9,5 +9,12 @@ namespace Chess.Core.Domain
         public string Author { get; set; }
         public string Content { get; set; }
 
+
+        public Article Article { get; set; }
+        public Comment(string author, string content)
+        {
+            Author = author;
+            Content = content;
+        }
     }
 }

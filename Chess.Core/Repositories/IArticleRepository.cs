@@ -10,7 +10,7 @@ namespace Chess.Core.Repositories
         Task<Article> GetAsync(Guid id);
         Task<IEnumerable<Article>> GetAllAsync();
         Task AddAsync(Article article);
-        Task UpdateAsync(Article user);
+        Task UpdateAsync(Article article);
         Task RemoveAsync(Guid id);
 
 

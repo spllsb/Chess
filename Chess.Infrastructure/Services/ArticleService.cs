@@ -19,14 +19,14 @@ namespace Chess.Infrastructure.Services
             _mapper = mapper;
             
         }
-        public async Task<ArticleDto> GetAsync(Guid articleId)
+        public async Task<ArticleDetailsDto> GetAsync(Guid articleId)
         {
             var article = await _articleRepository.GetAsync(articleId);
             if(article == null)
             {
                 throw new Exception($"Article with id: '{articleId}' don't exists");
             }
-            return _mapper.Map<Article,ArticleDto>(article);
+            return _mapper.Map<Article,ArticleDetailsDto>(article);
         }
 
         public async Task<IEnumerable<ArticleDto>> BrowseAsync()
@@ -36,9 +36,14 @@ namespace Chess.Infrastructure.Services
             return _mapper.Map<IEnumerable<Article>,IEnumerable<ArticleDto>>(articles);
         }
         
-                public async Task CreateAsync(string title, string content, string fullNameAuthor)
+        public async Task CreateAsync(string title, string content, string fullNameAuthor)
         {
             await _articleRepository.AddAsync(new Article(title,content,fullNameAuthor));
+        }
+
+        public Task AddCommentAsync(string author, string content)
+        {
+            throw new NotImplementedException();
         }
     }
 }

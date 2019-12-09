@@ -1,0 +1,1 @@
+insert into comments (id,content,author) values ('0d78f06a-c8ea-4495-828d-6a2bae99d6b4', 'Dobry artykol', 'Pan nobody');

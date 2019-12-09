@@ -26,3 +26,13 @@ CREATE TABLE public.articles (
 	created_at timestamp NOT NULL,
 	updated_at timestamp NOT null
 );
+
+CREATE TABLE public.comments (
+	id uuid NOT null primary key,
+	content text NOT NULL,
+	author varchar(70) not null,
+--	created_at timestamp NOT NULL,
+--	updated_at timestamp NOT null
+	
+    CONSTRAINT fk_article_id FOREIGN KEY (id) REFERENCES articles (id)
+);

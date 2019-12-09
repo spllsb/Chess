@@ -13,6 +13,8 @@ namespace Chess.Infrastructure.Mappers
                     cfg.CreateMap<Tournament,TournamentDetailsDto>();
                     cfg.CreateMap<User,UserDto>();
                     cfg.CreateMap<Article,ArticleDto>();
+                    cfg.CreateMap<Article,ArticleDetailsDto>();
+                    cfg.CreateMap<CommentDto,CommentDto>();
                 })
                 .CreateMapper();
     }
