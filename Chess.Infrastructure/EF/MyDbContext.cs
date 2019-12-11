@@ -22,10 +22,9 @@ namespace Chess.Infrastructure.EF
             var tournamentBuilder = builder.Entity<Tournament>();
             tournamentBuilder.HasKey(x => x.Id);
 
-            var articleBuilder = builder.Entity<Article>();
-            articleBuilder.HasKey(x => x.Id);
-            articleBuilder.HasMany(x => x.Comments);
-            articleBuilder.WithOne(x => x.Article);
+            // var articleBuilder = builder.Entity<Article>();
+            // articleBuilder.HasKey(x => x.Id);
+            // articleBuilder.HasMany(x => x.Comments);
             
 
             

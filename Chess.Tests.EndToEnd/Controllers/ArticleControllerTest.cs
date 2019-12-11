@@ -12,10 +12,10 @@ namespace Chess.Tests.EndToEnd.Controllers
         {
         }
         [Fact]
-        public async void given_valid_tournament_name_should_exist()
+        public async void given_valid_article_title_should_exist()
         {
         //Given
-        var articleTitle = "nowy artykow";
+        var articleAuthor = "Juzio";
         var articleGuid = "0d78f06a-c8ea-4495-828d-6a2bae99d6b4";
 
         //When
@@ -23,10 +23,10 @@ namespace Chess.Tests.EndToEnd.Controllers
         response.EnsureSuccessStatusCode();
         
         var responseString = await response.Content.ReadAsStringAsync();
-        var article = JsonConvert.DeserializeObject<ArticleDto>(responseString);
+        var article = JsonConvert.DeserializeObject<ArticleDetailsDto>(responseString);
         
         //Then
-        article.Title.Should().BeEquivalentTo(articleTitle);
+        article.FullNameAuthor.Should().BeEquivalentTo(articleAuthor);
         }
     }
 }

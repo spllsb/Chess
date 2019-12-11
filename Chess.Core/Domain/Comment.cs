@@ -11,10 +11,16 @@ namespace Chess.Core.Domain
 
 
         public Article Article { get; set; }
+
+        protected Comment()
+        {}
         public Comment(string author, string content)
         {
             Author = author;
             Content = content;
         }
+
+        public static Comment Create(string author, string content)
+            => new Comment(author,content);
     }
 }

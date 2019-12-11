@@ -32,9 +32,9 @@ namespace Chess.Core.Domain
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void AddComment(string author, string comment)
+        public void AddComment(string author, string content)
         {
-            _comments.Add(new Comment(author, comment));
+            _comments.Add(Comment.Create(author,content));
             UpdatedAt = DateTime.UtcNow;
         }
     }

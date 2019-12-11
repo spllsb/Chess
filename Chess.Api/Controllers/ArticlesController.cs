@@ -2,15 +2,17 @@ using System;
 using System.Threading.Tasks;
 using Chess.Infrastructure.Commands;
 using Chess.Infrastructure.Commands.Article;
+using Chess.Infrastructure.DTO;
 using Chess.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Chess.Api.Controllers
 {
     public class ArticlesController : ApiControllerBase
     {
         private readonly IArticleService _articleService;
-        public ArticlesController(IArticleService articleService,
+        public ArticlesController(IArticleService articleService, 
             ICommandDispatcher commandDispatcher) : base(commandDispatcher)
         {
             _articleService = articleService;

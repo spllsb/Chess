@@ -14,7 +14,7 @@ namespace Chess.Infrastructure.Mappers
                     cfg.CreateMap<User,UserDto>();
                     cfg.CreateMap<Article,ArticleDto>();
                     cfg.CreateMap<Article,ArticleDetailsDto>();
-                    cfg.CreateMap<CommentDto,CommentDto>();
+                    cfg.CreateMap<Comment,CommentDto>();
                 })
                 .CreateMapper();
     }
