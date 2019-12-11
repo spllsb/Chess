@@ -29,10 +29,11 @@ CREATE TABLE public.articles (
 
 CREATE TABLE public.comments (
 	id uuid NOT null primary key,
+	article_id uuid NOT null,
 	content text NOT NULL,
 	author varchar(70) not null,
---	created_at timestamp NOT NULL,
+--	created_at timestamp NOT NULL, 
 --	updated_at timestamp NOT null
 	
-    CONSTRAINT fk_article_id FOREIGN KEY (id) REFERENCES articles (id)
+    CONSTRAINT fk_article_id FOREIGN KEY (article_id) REFERENCES articles (id)
 );

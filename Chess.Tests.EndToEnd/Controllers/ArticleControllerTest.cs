@@ -26,6 +26,8 @@ namespace Chess.Tests.EndToEnd.Controllers
         var article = JsonConvert.DeserializeObject<ArticleDetailsDto>(responseString);
         
         //Then
+        //Dlaczego article.ti
+        // article.Title.Should().BeEquivalentTo("nowy artykow");
         article.FullNameAuthor.Should().BeEquivalentTo(articleAuthor);
         }
     }
