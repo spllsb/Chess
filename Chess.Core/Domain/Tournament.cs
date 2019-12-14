@@ -7,16 +7,16 @@ namespace Chess.Core.Domain
 {
     public class Tournament
     {
-        // private ISet<User> _users = new HashSet<User>();
+        // private ISet<Player> _players = new HashSet<Player>();
 
         public Guid Id { get; protected set;}
         public string Name { get; protected set; }
         public int MaxPlayers { get; protected set; }
         public DateTime UpdatedAt {get; private set;}
-        // public IEnumerable<User> Users 
+        // public IEnumerable<Player> Players 
         // { 
-        //     get { return _users;} 
-        //     set { _users = new HashSet<User>(value);} 
+        //     get { return _players;} 
+        //     set { _players = new HashSet<Player>(value);} 
         // }
         protected Tournament()
         {
@@ -28,14 +28,14 @@ namespace Chess.Core.Domain
             MaxPlayers = maxPlayer;
         }
 
-        // public void AddPlayer(User newUser)
+        // public void AddPlayer(Player newPlayer)
         // {
-        //     var user = Users.SingleOrDefault(x => x.Id == newUser.Id);
+        //     var user = _players.SingleOrDefault(x => x.UserId == newPlayer.UserId);
         //     if (user != null)
         //     {
-        //         throw new Exception($"User with id: '{newUser.Id}' and email '{newUser.Email}' already exists for tournament. You can't add him again");
+        //         throw new Exception($"User with id: '{newPlayer.UserId}' and username '{newPlayer.Username}' already exists for tournament. You can't add him again");
         //     }
-        //     _users.Add(newUser);
+        //     _players.Add(newPlayer);
         //     UpdatedAt = DateTime.UtcNow;
         // }
 
@@ -46,7 +46,7 @@ namespace Chess.Core.Domain
         //     {
         //         throw new Exception($"User with id: '{deleteUser.Id}' and email '{deleteUser.Email}' was not found");
         //     }
-        //     _users.Remove(deleteUser);
+        //     _players.Remove(deleteUser);
         //     UpdatedAt = DateTime.UtcNow;
         // }
 

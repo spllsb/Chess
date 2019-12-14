@@ -53,7 +53,7 @@ namespace Chess.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMyExceptionHandler();
+            // app.UseMyExceptionHandler();
             app.UseMvc();
             appLifeTime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }

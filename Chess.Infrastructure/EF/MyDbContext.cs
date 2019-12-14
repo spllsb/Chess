@@ -11,6 +11,8 @@ namespace Chess.Infrastructure.EF
         public DbSet<Tournament> Tournaments { get; set; }
         public DbSet<Article> Articles {get;set;}
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<Player> Players { get; set; }
+        public DbSet<PlayerTournamentParticipation> PlayerTournamentParticipation { get; set; }
 
         // private readonly DatabaseSettings _databaseSettings;
 
@@ -26,9 +28,9 @@ namespace Chess.Infrastructure.EF
             // articleBuilder.HasKey(x => x.Id);
             // articleBuilder.HasMany(x => x.Comments);
             
+            var playerBuilder = builder.Entity<Player>();
+            playerBuilder.HasKey(x => x.UserId);
 
-            
-            
             base.OnModelCreating(builder);
             foreach(var entity in builder.Model.GetEntityTypes())
             {

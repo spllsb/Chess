@@ -5,7 +5,10 @@ CREATE TABLE public.tournaments (
 	updated_at timestamp NOT NULL
 );
 
-
+CREATE TABLE public.players (
+	user_id uuid NOT null primary key,
+	username varchar(50) NOT NULL
+);
 
 CREATE TABLE public.users (
 	id uuid NOT null primary key,
@@ -36,4 +39,14 @@ CREATE TABLE public.comments (
 --	updated_at timestamp NOT null
 	
     CONSTRAINT fk_article_id FOREIGN KEY (article_id) REFERENCES articles (id)
+);
+
+create table player_tournament_participation(
+	id uuid not null primary key,
+	tournament_id uuid not null,
+	player_id uuid not null,
+	result varchar(10) not null
+	
+--	CONSTRAINT fk_tournament_id FOREIGN KEY (tournament_id) REFERENCES tournaments (id),
+--	CONSTRAINT fk_player_id FOREIGN KEY (player_id) REFERENCES players (user_id)
 );

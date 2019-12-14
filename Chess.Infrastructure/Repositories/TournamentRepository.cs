@@ -18,9 +18,22 @@ namespace Chess.Infrastructure.Repositories
         }
         public async Task<Tournament> GetAsync(Guid id)
             => await _context.Tournaments.SingleOrDefaultAsync(x => x.Id == id);
-        public async Task<Tournament> GetAsync(string name)
-            => await _context.Tournaments.SingleOrDefaultAsync(x => x.Name == name);
+
+
+        // public async Task<Tournament> GetAsync(string name)
+        //     => await _context.Tournaments.SingleOrDefaultAsync(x => x.Name == name);
         //Dodac paginację (np funkcje Take lub Skip)
+
+        public async Task<Tournament> GetAsync(string name)
+        {
+            var aa = await _context.Tournaments.SingleOrDefaultAsync(x => x.Name == name);
+            Guid id = new Guid("111580e5-1c1f-4b9f-b6db-d6e91d669ae4");
+            var xx = _context.Players.SingleOrDefault(x => x.UserId == id);
+            var zz = _context.PlayerTournamentParticipation.SingleOrDefault(x => x.TournamentId == id);
+        
+            return aa;
+        }
+
         public async Task<IEnumerable<Tournament>> GetAllAsync()
         
             => await _context.Tournaments.Take(10).ToListAsync();

@@ -19,12 +19,6 @@ namespace Chess.Infrastructure.Repositories
         public async Task<Article> GetAsync(Guid id)
             => await _context.Articles.Include(x => x.Comments).SingleOrDefaultAsync(x => x.Id == id);
 
-        // public async Task<Article> GetAsync(Guid id)
-        // {
-        //     var article = await _context.Articles.SingleOrDefaultAsync(x => x.Id == id);
-        //     article.AddComment("asdasdasd","sadasdasdas");
-        //     return article;
-        // }
         public async Task<IEnumerable<Article>> GetAllAsync()
             => await _context.Articles.Take(10).ToListAsync();
 
@@ -45,7 +39,5 @@ namespace Chess.Infrastructure.Repositories
             _context.Articles.Update(article);
             await _context.SaveChangesAsync();
         }
-
- 
     }
 }
