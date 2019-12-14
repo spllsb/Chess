@@ -6,6 +6,11 @@
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <!-- <GenerateProgramFile>false</GenerateProgramFile> -->
   </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Chess.Api\Chess.Api.csproj" />
+    <ProjectReference Include="..\Chess.Infrastructure\Chess.Infrastructure.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Chess.Api\Chess.Api.csproj" />

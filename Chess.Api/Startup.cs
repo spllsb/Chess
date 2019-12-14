@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Chess.Core.Repositories;
+using Chess.Api.Framework;
 using Chess.Infrastructure.EF;
 using Chess.Infrastructure.IoC;
 using Microsoft.AspNetCore.Builder;
@@ -56,6 +53,7 @@ namespace Chess.Api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseMyExceptionHandler();
             app.UseMvc();
             appLifeTime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }

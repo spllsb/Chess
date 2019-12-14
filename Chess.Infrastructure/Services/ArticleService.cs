@@ -5,6 +5,7 @@ using AutoMapper;
 using Chess.Core.Domain;
 using Chess.Core.Repositories;
 using Chess.Infrastructure.DTO;
+using Chess.Infrastructure.Extensions;
 
 namespace Chess.Infrastructure.Services
 {
@@ -21,18 +22,13 @@ namespace Chess.Infrastructure.Services
         }
         public async Task<ArticleDetailsDto> GetAsync(Guid articleId)
         {
-            var article = await _articleRepository.GetAsync(articleId);
-            if(article == null)
-            {
-                throw new Exception($"Article with id: '{articleId}' don't exists");
-            }
+            var article = await _articleRepository.GetOrFailAsync(articleId);
             return _mapper.Map<Article,ArticleDetailsDto>(article);
         }
 
         public async Task<IEnumerable<ArticleDto>> BrowseAsync()
         {
             var articles = await _articleRepository.GetAllAsync();
-
             return _mapper.Map<IEnumerable<Article>,IEnumerable<ArticleDto>>(articles);
         }
         

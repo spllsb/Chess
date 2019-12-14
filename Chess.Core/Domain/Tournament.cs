@@ -36,7 +36,7 @@ namespace Chess.Core.Domain
         //         throw new Exception($"User with id: '{newUser.Id}' and email '{newUser.Email}' already exists for tournament. You can't add him again");
         //     }
         //     _users.Add(newUser);
-        //     UpdateAt = DateTime.UtcNow;
+        //     UpdatedAt = DateTime.UtcNow;
         // }
 
         // public void DeletePlayer(User deleteUser)
@@ -47,7 +47,7 @@ namespace Chess.Core.Domain
         //         throw new Exception($"User with id: '{deleteUser.Id}' and email '{deleteUser.Email}' was not found");
         //     }
         //     _users.Remove(deleteUser);
-        //     UpdateAt = DateTime.UtcNow;
+        //     UpdatedAt = DateTime.UtcNow;
         // }
 
     }

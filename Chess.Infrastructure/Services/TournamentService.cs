@@ -6,6 +6,7 @@ using Chess.Core.Domain;
 using Chess.Core.Repositories;
 using Chess.Infrastructure.DTO;
 using Chess.Infrastructure.Settings;
+using Chess.Infrastructure.Extensions;
 
 namespace Chess.Infrastructure.Services
 {
@@ -31,11 +32,7 @@ namespace Chess.Infrastructure.Services
         }
         public async Task<TournamentDto> GetAsync(string name)
         {
-            var tournament = await _tournamentRepository.GetAsync(name);
-            if(tournament == null)
-            {
-                throw new Exception($"Tournament with id: '{name}' don't exists");
-            }
+            var tournament = await _tournamentRepository.GetOrFailAsync(name);
             return _mapper.Map<Tournament,TournamentDto>(tournament);
         }
         public async Task CreateAsync(string name, int maxPlayers)
