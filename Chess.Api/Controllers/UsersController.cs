@@ -6,6 +6,7 @@ using Chess.Infrastructure.DTO;
 using Chess.Infrastructure.Service;
 using Chess.Infrastructure.Settings;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Chess.Api.Controllers
 {
@@ -27,7 +28,7 @@ namespace Chess.Api.Controllers
             {
                     return NotFound();
             }
-            return Json(user);
+            return Ok(user);
         }
 
         [HttpPost]

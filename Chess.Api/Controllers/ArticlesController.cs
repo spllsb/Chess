@@ -5,7 +5,6 @@ using Chess.Infrastructure.Commands.Article;
 using Chess.Infrastructure.DTO;
 using Chess.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace Chess.Api.Controllers
 {
@@ -23,7 +22,7 @@ namespace Chess.Api.Controllers
         {
             var articles = await _articleService.BrowseAsync();
 
-            return Json(articles);
+            return Ok(articles);
         }
 
         [HttpGet]
@@ -36,7 +35,7 @@ namespace Chess.Api.Controllers
                     return NotFound();
             }
             
-            return Json(article);
+            return Ok(article);
         }
 
 

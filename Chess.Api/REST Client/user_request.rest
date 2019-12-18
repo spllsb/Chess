@@ -1,3 +1,10 @@
+
+
+
+
+GET http://localhost:5000/users/dedmeadc@zdnet.com
+
+###
 GET http://localhost:5000/users/user1@email.com
 
 ###

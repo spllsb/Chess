@@ -7,19 +7,20 @@ namespace Chess.Core.Domain
 {
     public class Tournament
     {
-        // private ISet<Player> _players = new HashSet<Player>();
+        private ISet<PlayerTournamentParticipation> _playerTournamentParticipation = new HashSet<PlayerTournamentParticipation>();
 
         public Guid Id { get; protected set;}
         public string Name { get; protected set; }
         public int MaxPlayers { get; protected set; }
         public DateTime UpdatedAt {get; private set;}
-        // public IEnumerable<Player> Players 
-        // { 
-        //     get { return _players;} 
-        //     set { _players = new HashSet<Player>(value);} 
-        // }
+        public virtual IEnumerable<PlayerTournamentParticipation> PlayerTournamentParticipation 
+        { 
+            get { return _playerTournamentParticipation;} 
+            set { _playerTournamentParticipation = new HashSet<PlayerTournamentParticipation>(value);} 
+        }
         protected Tournament()
         {
+            PlayerTournamentParticipation = new HashSet<PlayerTournamentParticipation>();
         }
 
         public Tournament(string name, int maxPlayer)

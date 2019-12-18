@@ -21,19 +21,19 @@ namespace Chess.Infrastructure.Services
             _tournamentRepository = tournamentRepository;
             _mapper = mapper;
         }
-        public async Task<TournamentDto> GetAsync(Guid tournamentId)
+        public async Task<TournamentDetailsDto> GetAsync(Guid tournamentId)
         {
             var tournament = await _tournamentRepository.GetAsync(tournamentId);
             if(tournament == null)
             {
                 throw new Exception($"Tournament with id: '{tournamentId}' don't exists");
             }
-            return _mapper.Map<Tournament,TournamentDto>(tournament);
+            return _mapper.Map<Tournament,TournamentDetailsDto>(tournament);
         }
-        public async Task<TournamentDto> GetAsync(string name)
+        public async Task<TournamentDetailsDto> GetAsync(string name)
         {
             var tournament = await _tournamentRepository.GetOrFailAsync(name);
-            return _mapper.Map<Tournament,TournamentDto>(tournament);
+            return _mapper.Map<Tournament,TournamentDetailsDto>(tournament);
         }
         public async Task CreateAsync(string name, int maxPlayers)
         {

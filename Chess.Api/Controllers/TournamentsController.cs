@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Chess.Infrastructure.Commands;
 using Chess.Infrastructure.Commands.Tournament;
@@ -22,7 +23,7 @@ namespace Chess.Api.Controllers
         {
             var tournament = await _tournamentService.BrowseAsync();
 
-            return Json(tournament);
+            return Ok(tournament);
         }
 
         [HttpGet("{name}")]
@@ -34,8 +35,20 @@ namespace Chess.Api.Controllers
                     return NotFound();
             }
             
-            return Json(tournament);
+            return Ok(tournament);
         }
+
+        // [HttpGet("{id}")]
+        // public async Task<IActionResult> Get(Guid id)
+        // {
+        //     var tournament = await _tournamentService.GetAsync(id);
+        //     if(tournament == null)
+        //     {
+        //             return NotFound();
+        //     }
+            
+        //     return Json(tournament);
+        // }
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateTournament command)
         {

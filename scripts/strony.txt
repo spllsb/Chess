@@ -1,0 +1,1 @@
+http://blog.bguiz.com/2017/postgres-many2many-sql-non-relational/

@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Chess.Api.Controllers
 {
+    [ApiController]
     [Route("[controller]")]
-    public class ApiControllerBase : Controller
+    public class ApiControllerBase : ControllerBase
     {
         protected readonly ICommandDispatcher CommandDispatcher;
 

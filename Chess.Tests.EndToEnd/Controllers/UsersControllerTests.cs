@@ -15,7 +15,6 @@ namespace Chess.Tests.EndToEnd.Controllers
         {
         }
 
-        [Fact]
         public async Task given_valid_email_user_should_exist()
         {
             // Act

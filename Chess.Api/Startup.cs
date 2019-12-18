@@ -1,61 +1,71 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Chess.Api.Framework;
 using Chess.Infrastructure.EF;
 using Chess.Infrastructure.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace Chess.Api
 {
     public class Startup
     {
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
         public IContainer ApplicationContainer { get; private set; }
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddMvc()
-                .AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented); //kosmetyczna zmiana do wyswietlanego jsona
+            services.AddControllers()
+                .AddNewtonsoftJson();
             services.AddEntityFrameworkNpgsql()
-                .AddDbContext<MyDbContext>(options => options.UseNpgsql(Configuration.GetValue<string>("Database:ConnectionString")));
-            
-            var builder = new ContainerBuilder();
-            builder.Populate(services);
+                .AddDbContext<MyDbContext>(options => options
+                    .UseNpgsql(Configuration.GetValue<string>("Database:ConnectionString"))
+                    .UseSnakeCaseNamingConvention());
+            services.AddOptions();
+        }
+ 
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            // Register your own things directly with Autofac, like:
             builder.RegisterModule(new ContainerModule(Configuration));
-            ApplicationContainer = builder.Build();
-
-            return new AutofacServiceProvider(ApplicationContainer);
-        } 
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
-            ILoggerFactory loggerFactory, IApplicationLifetime appLifeTime)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime applicationLifetime)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
+            app.UseHttpsRedirection();
             // app.UseMyExceptionHandler();
-            app.UseMvc();
-            appLifeTime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
+            applicationLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }
     }
 }

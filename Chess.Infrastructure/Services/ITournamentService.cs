@@ -8,8 +8,8 @@ namespace Chess.Infrastructure.Services
 {
     public interface ITournamentService : IService
     {
-        Task<TournamentDto> GetAsync(Guid tournamentId);
-        Task<TournamentDto> GetAsync(string name);
+        Task<TournamentDetailsDto> GetAsync(Guid tournamentId);
+        Task<TournamentDetailsDto> GetAsync(string name);
         Task<IEnumerable<TournamentDto>> BrowseAsync();
         Task CreateAsync(string name,int maxPlayers);
     }

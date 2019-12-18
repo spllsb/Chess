@@ -42,11 +42,10 @@ CREATE TABLE public.comments (
 );
 
 create table player_tournament_participation(
-	id uuid not null primary key,
 	tournament_id uuid not null,
 	player_id uuid not null,
-	result varchar(10) not null
+	result varchar(10) not null,
 	
---	CONSTRAINT fk_tournament_id FOREIGN KEY (tournament_id) REFERENCES tournaments (id),
---	CONSTRAINT fk_player_id FOREIGN KEY (player_id) REFERENCES players (user_id)
+	CONSTRAINT fk_tournament_id FOREIGN KEY (tournament_id) REFERENCES tournaments (id),
+	CONSTRAINT fk_player_id FOREIGN KEY (player_id) REFERENCES players (user_id)
 );

@@ -5,12 +5,13 @@ namespace Chess.Core.Domain
     public class Comment
     {
         public Guid Id { get; protected set;}
+        public Guid ArticleId { get; set; }
         //pozniej to bedzie uzytkownik
         public string Author { get; set; }
         public string Content { get; set; }
 
 
-        public Article Article { get; set; }
+        public virtual Article Article { get; set; }
 
         protected Comment()
         {}

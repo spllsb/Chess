@@ -37,13 +37,6 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "say Hello",
-            "type": "shell",
-            "command": "echo Hello"
         }
-
-
     ]
 }

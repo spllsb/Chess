@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 
@@ -19,9 +20,9 @@ namespace Chess.Core.Domain
             get { return _comments; } 
             set { _comments = new HashSet<Comment>(value); }
         }
-        
         protected Article()
         {
+            Comments = new HashSet<Comment>();
         }
         public Article(string title,string content,string fullNameAuthor)
         {

@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chess.Infrastructure.Repositories
 {
+
     public class UserRepository : IUserRepository, IDatabaseRepository
     {
         private readonly MyDbContext _context;

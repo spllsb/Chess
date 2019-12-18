@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Chess.Api.Controllers
 {
+
+  
     public class AccountController : ApiControllerBase
     {
         public AccountController(ICommandDispatcher commandDispatcher) 
