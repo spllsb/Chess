@@ -26,10 +26,22 @@ namespace Chess.Api.Controllers
             return Ok(tournament);
         }
 
-        [HttpGet("{name}")]
-        public async Task<IActionResult> Get(string name)
+        // [HttpGet("{name}")]
+        // public async Task<IActionResult> Get(string name)
+        // {
+        //     var tournament = await _tournamentService.GetAsync(name);
+        //     if(tournament == null)
+        //     {
+        //             return NotFound();
+        //     }
+            
+        //     return Ok(tournament);
+        // }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(Guid id)
         {
-            var tournament = await _tournamentService.GetAsync(name);
+            var tournament = await _tournamentService.GetAsync(id);
             if(tournament == null)
             {
                     return NotFound();
@@ -37,18 +49,6 @@ namespace Chess.Api.Controllers
             
             return Ok(tournament);
         }
-
-        // [HttpGet("{id}")]
-        // public async Task<IActionResult> Get(Guid id)
-        // {
-        //     var tournament = await _tournamentService.GetAsync(id);
-        //     if(tournament == null)
-        //     {
-        //             return NotFound();
-        //     }
-            
-        //     return Json(tournament);
-        // }
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateTournament command)
         {

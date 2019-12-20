@@ -8,22 +8,35 @@ namespace Chess.Infrastructure.EF
     public class MyDbContext : DbContext
     {
         public virtual DbSet<User> Users { get; set; }
-        // public virtual DbSet<Tournament> Tournaments { get; set; }
+        public virtual DbSet<Tournament> Tournaments { get; set; }
         public virtual DbSet<Article> Articles {get;set;}
         public virtual DbSet<Comment> Comments { get; set; }
-        // public virtual DbSet<Player> Players { get; set; }
-        // public virtual DbSet<PlayerTournamentParticipation> PlayerTournamentParticipation { get; set; }
+        public virtual DbSet<Player> Players { get; set; }
+        public virtual DbSet<PlayerTournamentParticipation> PlayerTournamentParticipation { get; set; }
 
 
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
         }
-        // protected override void OnModelCreating(ModelBuilder modelBuilder)
-        // {
-            // modelBuilder.Entity<Article>(entity =>
-            // {
-            //     entity.HasKey(x => x.Id);
-            // });
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Player>(entity =>
+            {
+                entity.HasKey(x => x.UserId);
+            });
+
+            modelBuilder.Entity<PlayerTournamentParticipation>(entity =>
+            {
+                entity.HasKey(x => new {x.TournamentId,x.PlayerId});
+                entity.HasOne(d => d.Player)
+                    .WithMany(p => p.PlayerTournamentParticipation)
+                    .HasForeignKey(d => d.PlayerId);
+
+                entity.HasOne(d => d.Tournament)
+                    .WithMany(p => p.PlayerTournamentParticipation)
+                    .HasForeignKey(d => d.TournamentId);
+            });
+        }
 
             // modelBuilder.Entity<Comment>(entity =>
             // {

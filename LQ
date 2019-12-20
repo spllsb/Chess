@@ -1,0 +1,233 @@
+warning: LF will be replaced by CRLF in Chess.Infrastructure/DTO/PlayerTournamentParticipationDto.cs.
+The file will have its original line endings in your working directory
+[1mdiff --git a/Chess.Api/Controllers/TournamentsController.cs b/Chess.Api/Controllers/TournamentsController.cs[m
+[1mindex 0c79733..75a5547 100644[m
+[1m--- a/Chess.Api/Controllers/TournamentsController.cs[m
+[1m+++ b/Chess.Api/Controllers/TournamentsController.cs[m
+[36m@@ -26,10 +26,22 @@[m [mnamespace Chess.Api.Controllers[m
+             return Ok(tournament);[m
+         }[m
+ [m
+[31m-        [HttpGet("{name}")][m
+[31m-        public async Task<IActionResult> Get(string name)[m
+[32m+[m[32m        // [HttpGet("{name}")][m
+[32m+[m[32m        // public async Task<IActionResult> Get(string name)[m
+[32m+[m[32m        // {[m
+[32m+[m[32m        //     var tournament = await _tournamentService.GetAsync(name);[m
+[32m+[m[32m        //     if(tournament == null)[m
+[32m+[m[32m        //     {[m
+[32m+[m[32m        //             return NotFound();[m
+[32m+[m[32m        //     }[m
+[32m+[m[41m            [m
+[32m+[m[32m        //     return Ok(tournament);[m
+[32m+[m[32m        // }[m
+[32m+[m
+[32m+[m[32m        [HttpGet("{id}")][m
+[32m+[m[32m        public async Task<IActionResult> Get(Guid id)[m
+         {[m
+[31m-            var tournament = await _tournamentService.GetAsync(name);[m
+[32m+[m[32m            var tournament = await _tournamentService.GetAsync(id);[m
+             if(tournament == null)[m
+             {[m
+                     return NotFound();[m
+[36m@@ -37,18 +49,6 @@[m [mnamespace Chess.Api.Controllers[m
+             [m
+             return Ok(tournament);[m
+         }[m
+[31m-[m
+[31m-        // [HttpGet("{id}")][m
+[31m-        // public async Task<IActionResult> Get(Guid id)[m
+[31m-        // {[m
+[31m-        //     var tournament = await _tournamentService.GetAsync(id);[m
+[31m-        //     if(tournament == null)[m
+[31m-        //     {[m
+[31m-        //             return NotFound();[m
+[31m-        //     }[m
+[31m-            [m
+[31m-        //     return Json(tournament);[m
+[31m-        // }[m
+         [HttpPost][m
+         public async Task<IActionResult> Post([FromBody] CreateTournament command)[m
+         {[m
+[1mdiff --git a/Chess.Infrastructure/DTO/PlayerTournamentParticipationDto.cs b/Chess.Infrastructure/DTO/PlayerTournamentParticipationDto.cs[m
+[1mindex effa7ae..d34e76b 100644[m
+[1m--- a/Chess.Infrastructure/DTO/PlayerTournamentParticipationDto.cs[m
+[1m+++ b/Chess.Infrastructure/DTO/PlayerTournamentParticipationDto.cs[m
+[36m@@ -4,10 +4,14 @@[m [mnamespace Chess.Infrastructure.DTO[m
+ {[m
+     public class PlayerTournamentParticipationDto[m
+     {[m
+[31m-        public TournamentDto Tournament { get; set; }[m
+         public Guid TournamentId { get; set; }[m
+[31m-        public PlayerDto Player {get;set;}[m
+         public Guid PlayerId { get; set; }[m
+[32m+[m
+         public string Result { get; set; }[m
+[32m+[m
+[32m+[m[32m        public TournamentDto Tournament { get; set; }[m
+[32m+[m[32m        public PlayerDto Player {get;set;}[m
+[32m+[m
+[32m+[m
+     }[m
+ }[m
+\ No newline at end of file[m
+[1mdiff --git a/Chess.Infrastructure/EF/MyDbContext.cs b/Chess.Infrastructure/EF/MyDbContext.cs[m
+[1mindex 140d3be..b2d770b 100644[m
+[1m--- a/Chess.Infrastructure/EF/MyDbContext.cs[m
+[1m+++ b/Chess.Infrastructure/EF/MyDbContext.cs[m
+[36m@@ -8,22 +8,35 @@[m [mnamespace Chess.Infrastructure.EF[m
+     public class MyDbContext : DbContext[m
+     {[m
+         public virtual DbSet<User> Users { get; set; }[m
+[31m-        // public virtual DbSet<Tournament> Tournaments { get; set; }[m
+[32m+[m[32m        public virtual DbSet<Tournament> Tournaments { get; set; }[m
+         public virtual DbSet<Article> Articles {get;set;}[m
+         public virtual DbSet<Comment> Comments { get; set; }[m
+[31m-        // public virtual DbSet<Player> Players { get; set; }[m
+[31m-        // public virtual DbSet<PlayerTournamentParticipation> PlayerTournamentParticipation { get; set; }[m
+[32m+[m[32m        public virtual DbSet<Player> Players { get; set; }[m
+[32m+[m[32m        public virtual DbSet<PlayerTournamentParticipation> PlayerTournamentParticipation { get; set; }[m
+ [m
+ [m
+         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)[m
+         {[m
+         }[m
+[31m-        // protected override void OnModelCreating(ModelBuilder modelBuilder)[m
+[31m-        // {[m
+[31m-            // modelBuilder.Entity<Article>(entity =>[m
+[31m-            // {[m
+[31m-            //     entity.HasKey(x => x.Id);[m
+[31m-            // });[m
+[32m+[m[32m        protected override void OnModelCreating(ModelBuilder modelBuilder)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            modelBuilder.Entity<Player>(entity =>[m
+[32m+[m[32m            {[m
+[32m+[m[32m                entity.HasKey(x => x.UserId);[m
+[32m+[m[32m            });[m
+[32m+[m
+[32m+[m[32m            modelBuilder.Entity<PlayerTournamentParticipation>(entity =>[m
+[32m+[m[32m            {[m
+[32m+[m[32m                entity.HasKey(x => new {x.TournamentId,x.PlayerId});[m
+[32m+[m[32m                entity.HasOne(d => d.Player)[m
+[32m+[m[32m                    .WithMany(p => p.PlayerTournamentParticipation)[m
+[32m+[m[32m                    .HasForeignKey(d => d.PlayerId);[m
+[32m+[m
+[32m+[m[32m                entity.HasOne(d => d.Tournament)[m
+[32m+[m[32m                    .WithMany(p => p.PlayerTournamentParticipation)[m
+[32m+[m[32m                    .HasForeignKey(d => d.TournamentId);[m
+[32m+[m[32m            });[m
+[32m+[m[32m        }[m
+ [m
+             // modelBuilder.Entity<Comment>(entity =>[m
+             // {[m
+[1mdiff --git a/Chess.Infrastructure/Mappers/AutoMapperConfig.cs b/Chess.Infrastructure/Mappers/AutoMapperConfig.cs[m
+[1mindex e0f61e2..ba07b3a 100644[m
+[1m--- a/Chess.Infrastructure/Mappers/AutoMapperConfig.cs[m
+[1m+++ b/Chess.Infrastructure/Mappers/AutoMapperConfig.cs[m
+[36m@@ -17,6 +17,7 @@[m [mnamespace Chess.Infrastructure.Mappers[m
+                     cfg.CreateMap<Comment,CommentDto>();[m
+ [m
+                     cfg.CreateMap<PlayerTournamentParticipation,PlayerTournamentParticipationDto>();[m
+[32m+[m[32m                    cfg.CreateMap<Player,PlayerDto>();[m
+                 })[m
+                 .CreateMapper();[m
+     }[m
+[1mdiff --git a/Chess.Infrastructure/Repositories/TournamentRepository.cs b/Chess.Infrastructure/Repositories/TournamentRepository.cs[m
+[1mindex 8423c98..0a17dfc 100644[m
+[1m--- a/Chess.Infrastructure/Repositories/TournamentRepository.cs[m
+[1m+++ b/Chess.Infrastructure/Repositories/TournamentRepository.cs[m
+[36m@@ -1,50 +1,49 @@[m
+[31m-// using System;[m
+[31m-// using System.Collections.Generic;[m
+[31m-// using System.Linq;[m
+[31m-// using System.Threading.Tasks;[m
+[31m-// using Chess.Core.Domain;[m
+[31m-// using Chess.Core.Repositories;[m
+[31m-// using Chess.Infrastructure.EF;[m
+[31m-// using Microsoft.EntityFrameworkCore;[m
+[32m+[m[32musing System;[m
+[32m+[m[32musing System.Collections.Generic;[m
+[32m+[m[32musing System.Linq;[m
+[32m+[m[32musing System.Threading.Tasks;[m
+[32m+[m[32musing Chess.Core.Domain;[m
+[32m+[m[32musing Chess.Core.Repositories;[m
+[32m+[m[32musing Chess.Infrastructure.EF;[m
+[32m+[m[32musing Microsoft.EntityFrameworkCore;[m
+ [m
+[31m-// namespace Chess.Infrastructure.Repositories[m
+[31m-// {[m
+[31m-//     // : ITournamentRepository, IDatabaseRepository[m
+[31m-//     public class TournamentRepository [m
+[31m-//     {[m
+[31m-//         private readonly MyDbContext _context;[m
+[31m-//         public TournamentRepository(MyDbContext context) [m
+[31m-//         {[m
+[31m-//             _context = context;[m
+[31m-//         }[m
+[31m-//         public async Task<Tournament> GetAsync(Guid id)[m
+[31m-//             => await _context.Tournaments.Include(x => x.PlayerTournamentParticipation).SingleOrDefaultAsync(x => x.Id == id);[m
+[32m+[m[32mnamespace Chess.Infrastructure.Repositories[m
+[32m+[m[32m{[m
+[32m+[m[32m    public class TournamentRepository : ITournamentRepository, IDatabaseRepository[m
+[32m+[m[32m    {[m
+[32m+[m[32m        private readonly MyDbContext _context;[m
+[32m+[m[32m        public TournamentRepository(MyDbContext context)[m[41m [m
+[32m+[m[32m        {[m
+[32m+[m[32m            _context = context;[m
+[32m+[m[32m        }[m
+[32m+[m[32m        public async Task<Tournament> GetAsync(Guid id)[m
+[32m+[m[32m            => await _context.Tournaments.Include(x => x.PlayerTournamentParticipation).SingleOrDefaultAsync(x => x.Id == id);[m
+ [m
+ [m
+[31m-//         public async Task<Tournament> GetAsync(string name)[m
+[31m-//             => await _context.Tournaments.Include(x => x.PlayerTournamentParticipation).SingleOrDefaultAsync(x => x.Name == name);[m
+[31m-//         //Dodac paginację (np funkcje Take lub Skip)[m
+[32m+[m[32m        public async Task<Tournament> GetAsync(string name)[m
+[32m+[m[32m            => await _context.Tournaments.Include(x => x.PlayerTournamentParticipation).SingleOrDefaultAsync(x => x.Name == name);[m
+[32m+[m[32m        //Dodac paginację (np funkcje Take lub Skip)[m
+ [m
+ [m
+[31m-//         public async Task<IEnumerable<Tournament>> GetAllAsync()[m
+[32m+[m[32m        public async Task<IEnumerable<Tournament>> GetAllAsync()[m
+         [m
+[31m-//             => await _context.Tournaments.Take(10).ToListAsync();[m
+[32m+[m[32m            => await _context.Tournaments.Take(10).ToListAsync();[m
+ [m
+[31m-//         public async Task AddAsync(Tournament user)[m
+[31m-//         {[m
+[31m-//             await _context.Tournaments.AddAsync(user);[m
+[31m-//             await _context.SaveChangesAsync();[m
+[31m-//         }[m
+[31m-//         public async Task UpdateAsync(Tournament user)[m
+[31m-//         {[m
+[31m-//             _context.Tournaments.Update(user);[m
+[31m-//             await _context.SaveChangesAsync();[m
+[31m-//         }[m
+[31m-//         public async Task RemoveAsync(Guid id)[m
+[31m-//         {[m
+[31m-//             var tournament = await GetAsync(id);[m
+[31m-//             _context.Tournaments.Remove(tournament);[m
+[31m-//             await _context.SaveChangesAsync();[m
+[31m-//         }[m
+[31m-//     }[m
+[31m-// }[m
+\ No newline at end of file[m
+[32m+[m[32m        public async Task AddAsync(Tournament user)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            await _context.Tournaments.AddAsync(user);[m
+[32m+[m[32m            await _context.SaveChangesAsync();[m
+[32m+[m[32m        }[m
+[32m+[m[32m        public async Task UpdateAsync(Tournament user)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            _context.Tournaments.Update(user);[m
+[32m+[m[32m            await _context.SaveChangesAsync();[m
+[32m+[m[32m        }[m
+[32m+[m[32m        public async Task RemoveAsync(Guid id)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            var tournament = await GetAsync(id);[m
+[32m+[m[32m            _context.Tournaments.Remove(tournament);[m
+[32m+[m[32m            await _context.SaveChangesAsync();[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
