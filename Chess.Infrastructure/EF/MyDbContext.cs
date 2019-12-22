@@ -12,7 +12,6 @@ namespace Chess.Infrastructure.EF
         public virtual DbSet<Article> Articles {get;set;}
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Player> Players { get; set; }
-        public virtual DbSet<PlayerTournamentParticipation> PlayerTournamentParticipation { get; set; }
 
 
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
@@ -29,11 +28,11 @@ namespace Chess.Infrastructure.EF
             {
                 entity.HasKey(x => new {x.TournamentId,x.PlayerId});
                 entity.HasOne(d => d.Player)
-                    .WithMany(p => p.PlayerTournamentParticipation)
+                    .WithMany(p => p.Tournaments)
                     .HasForeignKey(d => d.PlayerId);
 
                 entity.HasOne(d => d.Tournament)
-                    .WithMany(p => p.PlayerTournamentParticipation)
+                    .WithMany(p => p.Players)
                     .HasForeignKey(d => d.TournamentId);
             });
         }

@@ -16,12 +16,19 @@ namespace Chess.Infrastructure.Repositories
         {
             _context = context;
         }
+        // public async Task<Tournament> GetAsync(Guid id)
+        //     {    
+        //         await _context.Tournaments.Include(x => x.PlayerTournamentParticipation).SingleOrDefaultAsync(x => x.Id == id);
+        //     }
+
         public async Task<Tournament> GetAsync(Guid id)
-            => await _context.Tournaments.Include(x => x.PlayerTournamentParticipation).SingleOrDefaultAsync(x => x.Id == id);
+        {
+            return await _context.Tournaments.Include(x => x.Players).ThenInclude(x=>x.Player).SingleOrDefaultAsync(x => x.Id == id);
+        }
 
 
         public async Task<Tournament> GetAsync(string name)
-            => await _context.Tournaments.Include(x => x.PlayerTournamentParticipation).SingleOrDefaultAsync(x => x.Name == name);
+            => await _context.Tournaments.Include(x => x.Players).ThenInclude(x=>x.Player).SingleOrDefaultAsync(x => x.Name == name);
         //Dodac paginację (np funkcje Take lub Skip)
 
 

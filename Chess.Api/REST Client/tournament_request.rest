@@ -3,7 +3,7 @@ GET http://localhost:5000/tournaments/
 GET http://localhost:5000/tournaments/Kadeci
 
 ###
-GET http://localhost:5000/tournaments/ebb65403-1f3c-4e63-8693-3bfaf6536ea0
+GET http://localhost:5000/tournaments/ff1a5a46-1781-465f-9468-e3c98c54d73c
 
 ###
 POST http://localhost:5000/tournaments HTTP/1.1

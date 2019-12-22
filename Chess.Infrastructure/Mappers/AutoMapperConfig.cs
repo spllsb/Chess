@@ -11,13 +11,14 @@ namespace Chess.Infrastructure.Mappers
                 {
                     cfg.CreateMap<Tournament,TournamentDto>();
                     cfg.CreateMap<Tournament,TournamentDetailsDto>();
+                    cfg.CreateMap<PlayerTournamentParticipation,PlayerDto>()
+                        .ForMember(x => x.PlayerId, opt => opt.MapFrom(y => y.Player.UserId))
+                        .ForMember(x => x.Username, opt => opt.MapFrom(y => y.Player.Username));
+        
                     cfg.CreateMap<User,UserDto>();
                     cfg.CreateMap<Article,ArticleDto>();
                     cfg.CreateMap<Article,ArticleDetailsDto>();
                     cfg.CreateMap<Comment,CommentDto>();
-
-                    cfg.CreateMap<PlayerTournamentParticipation,PlayerTournamentParticipationDto>();
-                    cfg.CreateMap<Player,PlayerDto>();
                 })
                 .CreateMapper();
     }
