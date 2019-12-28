@@ -28,17 +28,6 @@ namespace Chess.Core.Domain
             MaxPlayers = maxPlayer;
         }
 
-        // public void AddPlayer(Player newPlayer)
-        // {
-        //     var user = _players.SingleOrDefault(x => x.UserId == newPlayer.UserId);
-        //     if (user != null)
-        //     {
-        //         throw new Exception($"User with id: '{newPlayer.UserId}' and username '{newPlayer.Username}' already exists for tournament. You can't add him again");
-        //     }
-        //     _players.Add(newPlayer);
-        //     UpdatedAt = DateTime.UtcNow;
-        // }
-
         // public void DeletePlayer(User deleteUser)
         // {
         //     var user = Users.SingleOrDefault(x => x.Id == deleteUser.Id);

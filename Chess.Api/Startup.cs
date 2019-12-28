@@ -65,7 +65,7 @@ namespace Chess.Api
                 endpoints.MapControllers();
             });
 
-            applicationLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
+            // applicationLifetime.ApplicationStopped.Register(() => ApplicationContainer.Dispose());
         }
     }
 }

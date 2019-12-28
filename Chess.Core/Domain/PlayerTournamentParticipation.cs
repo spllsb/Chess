@@ -12,5 +12,15 @@ namespace Chess.Core.Domain
         public virtual Player Player { get; set; }
 
         public string Result { get; set; }  
+
+        protected PlayerTournamentParticipation()
+        {}
+        protected PlayerTournamentParticipation(Player player, Tournament tournament)
+        {
+            Player = player;
+            Tournament = tournament;
+        }
+        public static PlayerTournamentParticipation Create(Player player, Tournament tournament)
+            => new PlayerTournamentParticipation(player,tournament);
     }
 }

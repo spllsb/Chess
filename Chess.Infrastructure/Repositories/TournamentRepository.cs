@@ -22,10 +22,7 @@ namespace Chess.Infrastructure.Repositories
         //     }
 
         public async Task<Tournament> GetAsync(Guid id)
-        {
-            return await _context.Tournaments.Include(x => x.Players).ThenInclude(x=>x.Player).SingleOrDefaultAsync(x => x.Id == id);
-        }
-
+            => await _context.Tournaments.Include(x => x.Players).ThenInclude(x=>x.Player).SingleOrDefaultAsync(x => x.Id == id);
 
         public async Task<Tournament> GetAsync(string name)
             => await _context.Tournaments.Include(x => x.Players).ThenInclude(x=>x.Player).SingleOrDefaultAsync(x => x.Name == name);
