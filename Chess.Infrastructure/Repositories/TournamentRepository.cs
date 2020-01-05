@@ -33,14 +33,14 @@ namespace Chess.Infrastructure.Repositories
         
             => await _context.Tournaments.Take(10).ToListAsync();
 
-        public async Task AddAsync(Tournament user)
+        public async Task AddAsync(Tournament tournament)
         {
-            await _context.Tournaments.AddAsync(user);
+            await _context.Tournaments.AddAsync(tournament);
             await _context.SaveChangesAsync();
         }
-        public async Task UpdateAsync(Tournament user)
+        public async Task UpdateAsync(Tournament tournament)
         {
-            _context.Tournaments.Update(user);
+            _context.Tournaments.Update(tournament);
             await _context.SaveChangesAsync();
         }
         public async Task RemoveAsync(Guid id)

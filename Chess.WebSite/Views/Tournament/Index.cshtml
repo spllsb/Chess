@@ -1,0 +1,41 @@
+@using Chess.Infrastructure.DTO
+@model IEnumerable<TournamentDto>
+@{
+    Layout = "_Layout";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<!-- Tournaments -->
+
+<a asp-action="Create">Create new tournament</a> |
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxPlayers)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxPlayers)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-name="@item.Name">Edit</a> |
+                <a asp-action="Details" asp-route-name="@item.Name">Details</a> |
+                <a asp-action="Delete" asp-route-name="@item.Name">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

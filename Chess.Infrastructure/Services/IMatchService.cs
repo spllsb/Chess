@@ -15,5 +15,6 @@ namespace Chess.Infrastructure.Services
         Task<MatchDto> GetAsync(Guid matchId);
         Task<IEnumerable<MatchDto>> BrowseAsync();
         Task CreateAsync(string title);
+
     }
 }

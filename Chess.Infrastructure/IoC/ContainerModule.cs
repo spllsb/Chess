@@ -19,7 +19,7 @@ namespace Chess.Infrastructure.IoC
                 .SingleInstance();
             builder.RegisterModule<CommandModule>();
             builder.RegisterModule<RepositoryModule>();
-            // builder.RegisterModule<DatabaseModule>();
+            builder.RegisterModule<DatabaseModule>();
             builder.RegisterModule<ServiceModule>();
             builder.RegisterInstance(new SettingsModule(_configuration));
 

@@ -1,0 +1,35 @@
+@using Chess.Infrastructure.DTO
+@model TournamentDetailsDto
+@{
+    Layout = "_Layout";
+}
+
+@Model.Name
+@Model.MaxPlayers
+
+<!-- Tournaments -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                PlayerId
+            </th>
+            <th>
+                Username
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Players) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlayerId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

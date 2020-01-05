@@ -4,12 +4,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": ".NET Core Launch (web)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Chess.Api/bin/Debug/netcoreapp3.1/Chess.Api.dll",
+            "program": "${workspaceFolder}/Chess.WebSite/bin/Debug/netcoreapp3.1/Chess.WebSite.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Chess.Api",
             "stopAtEntry": false,

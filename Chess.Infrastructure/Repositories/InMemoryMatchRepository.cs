@@ -14,6 +14,10 @@ namespace Chess.Infrastructure.Repositories
             Match.Create(
                 new Player(new User("user1@email.com", "user1", "secert", "salt")),
                 new Player(new User("user10@email.com", "user10", "secert10", "salt10"))
+                ),
+            Match.Create(
+                new Player(new User("user2@email.com", "user2", "secert2", "salt2")),
+                new Player(new User("user3@email.com", "user3", "secert3", "salt3"))
                 )
         };
         public async Task<IEnumerable<Match>> GetAllAsync()
@@ -25,9 +29,5 @@ namespace Chess.Infrastructure.Repositories
             _matches.Add(match);
             await Task.CompletedTask;
         }
-
-
-
-
     }
 }
