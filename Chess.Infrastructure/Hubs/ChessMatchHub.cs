@@ -12,9 +12,10 @@ namespace Chess.Infrastructure.Hubs
             Clients.Client(Context.ConnectionId).SendAsync("ReceiveConnID", Context.ConnectionId);
             return base.OnConnectedAsync();
         }
-        public async Task SendMessage(string user, string message)
+
+        public async Task SendPosition(string position, string user)
         {
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            await Clients.All.SendAsync("ReceivePosition", position, user);
         }
     }
 }

@@ -26,9 +26,11 @@ namespace Chess.WebSite.Controllers
     // }
 
     // [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string message, string status)
         {
+            ViewBag.StatusCode = status;
             ViewBag.Title = "Tournaments";
+            ViewBag.Message = message;
             var tournament = await _tournamentService.BrowseAsync();
 
             return View(tournament);
@@ -39,7 +41,7 @@ namespace Chess.WebSite.Controllers
             var tournamentDetails = await _tournamentService.GetAsync(name);
             if(tournamentDetails == null)
             {
-                        return NotFound();
+                return NotFound();
             }
             return View(tournamentDetails);
         }
@@ -56,12 +58,12 @@ namespace Chess.WebSite.Controllers
         {
             if(ModelState.IsValid)
             {
-                await CommandDispatcher.DispatchAsync(command);
-                ViewBag.Message = "JUPI udalo sie utworzyc nowy turniej";
-                return RedirectToAction("Index");
+                // await CommandDispatcher.DispatchAsync(command);
+                this.HttpContext.Response.StatusCode = 201;
+                return RedirectToAction("Index", new {message ="JUPI udalo sie utworzyc nowy turniej", status = "success"});
             }
             ViewBag.Message = "NIe udalo sie stworzyc turnieju";
-            return View(command);
+            return View();
         }
 
 

@@ -6,6 +6,10 @@
 
 <h1>@ViewBag.Title</h1>
 
+@if(@ViewBag.StatusCode == "success"){
+<h1 class="alert-success">@ViewBag.Message </h1>
+}
+
 <!-- Tournaments -->
 
 <a asp-action="Create">Create new tournament</a> |

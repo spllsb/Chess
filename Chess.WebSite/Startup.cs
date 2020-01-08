@@ -55,7 +55,7 @@ namespace Chess.WebSite
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            // app.UseMyExceptionHandler();
+            app.UseMyExceptionHandler();
 
             app.UseRouting();
 
@@ -68,6 +68,7 @@ namespace Chess.WebSite
                     pattern:"{controller=Tournament}/{action=Index}/{id?}"
                 );
                 endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapHub<ChessMatchHub>("/chessMatchHub");
                 endpoints.MapRazorPages();
             });
         }
