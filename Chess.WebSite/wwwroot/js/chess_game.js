@@ -2,16 +2,13 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/chessMatchHub").build();
 
-// //Disable send button until connection is established
-document.getElementById("sendButton").disabled = true;
 
-connection.on("ReceivePosition", function (position, user) {
-    var li = document.createElement("li");
-    li.textContent = position + " " + user;
-    document.getElementById("movesList").appendChild(li);
-    // game.move(move);
-    // board.position(game.fen());
-
+connection.on("ReceivePosition", function (posit, user, move) {
+  game.move(move);
+  board.position(game.fen());
+  updateListMoves(move.color,move.san);
+  console.log(game.pgn());
+  updateStatus();
 });
 
 connection.start().then(function () {
@@ -20,35 +17,12 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
-// function sendMove (event) {
-//     let position = document.getElementById("fen").innerHTML;
-//     let user = document.getElementById("name").value;
-    
-    
-//     board.position(position);
-//     connection.invoke("SendPosition", position, user).catch(function (err) {
-//         return console.error(err.toString());
-//     });
-//     event.preventDefault();
-// };
-
-
-
-
-
-
-
-
-
-
 
 var board = Chessboard('myBoard');
-
 var board = null
 var game = new Chess()
 var $status = $('#status')
-var $fen = $('#fen')
-var $pgn = $('#pgn')
+
 
 function onDragStart (source, piece, position, orientation) {
   // do not pick up pieces if the game is over
@@ -68,18 +42,12 @@ function onDrop (source, target) {
     to: target,
     promotion: 'q' // NOTE: always promote to a queen for example simplicity
   });
-
-
   // illegal move
   if (move === null) return 'snapback';
   else{
-    let position = document.getElementById("fen").innerHTML;
-    let user = document.getElementById("name").value;
-    connection.invoke("SendPosition", position, user).catch(function (err) {
+    connection.invoke("SendPosition", "test", "userTest", move).catch(function (err) {
     return console.error(err.toString());
   })}
-
-  updateStatus()
 }
 
 // update the board position after the piece snap
@@ -117,18 +85,30 @@ function updateStatus () {
   }
 
   $status.html(status)
-  $fen.html(game.fen())
-  $pgn.html(game.pgn())
 }
-
 var config = {
-  pieceTheme: '/lib/chessboardjs/img/chesspieces/wikipedia/{piece}.png',
-  draggable: true,
-  position: 'start',
-  onDragStart: onDragStart,
-  onDrop: onDrop,
-  onSnapEnd: onSnapEnd
-}
-board = Chessboard('myBoard', config)
+    pieceTheme: '/lib/chessboardjs/img/chesspieces/wikipedia/{piece}.png',
+    draggable: true,
+    position: 'start',
+    onDragStart: onDragStart,
+    onDrop: onDrop,
+    onSnapEnd: onSnapEnd
+  }
+  board = Chessboard('myBoard', config);
 
-updateStatus()
+
+function updateListMoves(color, san)
+{
+  //jezli kolor jest biały -> dodajemy nowy wiersz
+
+  //jezli czarny dodajemy do 
+  if(color=="w")
+  {
+    document.getElementById("vertical__move__list__component").innerHTML  += "<div class='vertical__move__list__element d-flex'><div class='vertical__move__list__element__move col-2'><span>1.</span></div><div class='vertical__move__list__element__move col-5'><span class='vertical__move__list__element__move__clickable'>" + san + "</span></div><div class='vertical__move__list__element__move col-5' id='vertical__move__list__element__timestamp'></div>";
+  }
+  else
+  {
+    document.getElementById('vertical__move__list__element__timestamp').innerHTML += "<span class='vertical__move__list__element__move__clickable'>" + san + "</span>" ;
+    document.getElementById('vertical__move__list__element__timestamp').removeAttribute("id");
+  }
+}
