@@ -1,0 +1,61 @@
+
+@import "veriables";
+@import "placeholders";
+@import "mixins";
+
+.container{
+    
+}
+#layout__main{
+    background-color: $testowa_zmienna_kolor;
+}
+
+#layout__sidebar{
+    border: inherit;
+    padding: 10px;
+    background-color: burlywood;
+    @extend %frameBorder;
+}
+
+.game__controls__component{
+    display: flex;
+    flex-direction: column;
+    background-color: green;
+    @extend %frameBorder;
+
+    .vertical__move__list__component{
+        background-color: #F1AB86;
+    }
+
+    .vertical__move__list__element{
+        display: flex;
+        flex-direction: row;
+        background-color: white;
+        padding-bottom: 5px;
+        @include generateRow(2);
+        .vertical__move__list__element__fen{
+            display: none;
+        }
+    }
+}
+
+
+.vertical__move__list__element:last-child
+{
+    .vertical__move__list__element__move:last-child{
+        background-color: blue;
+    }
+}
+
+.chat__controls__component{
+    @extend %frameBorder;
+
+    .chat__stream__component{
+        height: 100px;
+        border-bottom: 2px solid black;
+    }
+
+    .chat__input__component{
+        height: 50px;
+    }
+}

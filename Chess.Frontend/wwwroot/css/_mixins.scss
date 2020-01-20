@@ -1,0 +1,8 @@
+
+@mixin generateRow ($numberOfItems) 
+{
+    &:nth-child(#{$numberOfItems}n)
+    {
+        background-color: red;
+    }
+}

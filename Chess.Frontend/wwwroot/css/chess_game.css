@@ -1,0 +1,67 @@
+#layout__sidebar, .game__controls__component, .chat__controls__component {
+  -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
+          box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
+  border-radius: 0.5rem;
+  border-left: 0 solid #00ff99;
+  -webkit-transition: border-left 300ms ease-in-out, padding-left 300ms ease-in-out;
+  transition: border-left 300ms ease-in-out, padding-left 300ms ease-in-out;
+}
+
+#layout__main {
+  background-color: red;
+}
+
+#layout__sidebar {
+  border: inherit;
+  padding: 10px;
+  background-color: burlywood;
+}
+
+.game__controls__component {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background-color: green;
+}
+
+.game__controls__component .vertical__move__list__component {
+  background-color: #F1AB86;
+}
+
+.game__controls__component .vertical__move__list__element {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  background-color: white;
+  padding-bottom: 5px;
+}
+
+.game__controls__component .vertical__move__list__element:nth-child(2n) {
+  background-color: red;
+}
+
+.game__controls__component .vertical__move__list__element .vertical__move__list__element__fen {
+  display: none;
+}
+
+.vertical__move__list__element:last-child .vertical__move__list__element__move:last-child {
+  background-color: blue;
+}
+
+.chat__controls__component .chat__stream__component {
+  height: 100px;
+  border-bottom: 2px solid black;
+}
+
+.chat__controls__component .chat__input__component {
+  height: 50px;
+}
+/*# sourceMappingURL=chess_game.css.map */

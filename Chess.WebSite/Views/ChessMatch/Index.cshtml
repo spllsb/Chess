@@ -14,6 +14,36 @@
         </div>
 
         <div id="layout__sidebar" class="col-md-3">
+            <div class="game__controls__component">
+                <div class="game__controls__wrapper">
+                    <div id="vertical__move__list__component">
+                        <div class="vertical__move__list__element" >
+                            <div class="vertical__move__list__element__move col-2"><span>1.</span></div>
+                            <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">Q3</span>
+                            <span class="vertical__move__list__element__fen">r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R</span>
+                            <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">P2</span>
+                        </div>
+                        <div class="vertical__move__list__element" >
+                            <div class="vertical__move__list__element__move col-2"><span>1.</span></div>
+                            <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">T3</span>
+                            <span class="vertical__move__list__element__fen">rnbqkbnr/pppppppp/8/8/5P2/8/PPPPP1PP/RNBQKBNR</span>
+                            <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">P3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-d">
+                <input value="Rezygnuj" onclick="Resign()" type="button"/>
+                <input value="Remis" onclick="Draw()" type="button"/>
+                <input value="Poczatek" onclick="Begin()" type="button"/>
+                <input value="Biezacty" onclick="Current()" type="button"/>
+            </div>
+            
+            <div class="flex-d">
+                <input value="Back" onclick="Back()" type="button"/>
+                <input value="Next" onclick="Next()" type="button"/>
+            </div>
             <label>Status:</label>
             <div id="status"></div>
             <label>FEN:</label>
@@ -22,19 +52,9 @@
             <div id="pgn"></div>
             <div id="root"></div>
             <h3>Lista ruchów</h3>
-            <div class="game__controls__component">
-                <div class="game__controls__wrapper">
-                    <div id="vertical__move__list__component" class="d-flex flex-column">
-                        <div class="vertical__move__list__element d-flex" >
-                            <div class="vertical__move__list__element__move col-2"><span>1.</span></div>
-                            <div class="vertical__move__list__element__move col-5"><span class="vertical__move__list__element__move__clickable">T3.</span></div>
-                            <div class="vertical__move__list__element__move col-5"><span class="vertical__move__list__element__move__clickable">P2.</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+        </div>
+
     <h1>ChessMatch</h1>
     <input id="name"/>
  

@@ -17,21 +17,42 @@
   height: 100px;
   overflow-y: scroll;
   overflow-x: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
-.vertical__move__list__element__move {
+.vertical__move__list__element {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.vertical__move__list__element .vertical__move__list__element__move {
   background-color: brown;
   border: 2px;
   padding: 5px;
   margin: 1px;
 }
 
-.vertical__move__list__element__move .vertical__move__list__element__move__clickable {
+.vertical__move__list__element .vertical__move__list__element__move .vertical__move__list__element__move__clickable {
   color: white;
 }
 
-.vertical__move__list__element__move .vertical__move__list__element__move__clickable:hover {
+.vertical__move__list__element .vertical__move__list__element__move .vertical__move__list__element__move__clickable:hover {
   background-color: AntiqueWhite;
   cursor: pointer;
+}
+
+.vertical__move__list__element .vertical__move__list__element__fen {
+  display: none;
+}
+
+.vertical__move__list__element .move__text__selected {
+  background-color: green;
 }
 /*# sourceMappingURL=chess_game.css.map */
