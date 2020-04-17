@@ -1,0 +1,144 @@
+$color-font : #333333;
+
+$color-primary : #b721ff;
+$color-secondary : #21d4fd;
+
+
+
+$avatar-size : 15vh;
+
+body{
+    box-sizing: border-box;
+}
+
+a{
+    text-decoration: none;
+    font-weight: 600;
+    color: $color-primary;
+    transition: color 200ms;;
+    &:hover{
+        color: $color-secondary;
+    }
+}
+
+.button{
+    border: none;
+    font-size: 1.2rem;
+    padding: 0 6vh;
+    box-sizing: border-box;
+    line-height: 2.5;
+    margin-top: 6vh;
+    outline: transparent;
+    border-radius: 50px;
+    box-shadow: 0 5px 10px rgba($color: $color-primary, $alpha: 0.2);
+}
+
+
+
+
+/* wylistowanie treningów do wboru */
+.drills__list__item{
+    display: flex;
+    border-top: 1px solid black;
+    margin: 20px;
+    .drills__list__item__board{
+        background-color: green; 
+        width: 450px;
+    }    
+    &:last-child{
+        border-bottom: 1px solid black;
+    }
+}
+
+
+
+
+
+
+
+
+/*#region Footer */
+
+.login-box{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: rgb(163, 108, 108);
+    width: 400px;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 11vh 5vh 7vh;
+    border-radius: 10px;
+    box-shadow: 0 25px 35px rgba($color: $color-primary, $alpha: 0.15);
+
+
+    h2{
+        font-size: 1.4rem;
+        color: lighten($color: $color-font, $amount: 10%);
+        margin: 0 0 0.9vh;
+    }
+    
+    p{
+        font-size: 0.8rem;
+        color: lighten($color: $color-font, $amount: 40%);
+        margin: 0 0 0.3vh;
+    }
+
+    .form{
+        .form--input-box{
+            text-align: left;
+            margin: 0 0 3vh;
+            border-bottom: #333333 solid;
+
+            input{
+                width: 100%;
+                border: none;
+                background-color: transparent;
+                font-size: 1.2rem;
+                line-height: 1.9;
+                outline: transparent;
+                margin-top: 2vh;
+            }
+
+            label{
+                font-size: 0.7rem;
+            }
+        }
+    }
+    .form--options{
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        font-size: 0.7rem;
+        text-align: left;
+    
+        > div:last-of-type{
+            text-align: right;
+        }
+    }
+}
+
+.avatar{
+    display: inline-block;
+    width: $avatar-size;
+    height: $avatar-size;
+    background-color: #b39898;
+    border-radius: 50%;
+    padding: 2.5vh;
+    border: 5px solid white;
+    box-shadow: 0 5px 10px rgba($color: $color-primary, $alpha: 0.15);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    svg{
+        height: 100%;
+
+        path{
+            fill:white;
+        }
+    }
+}
+/*#endregion*/
+
+

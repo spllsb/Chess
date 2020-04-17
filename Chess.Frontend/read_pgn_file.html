@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Test App</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet" />
+        
+        <link href="../Chess.Frontend/chessboardjs/css/chessboard-1.0.0.css" rel="stylesheet" />
+        <link href="style.css" rel="stylesheet" />
+        <link href="../Chess.Frontend/wwwroot/css/chess_game.css" rel="stylesheet"/>
+    </head>
+
+
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-page="/Index">Chess.WebSite</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="container">
+            <main role="main">
+                <div>HELLO WORLD</div>
+                <div class="row">
+                <div id="layout__main" class="col-md-12 col-lg-9">
+                    <div id="myBoard" style="width: 100%;"></div>
+                </div>
+
+                <div id="layout__sidebar" class="col-md-0 col-lg-3">
+                    <div class="game__controls__component">
+                        <h3>Game component</h3>
+                        <div class="game__controls__wrapper">
+                            <div id="vertical__move__list__component">
+                                <h4>Lista ruchów</h4>
+                                <div class="vertical__move__list__element" >
+                                    <span class="vertical__move__list__element__number col-2"><span>1.</span></span>
+                                    <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">Q3</span>
+                                    <span class="vertical__move__list__element__fen">r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R</span>
+                                    <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">P2</span>
+                                </div>
+                                <div class="vertical__move__list__element " >
+                                    <span class="vertical__move__list__element__number col-2"><span>1.</span></span>
+                                    <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">T3</span>
+                                    <span class="vertical__move__list__element__fen">rnbqkbnr/pppppppp/8/8/5P2/8/PPPPP1PP/RNBQKBNR</span>
+                                    <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">P3</span>
+                                </div>
+                                <div class="vertical__move__list__element " >
+                                    <span class="vertical__move__list__element__number col-2"><span>1.</span></span>
+                                    <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">T3</span>
+                                    <span class="vertical__move__list__element__fen">rnbqkbnr/pppppppp/8/8/5P2/8/PPPPP1PP/RNBQKBNR</span>
+                                    <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable" id="selected_element_move">P3</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="game__buttons__component flex-d">
+                            <div style="float: left;">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div style="float: right">
+                                <i class="fas fa-angle-double-left"></i>
+                                <i class="fas fa-angle-left"></i>
+                                <i class="fas fa-angle-right"></i>
+                                <i class="fas fa-angle-double-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat__controls__component">
+                        <div class="chat__stream__component">tu wyswietla sie chat</div>
+                        <div class="chat__input__component">
+                            <div class="input-group">
+                                <textarea class="form-control" aria-label="With textarea"></textarea>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-paper-plane"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+                <label>Status:</label>
+                <div id="status"></div>
+                <label>FEN:</label>
+                <div id="fen"></div>
+                <label>PGN:</label>
+                <div id="pgn"></div>
+                <div id="root"></div>
+            </main>|
+        </div>
+    
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2019 - Chess.WebSite - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            </div>
+        </footer>
+        <script src="../Chess.Frontend/js/jquery.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="../Chess.Frontend/chessboardjs/js/chessboard-1.0.0.js"></script>
+        <script src="../Chess.Frontend/chessjs/chess.js"></script>
+        <script src="../Chess.Frontend/js/board_test copy.js"></script>
+
+        <!--ikonki  -->
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    </body>
+</html>
+
+
+

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Test App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet" />
+
+    <link href="../Chess.Frontend/wwwroot/css/style.css" rel="stylesheet" />
+
+    <link href="../Chess.Frontend/chessboardjs/css/chessboard-1.0.0.css" rel="stylesheet" />
+    <link href="../Chess.Frontend/wwwroot/css/chess_game.css" rel="stylesheet"/>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Chess.WebSite</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9">
+                <main>
+                    <article class="drills__list__item container">
+                        <div class="drills__list__item__board drills__finished container-fluid col-sm-4">
+                            <div class="drills__icon">
+                            </div>
+                            <div class="drills__board ">
+                            </div>
+                        </div>
+                        <div class="drills__list__item__details col-sm-8">
+                            <h2>
+                                
+                            </h2>
+                            <div class="drills__list__item__description">
+                                Culpa ad deserunt adipisicing duis irure.
+                                Culpa ad deserunt adipisicing duis irure.
+                                Culpa ad deserunt adipisicing duis irure.
+                            </div>
+                        </div>
+                    </article>
+                    <article class="drills__list__item">
+                        <div class="drills__list__item__board drills__finished">
+                            <div class="drills__icon">
+                            </div>
+                            <div class="drills_border"></div>
+
+                        </div>
+                        <div class="drills__list__item__details">
+                            <h2>
+                                
+                            </h2>
+                            <div class="drills__list__item__description">
+                                Culpa ad deserunt adipisicing duis irure.
+                                Culpa ad deserunt adipisicing duis irure.
+                                Culpa ad deserunt adipisicing duis irure.
+                            </div>
+                        </div>
+                    </article>
+                    <article class="drills__list__item">
+                        <div class="drills__list__item__board drills__finished">
+                            <div id="myBoard"></div>
+                        </div>
+                        <div class="drills__list__item__details">
+                            <h2>
+                                
+                            </h2>
+                            <div class="drills__list__item__description">
+                                Culpa ad deserunt adipisicing duis irure.
+                                Culpa ad deserunt adipisicing duis irure.
+                                Culpa ad deserunt adipisicing duis irure.
+                            </div>
+                        </div>
+                    </article>
+                </main>
+            </div>
+            <aside class="col-sm-3">
+                <div class="card">
+                    <div class="card-header">Header</div>
+                    <div class="card-body">Content</div>
+                    <div class="card-footer">Footer</div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2019 - Chess.WebSite -
+            <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>
+    
+    <script src="../Chess.Frontend/js/jquery.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="../Chess.Frontend/chessboardjs/js/chessboard-1.0.0.js"></script>
+    <script src="../Chess.Frontend/js/chessjs/chess.js"></script>
+    <script src="../Chess.Frontend/js/board_read_pgn.js"></script>
+    <script src="../Chess.Frontend/wwwroot/js/site.js"></script>
+    <!--ikonki  -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
+
+<body>
+    <!-- <script src="scripts.js"></script> -->
+</body>
+
+</html>

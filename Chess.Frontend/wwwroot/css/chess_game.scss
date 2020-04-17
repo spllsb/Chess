@@ -14,7 +14,6 @@
     border: inherit;
     padding: 10px;
     background-color: burlywood;
-    @extend %frameBorder;
 }
 
 .game__controls__component{
@@ -44,13 +43,16 @@
 {
     .vertical__move__list__element__move:last-child{
         background-color: blue;
+        width: 10px;
+
     }
 }
 
 .chat__controls__component{
-    @extend %frameBorder;
-
     .chat__stream__component{
+        @extend %frameBorder;
+        background-color: white;
+        margin: 20px 5px;
         height: 100px;
         border-bottom: 2px solid black;
     }
@@ -58,4 +60,27 @@
     .chat__input__component{
         height: 50px;
     }
+}
+
+
+.post__preview__list__component
+{
+    @extend %frameBorder;
+}
+
+
+
+.section__link__component
+{
+    width: 100px;
+    background-color: grey;
+}
+
+
+
+.search{
+}
+
+.search__input{
+
 }

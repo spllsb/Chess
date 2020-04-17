@@ -54,7 +54,7 @@ namespace Chess.WebSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateTournament command)
+        public ActionResult Create(CreateTournament command)
         {
             if(ModelState.IsValid)
             {

@@ -8,9 +8,12 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet" />
         
-        <link href="../Chess.Frontend/chessboardjs/css/chessboard-1.0.0.css" rel="stylesheet" />
         <link href="style.css" rel="stylesheet" />
+
+        <link href="../Chess.Frontend/chessboardjs/css/chessboard-1.0.0.css" rel="stylesheet" />
         <link href="../Chess.Frontend/wwwroot/css/chess_game.css" rel="stylesheet"/>
+
+
     </head>
 
 
@@ -38,17 +41,18 @@
         </header>
         <div class="container">
             <main role="main">
-                <section>
-                    <div class="section__container__component">
-                        <section class="post__component">
-                            <div class="post__image"></div>
-                            <div class="post__title"></div>
-                            <div class="post__meta"></div>
-                            <div class="post__excerpt"></div>
-                        </section>
+                <div>HELLO WORLD</div>
+                <div class="row">
+                <div id="layout__main" class="col-md-12 col-lg-9">
+                    <div id="myBoard" style="width: 100%;"></div>
+                </div>
+
+                <div id="layout__sidebar" class="col-md-0 col-lg-3">
+                    <div class="game__controls__component">
+                        <h3>Game component</h3>
                     </div>
-                </section>
-            </main>|
+                </div>
+            </main>
         </div>
     
         <footer class="border-top footer text-muted">
@@ -61,23 +65,11 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
         <script src="../Chess.Frontend/chessboardjs/js/chessboard-1.0.0.js"></script>
         <script src="../Chess.Frontend/chessjs/chess.js"></script>
-        <script src="../Chess.Frontend/js/board_test.js"></script>
+        <script src="../Chess.Frontend/js/board_read_pgn.js"></script>
 
         <!--ikonki  -->
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
-    </body>
-
-
-
-
-
-
-
-
-
-    <body>
-        <!-- <script src="scripts.js"></script> -->
     </body>
 </html>
 
