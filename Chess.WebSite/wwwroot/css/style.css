@@ -1,0 +1,140 @@
+@charset "UTF-8";
+body {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  font-weight: 600;
+  color: #b721ff;
+  -webkit-transition: color 200ms;
+  transition: color 200ms;
+}
+
+a:hover {
+  color: #21d4fd;
+}
+
+.button {
+  border: none;
+  font-size: 1.2rem;
+  padding: 0 6vh;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  line-height: 2.5;
+  margin-top: 6vh;
+  outline: transparent;
+  border-radius: 50px;
+  -webkit-box-shadow: 0 5px 10px rgba(183, 33, 255, 0.2);
+          box-shadow: 0 5px 10px rgba(183, 33, 255, 0.2);
+}
+
+/* wylistowanie treningów do wboru */
+.drills__list__item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-top: 1px solid black;
+  margin: 20px;
+}
+
+.drills__list__item .drills__list__item__board {
+  background-color: green;
+  width: 450px;
+}
+
+.drills__list__item:last-child {
+  border-bottom: 1px solid black;
+}
+
+/*#region Footer */
+.login-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  background-color: #a36c6c;
+  width: 400px;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 11vh 5vh 7vh;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 25px 35px rgba(183, 33, 255, 0.15);
+          box-shadow: 0 25px 35px rgba(183, 33, 255, 0.15);
+}
+
+.login-box h2 {
+  font-size: 1.4rem;
+  color: #4d4d4d;
+  margin: 0 0 0.9vh;
+}
+
+.login-box p {
+  font-size: 0.8rem;
+  color: #999999;
+  margin: 0 0 0.3vh;
+}
+
+.login-box .form .form--input-box {
+  text-align: left;
+  margin: 0 0 3vh;
+  border-bottom: #333333 solid;
+}
+
+.login-box .form .form--input-box input {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  font-size: 1.2rem;
+  line-height: 1.9;
+  outline: transparent;
+  margin-top: 2vh;
+}
+
+.login-box .form .form--input-box label {
+  font-size: 0.7rem;
+}
+
+.login-box .form--options {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1.5fr;
+      grid-template-columns: 1fr 1.5fr;
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.login-box .form--options > div:last-of-type {
+  text-align: right;
+}
+
+.avatar {
+  display: inline-block;
+  width: 15vh;
+  height: 15vh;
+  background-color: #b39898;
+  border-radius: 50%;
+  padding: 2.5vh;
+  border: 5px solid white;
+  -webkit-box-shadow: 0 5px 10px rgba(183, 33, 255, 0.15);
+          box-shadow: 0 5px 10px rgba(183, 33, 255, 0.15);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.avatar svg {
+  height: 100%;
+}
+
+.avatar svg path {
+  fill: white;
+}
+
+/*#endregion*/
+/*# sourceMappingURL=style.css.map */

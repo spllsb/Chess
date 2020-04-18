@@ -26,7 +26,7 @@ namespace Chess.Api.Controllers
         }
 
         [HttpGet]
-        [Route("{articleId}")]
+        [Route("{Id}")]
         public async Task<IActionResult> Get(Guid articleId)
         {
             var article = await _articleService.GetAsync(articleId);

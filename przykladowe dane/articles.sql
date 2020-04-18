@@ -1,1 +1,0 @@
-insert into articles (id,title, content, full_name_author, created_at, updated_at) values ('0d78f06a-c8ea-4495-828d-6a2bae99d6b4', 'nowy artykow', 'asdasdsadzczx sad asdas das', 'Juzio', '2019-01-23T09:14:19Z', '2019-02-11T01:54:01Z');

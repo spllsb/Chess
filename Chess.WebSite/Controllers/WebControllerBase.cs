@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Chess.WebSite.Controllers
 
 {
-    [ApiController]
-    [Route("[controller]")]
+    // [ApiController]
+    // [Route("[controller]")]
 
     public class WebControllerBase : Controller
     {

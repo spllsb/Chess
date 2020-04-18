@@ -22,13 +22,16 @@ CREATE TABLE public.users (
 
 
 CREATE TABLE public.articles (
-	id uuid NOT null primary key,
+	id uuid NOT NULL,
 	title varchar(300) NOT NULL,
-	content text NOT NULL,
-	full_name_author varchar(70) not null,
+	"content" text NOT NULL,
+	full_name_author varchar(70) NOT NULL,
 	created_at timestamp NOT NULL,
-	updated_at timestamp NOT null
+	updated_at timestamp NOT NULL,
+	img_file_name varchar(100) not null,
+	CONSTRAINT articles_pkey PRIMARY KEY (id)
 );
+
 
 CREATE TABLE public.comments (
 	id uuid NOT null primary key,

@@ -21,6 +21,13 @@ namespace Chess.WebSite.Controllers
             _userService = userService;
         }
 
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+
         [HttpGet("{email}")]
         public async Task<IActionResult> Get(string email)
         {

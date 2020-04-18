@@ -8,7 +8,7 @@ namespace Chess.Infrastructure.Services
 {
     public interface IArticleService : IService
     {
-        Task<ArticleDetailsDto> GetAsync(Guid tournamentId);
+        Task<ArticleDetailsDto> GetAsync(Guid articleId);
         Task<IEnumerable<ArticleDto>> BrowseAsync();
         Task CreateAsync(string title,string content,string fullNameAuthor);
 
