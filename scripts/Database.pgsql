@@ -52,3 +52,11 @@ create table player_tournament_participation(
 	CONSTRAINT fk_tournament_id FOREIGN KEY (tournament_id) REFERENCES tournaments (id),
 	CONSTRAINT fk_player_id FOREIGN KEY (player_id) REFERENCES players (user_id)
 );
+
+
+CREATE TABLE public.drill (
+	id int NOT NULL,
+	description varchar(200) NOT NULL,
+	"name" varchar(50) NOT NULL,
+	category varchar(20) NOT NULL
+);

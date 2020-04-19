@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Chess.Core.Domain;
 using Chess.Core.Repositories;
@@ -38,6 +39,18 @@ namespace Chess.Infrastructure.Extensions
             }
 
             return article;
+        }
+
+
+        public static async Task<IEnumerable<Drill>> GetCategoryOrFailAsync(this IDrillRepository repository, string category)
+        {
+            var drills = await repository.GetAllByCategoryAsync(category);
+            if(drills == null)
+            {
+                throw new Exception($"Drill with category: '{category}' was not found");
+            }
+
+            return drills;
         }
 
     }

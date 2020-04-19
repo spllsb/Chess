@@ -1,0 +1,30 @@
+@using Chess.WebSite.Controllers
+@model IEnumerable<CategoryDrillsEnum>
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+            <main class="row">
+                @foreach (var item in Enum.GetValues(typeof(CategoryDrillsEnum))) {
+                        
+                    <div class="card text-center col-sm-6 col-md-4">
+                        <img src="https://unsplash.it/100/100"/>
+                        <div class="card-body">
+                            <h3 class="card-title"><a asp-action="GetCategoryListElement" asp-route-category="@item">@item</a></h3>
+                        </div>
+                    </div>
+                }
+            </main>
+        </div>
+        <aside class="col-sm-3">
+            <div class="card">
+                <div class="card-header">Header</div>
+                <div class="card-body">Content</div>
+                <div class="card-footer">Footer</div>
+            </div>
+        </aside>
+    </div>
+</div>

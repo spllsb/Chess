@@ -1,0 +1,38 @@
+@using Chess.Infrastructure.DTO
+@model IEnumerable<DrillDto>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+            <main>
+                @foreach(var item in Model)
+                {
+                <article class="drills__list__item container">
+                    <div class="drills__list__item__board drills__finished container-fluid col-sm-4">
+                        <div class="drills__icon">
+                        </div>
+                        <div class="drills__board ">
+                        </div>
+                    </div>
+                    <div class="drills__list__item__details col-sm-8">
+                        <h2>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </h2>
+                        <div class="drills__list__item__description">
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </div>
+                    </div>
+                </article>
+                }
+            </main>
+        </div>
+        <aside class="col-sm-3">
+            <div class="card">
+                <div class="card-header">Header</div>
+                <div class="card-body">Content</div>
+                <div class="card-footer">Footer</div>
+            </div>
+        </aside>
+    </div>
+</div>

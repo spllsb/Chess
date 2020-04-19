@@ -12,6 +12,7 @@ namespace Chess.Infrastructure.EF
         public virtual DbSet<Article> Articles {get;set;}
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Player> Players { get; set; }
+        public virtual DbSet<Drill> Drills { get; set; }
 
 
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
