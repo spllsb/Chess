@@ -31,9 +31,9 @@ namespace Chess.WebSite.Controllers
             return View(drills);
         }
 
-        public async Task<IActionResult> GetChessDrill()
+        public async Task<IActionResult> GetChessDrill(int id)
         {
-            var drill = await _drillService.GetAsync();
+            var drill = await _drillService.GetAsync(id);
             return View(drill);
         }
     }

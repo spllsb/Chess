@@ -7,6 +7,6 @@ namespace Chess.Infrastructure.Services
     public interface IDrillService : IService
     {
         Task<IEnumerable<DrillDto>> GetAllCategoryElementAsync(string category);
-        Task<DrillDto> GetAsync();
+        Task<DrillDto> GetAsync(int id);
     }
 }

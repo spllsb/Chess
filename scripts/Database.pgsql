@@ -54,9 +54,11 @@ create table player_tournament_participation(
 );
 
 
-CREATE TABLE public.drill (
-	id int NOT NULL,
+CREATE TABLE public.drills (
+	id int4 NOT NULL,
 	description varchar(200) NOT NULL,
 	"name" varchar(50) NOT NULL,
-	category varchar(20) NOT NULL
+	category varchar(20) NOT NULL,
+	start_position varchar(100) NOT NULL,
+	CONSTRAINT drills_pkey PRIMARY KEY (id)
 );

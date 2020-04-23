@@ -20,7 +20,7 @@ namespace Chess.Infrastructure.Repositories
         public async Task<IEnumerable<Drill>> GetAllByCategoryAsync(string category) 
             => await _context.Drills.ToListAsync();
 
-        public async Task<Drill> GetAsync() 
-            => await _context.Drills.FirstOrDefaultAsync();
+        public async Task<Drill> GetAsync(int id) 
+            => await _context.Drills.Where(x=> x.Id == id).FirstOrDefaultAsync();
     }
 }
