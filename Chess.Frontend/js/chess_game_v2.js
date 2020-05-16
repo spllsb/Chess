@@ -14,7 +14,7 @@ class Move {
         this.fen = fen;
         this.display_move = display_move;
         this.orientation = orientation;
-    };
+    }
     /**
      * Move 
      * @returns {string} - Display all information about variable
@@ -24,21 +24,20 @@ class Move {
     }
 }
 
+
 class ChessGame {
     constructor(html_id_name, config){
         this.game = new Chess();
         this.board = Chessboard(html_id_name, config);
         this.moves_array = [];
         this.current_active_index = -1; 
-    };
+    }
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const active_move_class_name = "active";
     const move_list_content = document.querySelector('.game__controls__wrapper');
-
-
-
     let moves = document.querySelectorAll('.game__controls__wrapper div');
 
     config = {
@@ -49,43 +48,23 @@ document.addEventListener('DOMContentLoaded', () => {
         onDrop: onDrop,
         position: 'start'
     }
-
     var chess_game = new ChessGame('chessboard', config);
 
     //query selector 
     const playerDisplay = document.querySelector('#player');
 
-
     moves.forEach(move => {
         move.addEventListener('click', clickSelectMoveToDisplay);
     })
 
-    //add list element
+    //list element
     function clickSelectMoveToDisplay(e) {
         const moveArray = Array.from(moves);
         const index = moveArray.indexOf(e.target);
-
         clearClassFromDiv(active_move_class_name);
-        console.log('Clicked ' + index + ' move from moves array');
-        console.log(chess_game.moves_array[index].getInformation());
-
-        moves[index].classList.add(active_move_class_name);
-        chess_game.board.position(chess_game.moves_array[index].fen);
+        updateActiveMoveFromHTMLBoard(index);
+        updateMoveInHTMLBoard(index);
     }
-
-    /**
-     * Move 
-     * @type {class_name: string}
-     */
-    //remove all active move in move list
-    function clearClassFromDiv(class_name) {
-        let div_with_move_active_class = document.querySelectorAll('.' + class_name);
-        [].forEach.call(div_with_move_active_class, function (el) {
-            el.classList.remove(class_name);
-        });
-    }
-
-
 
 
     //#region chess function  
@@ -104,13 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
         //remove active class
         clearClassFromDiv(active_move_class_name);
         //create new element from html with active class
-        let new_element_list = document.createElement('div');
-        new_element_list.addEventListener('click', clickSelectMoveToDisplay);
-        new_element_list.className = active_move_class_name;
-        move_list_content.appendChild(new_element_list);
-
+        move_list_content.appendChild(creatChessMoveElementHTML(move.san));
         moves = document.querySelectorAll('.game__controls__wrapper div');
+        chess_game.current_active_index = chess_game.moves_array.length;
         chess_game.moves_array.push(new Move(chess_game.moves_array.length, chess_game.game.fen(), move.san, orientation));
+        console.log("Current index: " + chess_game.current_active_index);
     };
 
     function onSnapEnd() {
@@ -135,37 +112,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     const flipBoardIcon = document.querySelector(".fa-retweet");
-    const downloadIcon = document.querySelector(".fa-download");
+    const downloadPGNIcon = document.querySelector(".fa-download");
     const shareIcon = document.querySelector(".fa-share-alt");
     
-    const previousIcon = document.querySelector(".fa-chevron-left");
-    const nextIcon = document.querySelector(".fa-chevron-right");
+    const previousMoveIcon = document.querySelector(".fa-chevron-left");
+    const nextMoveIcon = document.querySelector(".fa-chevron-right");
     
-    downloadIcon.addEventListener("click",function(){
-        alert("downloadIcon");
+    downloadPGNIcon.addEventListener("click",function(){
+        console.log("Printing PGN");
+        chess_game.game.header('Site', 'Szachy.pl');
+        chess_game.game.header('Date', '2020.04.24');
+        chess_game.game.header('Event', 'Player vs Player');
+        chess_game.game.header('Round', '0');
+        chess_game.game.header('White', 'Player1');
+        chess_game.game.header('Black', 'Player10');
+        chess_game.game.header('Result', '*');
+        chess_game.game.header('CurrentPosition', chess_game.moves_array[chess_game.current_active_index].fen);
+        document.getElementById("PGN").innerHTML = chess_game.game.pgn({ max_width: 5, newline_char: '<br />' });
     });
     
     shareIcon.addEventListener("click",function(){
         alert("shareIcon");
     });
     
-    previousIcon.addEventListener("click",function(){
-        
-        alert("previousIcon");
+    previousMoveIcon.addEventListener("click",function(){
+        let newIndex = chess_game.current_active_index - 1;
+        try{
+            clearClassFromDiv(active_move_class_name);
+            updateActiveMoveFromHTMLBoard(newIndex);
+        } catch (e) {
+            chess_game.board.position("start");
+            return;
+        }
+        console.log("Previous index: " + chess_game.current_active_index);
+        updateMoveInHTMLBoard(newIndex);
     });
     
-    nextIcon.addEventListener("click",function(){
-        alert("nextIcon");
+    nextMoveIcon.addEventListener("click",function(){
+        let newIndex = chess_game.current_active_index + 1;
+        try{
+            clearClassFromDiv(active_move_class_name);
+            updateActiveMoveFromHTMLBoard(newIndex);
+        } catch (e) {
+            return;
+        }
+        updateMoveInHTMLBoard(newIndex);
     });
+
     flipBoardIcon.addEventListener("click",function(){
         console.log('Board orientation is: ' + chess_game.board.orientation());
         chess_game.board.flip();
     });
 
 
+    function updateActiveMoveFromHTMLBoard(index){
+        console.log("Previous index: " + chess_game.current_active_index);
+        console.log('Selected index ' + index + ' move from moves array');
+        console.log(chess_game.moves_array[index].getInformation());
+        moves[index].classList.add(active_move_class_name);
+        chess_game.current_active_index = index;
+        console.log("Current index: " + chess_game.current_active_index);
+    }
 
-    function getActiveElementIndex() {
-        
+    function updateMoveInHTMLBoard(index) {
+        chess_game.board.position(chess_game.moves_array[index].fen);
+    }
+
+    /**
+     * Move 
+     * @type {class_name: string}
+     */
+    //remove all active move in move list
+    function clearClassFromDiv(class_name) {
+        let div_with_move_active_class = document.querySelectorAll('.' + class_name);
+        [].forEach.call(div_with_move_active_class, function (el) {
+            el.classList.remove(class_name);
+        });
+    }
+
+    function creatChessMoveElementHTML(textInnerElement){
+        let new_element_list = document.createElement('div');
+        new_element_list.addEventListener('click', clickSelectMoveToDisplay);
+        new_element_list.className = active_move_class_name;
+        new_element_list.innerHTML = textInnerElement;
+        return new_element_list;
     }
 })
 
