@@ -3,9 +3,13 @@
 @import "placeholders";
 @import "mixins";
 
-.container{
-    
+html{
+    box-sizing: border-box;
 }
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
 #layout__main{
     background-color: $testowa_zmienna_kolor;
 }
@@ -16,7 +20,16 @@
     background-color: burlywood;
 }
 
+.section_wrapper{
+    text-align: center;
+    height: 15%;
+}
+
+
+
+
 .game__controls__component{
+    height: 85%;
     display: flex;
     flex-direction: column;
     background-color: green;
@@ -84,3 +97,6 @@
 .search__input{
 
 }
+
+
+

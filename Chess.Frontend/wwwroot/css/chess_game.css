@@ -7,6 +7,16 @@
   transition: border-left 300ms ease-in-out, padding-left 300ms ease-in-out;
 }
 
+html {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+          box-sizing: inherit;
+}
+
 #layout__main {
   background-color: red;
 }
@@ -17,7 +27,13 @@
   background-color: burlywood;
 }
 
+.section_wrapper {
+  text-align: center;
+  height: 15%;
+}
+
 .game__controls__component {
+  height: 85%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
