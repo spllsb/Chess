@@ -14,5 +14,10 @@ namespace Chess.WebSite.Controllers
         {
             return View();
         }
+
+        public IActionResult ChessGame()
+        {
+            return View();
+        }
     }
 }

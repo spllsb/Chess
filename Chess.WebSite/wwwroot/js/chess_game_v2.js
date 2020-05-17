@@ -1,3 +1,12 @@
+
+"use strict";
+
+
+
+
+
+
+
 /**
  * A move 
  * @typedef {Object} Move
@@ -36,12 +45,57 @@ class ChessGame {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chessMatchHub").build();
+
+
+    connection.on("ReceivePosition", function (roomId, user, move) {
+        console.log("Info z signalR: " + roomId + '  ' + user)
+
+      chess_game.game.move(move);
+      chess_game.board.position(chess_game.game.fen());
+    //   updateListMoves(move.color,move.san,game.fen());
+      console.log(chess_game.game.pgn());
+    //   updateStatus();
+
+
+      
+
+    //remove active class
+    clearClassFromDiv(active_move_class_name);
+    //create new element from html with active class
+    move_list_content.appendChild(creatChessMoveElementHTML(move.san));
+    moves = document.querySelectorAll('.game__controls__wrapper div');
+    chess_game.current_active_index = chess_game.moves_array.length;
+    console.log("LOG: " + chess_game.moves_array.length);
+    console.log("Current index: " + chess_game.game.fen());
+    console.log("Current index: " + chess_game.current_active_index);
+    console.log("Current index: " + move.san);
+    console.log("Current index: " + move.color);
+    
+    chess_game.moves_array.push(new Move(chess_game.moves_array.length, chess_game.game.fen(), move.san, move.color));
+    console.log("Current index: " + chess_game.current_active_index);
+    });
+    
+    connection.start().then(function () {
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+    
+
+
+
+
+
+
+
     const active_move_class_name = "active";
     const move_list_content = document.querySelector('.game__controls__wrapper');
     let moves = document.querySelectorAll('.game__controls__wrapper div');
 
     let config = {
-        pieceTheme: '../Chess.Frontend/chessboardjs/img/chesspieces/wikipedia/{piece}.png',
+        pieceTheme: '/lib/chessboardjs/img/chesspieces/wikipedia/{piece}.png',
         draggable: isDraggable(),
         // orientation: getOrientation(),
         onSnapEnd: onSnapEnd,
@@ -79,15 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         // illegal move
         if (move === null) return 'snapback';
-
-        //remove active class
-        clearClassFromDiv(active_move_class_name);
-        //create new element from html with active class
-        move_list_content.appendChild(creatChessMoveElementHTML(move.san));
-        moves = document.querySelectorAll('.game__controls__wrapper div');
-        chess_game.current_active_index = chess_game.moves_array.length;
-        chess_game.moves_array.push(new Move(chess_game.moves_array.length, chess_game.game.fen(), move.san, orientation));
-        console.log("Current index: " + chess_game.current_active_index);
+        else{
+            connection.invoke("SendPosition", "test", "userTest", move).catch(function (err) {
+            return console.error(err.toString());
+        })}
     };
 
     function onSnapEnd() {
@@ -142,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateActiveMoveFromHTMLBoard(newIndex);
         } catch (e) {
             chess_game.board.position("start");
+            chess_game.current_active_index = -1;
             return;
         }
         console.log("Previous index: " + chess_game.current_active_index);
