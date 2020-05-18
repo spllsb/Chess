@@ -44,6 +44,8 @@ class ChessGame {
 }
 
 
+var playerColor = "black";
+
 document.addEventListener('DOMContentLoaded', () => {
 
 
@@ -68,11 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
     move_list_content.appendChild(creatChessMoveElementHTML(move.san));
     moves = document.querySelectorAll('.game__controls__wrapper div');
     chess_game.current_active_index = chess_game.moves_array.length;
-    console.log("LOG: " + chess_game.moves_array.length);
-    console.log("Current index: " + chess_game.game.fen());
-    console.log("Current index: " + chess_game.current_active_index);
-    console.log("Current index: " + move.san);
-    console.log("Current index: " + move.color);
     
     chess_game.moves_array.push(new Move(chess_game.moves_array.length, chess_game.game.fen(), move.san, move.color));
     console.log("Current index: " + chess_game.current_active_index);
@@ -84,12 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
 
-
-
-
-
-
-
     const active_move_class_name = "active";
     const move_list_content = document.querySelector('.game__controls__wrapper');
     let moves = document.querySelectorAll('.game__controls__wrapper div');
@@ -97,14 +88,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let config = {
         pieceTheme: '/lib/chessboardjs/img/chesspieces/wikipedia/{piece}.png',
         draggable: isDraggable(),
-        // orientation: getOrientation(),
+        orientation: getOrientation(),
         onSnapEnd: onSnapEnd,
         onDrop: onDrop,
         position: 'start'
     }
     var chess_game = new ChessGame('chessboard', config);
+    $(window).resize(chess_game.board.resize);
 
-    //query selector 
+
     const playerDisplay = document.querySelector('#player');
 
     moves.forEach(move => {
@@ -147,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //#region chess configuration function  
     // losowanie kto jest jakim kolorem ? 
     function getOrientation() {
-        return 'black';
+        return playerColor;
     }
 
     //opcja false, ustawiona jest np w przypadku "zdjęć"
@@ -212,6 +204,15 @@ document.addEventListener('DOMContentLoaded', () => {
     flipBoardIcon.addEventListener("click",function(){
         console.log('Board orientation is: ' + chess_game.board.orientation());
         chess_game.board.flip();
+
+        // change orientation information about player 
+        let att = document.getElementById("layout__main");
+        if (getComputedStyle(att).flexDirection == "column"){
+            document.getElementById("layout__main").setAttribute("style", "flex-direction:column-reverse");
+        }
+        else{
+            document.getElementById("layout__main").setAttribute("style", "flex-direction:column");
+        }
     });
 
 
@@ -244,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let new_element_list = document.createElement('div');
         new_element_list.addEventListener('click', clickSelectMoveToDisplay);
         new_element_list.className = active_move_class_name;
+        new_element_list.classList.add("game__controls_move");
         new_element_list.innerHTML = textInnerElement;
         return new_element_list;
     }
@@ -251,7 +253,106 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+function convertSeconds(s){
+    let min = Math.floor(s / 60);
+    let sec = s % 60;
+    let formattedNumber = ("0" + min).slice(-2);
+    let formattedSecond = ("0" + sec).slice(-2);
+    return formattedNumber + ':' + formattedSecond;
+}
+
+/**
+ * A move 
+ * @typedef {Object} Move
+ * @property{number} id - Move Index
+ * @property{string} fen - Fen
+ * @property{string} display_move - Move display name
+ */
+/**
+* @type {Player}
+*/
+class Player{
+    constructor(playerName, startOrientation){
+        this.playerName = playerName;
+        this.startOrientation = startOrientation;
+        this.isYourMove = false;
+        this.timeLeft = 0;
+    }
+}
+
+class Timer{
+    constructor(fullTime, htmlName){
+        this.fullTime = fullTime;
+        this.htmlName = htmlName;
+        this.counter = 0;
+        this.isOn = false;
+        this.timerInterval;
+    }
+
+    getAvailableTime(){
+        return this.fullTime - this.counter;
+    }
+
+    stopTimer(){
+
+    }
+
+
+}
+
+// var timeFull = 60;
+// var timerInterval;
+
+// var timeLeft = timeFull;
+// var counter = 0;
+// var timeIsOn = 0;
+// var playerBlackTimerName = "timerBlackPlayer";
+
+
+// function timeIt(){
+//     document.getElementById("timer").innerHTML = convertSeconds(timeLeft);
+//     counter ++;
+//     timeLeft = timeFull - counter;
+//     timerInterval = setTimeout(timeIt, 1000);
+// }
+
+// function startTimer(){
+//     if (!timeIsOn) {
+//         timeIsOn = 1;
+//         timeIt();
+//     }
+// }
+
+// function stopTimer() {
+//     clearInterval(timerInterval);
+//     timeIsOn = 0;
+// }
 
 
 
 
+var Timer2 = new Timer(60,"opponentTimer");
+var Timer1 = new Timer(60,"myTimer");
+var timerTimeout2;
+var timerTimeout1;
+
+
+function timeIt(timer){
+    document.getElementById(timer.htmlName).innerHTML = convertSeconds(timer.getAvailableTime());
+    timer.counter++;
+    timerTimeout2 = setTimeout(timeIt, 1000, timer);
+}
+
+function startTimer(){
+    let timer = Timer2;
+    if (!timer.isOn) {
+        timer.isOn = 1;
+        timeIt(timer);
+    }
+}
+
+function stopTimer() {
+    let timer = Timer2;
+    clearInterval(timerTimeout2);
+    timer.isOn = 0;
+}

@@ -4,54 +4,70 @@
 <link href="~/lib/chessboardjs/css/chessboard-1.0.0.css" rel="stylesheet" />
 <link href="~/css/chess_game.css" rel="stylesheet"/>
 
-<style>
-    .game__controls__wrapper {
-        height: 400px;
-        width: 600px;
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .game__controls__wrapper div{
-        width: 33%;
-        height: 10%;
-
-        text-align: center;
-        font-size: 1.5em;
-    }
-    .active{
-        background-color: rgb(128, 0, 60);
-    }
-</style>
-
 
 
 <div>HELLO WORLD</div>
     <div class="row">
-        <div id="layout__main" class="col-md-9">
-            <div id="chessboard" style="width: 800px;"></div>
-        </div>
-        <div id="layout__sidebar" class="col-md-3">
-            <div class="game__controls__component">
-                <div class="game__controls__wrapper">
-                    
+        <div id="layout__main" class="col-lg-9">
+            <div class="border__layout_player p-2">
+                <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div> 
+                <div class="border__layout_usernameDetail"> 
+                    <span>Jakis gracz1</span>
+                    <span>(ilosc punktow)</span>
+                    <img src="https://unsplash.it/20/20" class="img-fluid">
+                </div>
+                <div class="clock__component">
+                    <p id="opponentTimer">5:00</p>
                 </div>
             </div>
-            <div class="section_wrapper"> 
-                <div>
-                    <button type="button" class="fas fa-chevron-left fa-ls fa-3x"></button>
-                    <button type="button" class="fas fa-chevron-right fa-3x"></button>
-                </div>
-                <div>
-                    <i class="fas fa-retweet fa-2x"></i>
-                    <i class="fas fa-download fa-2x"></i>
-                    <i class="fas fa-share-alt fa-2x"></i>
-                </div>
-            </div>
-    </div>
-    <div id="PGN" style="padding: 50px;">
 
+            <div id="chessboard"></div>
+
+            <div class="border__layout_player p-2">
+                <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div> 
+                <div class="border__layout_usernameDetail"> 
+                    <span>Tu jestem ja</span>
+                    <span>(ilosc punktow)</span>
+                    <img src="https://unsplash.it/20/20" class="img-fluid">
+                </div>
+                <div class="clock__component">
+                    <p id="myTimer">5:00</p>
+                </div>
+            </div>
+
+        </div>
+        <div id="layout__sidebar" class="col-lg-3 ">
+            <div class="game__controls__component">
+                <button onclick="startTimer();">Start</button>
+                <button onclick="stopTimer();">Stop</button>
+                <div>
+                    Jakis typ spotkania
+                </div>
+                <div class="game__controls__wrapper ">
+                    @* moves list content *@
+                </div>
+                <div class="section_wrapper "> 
+                    <div>
+                        <button type="button" class="fas fa-chevron-left fa-ls fa-3x"></button>
+                        <button type="button" class="fas fa-chevron-right fa-3x"></button>
+                    </div>
+                    <div class="section_icon">
+                        <i class="fas fa-retweet fa-2x"></i>
+                        <i class="fas fa-download fa-2x"></i>
+                        <i class="fas fa-share-alt fa-2x"></i>
+                    </div>
+                </div>
+                <div class="about_player player_bottom">
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<div id="PGN" style="padding: 50px;">
+
+
+<i class="fa fa-retweet"></i>
 
 
 @section Scripts {
