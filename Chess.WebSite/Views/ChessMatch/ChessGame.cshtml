@@ -1,3 +1,7 @@
+@{
+    Layout = "_Layout";
+}
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet" />
 <link rel="img" asp-href-include="~/lib/chessboardjs/img/chesspieces/wikipedia/*.png" />
@@ -17,7 +21,7 @@
                     <img src="https://unsplash.it/20/20" class="img-fluid">
                 </div>
                 <div class="clock__component">
-                    <p id="opponentTimer">5:00</p>
+                    <div id="opponentTimer" data-timer="900">00:00</div>
                 </div>
             </div>
 
@@ -31,15 +35,15 @@
                     <img src="https://unsplash.it/20/20" class="img-fluid">
                 </div>
                 <div class="clock__component">
-                    <p id="myTimer">5:00</p>
+                    <div id="myTimer" data-timer="900">00:00</div>
                 </div>
             </div>
 
         </div>
         <div id="layout__sidebar" class="col-lg-3 ">
             <div class="game__controls__component">
-                <button onclick="startTimer();">Start</button>
-                <button onclick="stopTimer();">Stop</button>
+                <button onclick="startTimer('timerTimeout');">Start</button>
+                <button onclick="stopTimer('timerTimeout');">Stop</button>
                 <div>
                     Jakis typ spotkania
                 </div>
@@ -60,6 +64,8 @@
                 <div class="about_player player_bottom">
 
                 </div>
+                <button onclick="startTimer1('timerTimeout1');">Start</button>
+                <button onclick="stopTimer1('timerTimeout1');">Stop</button>
             </div>
         </div>
     </div>

@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using Chess.Core.Domain;
 using Chess.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +12,7 @@ namespace Chess.Infrastructure.EF
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Player> Players { get; set; }
         public virtual DbSet<Drill> Drills { get; set; }
-
+        public virtual DbSet<Match> Matches { get; set; }
 
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
@@ -36,6 +35,17 @@ namespace Chess.Infrastructure.EF
                     .WithMany(p => p.Players)
                     .HasForeignKey(d => d.TournamentId);
             });
+            // modelBuilder.Entity<Match>(entity =>
+            // {
+            //     entity.HasKey(x => new {x.Id});
+            //     entity.HasOne(d => d.Player)
+            //         .WithMany(p => p.Tournaments)
+            //         .HasForeignKey(d => d.PlayerId);
+
+            //     entity.HasOne(d => d.Tournament)
+            //         .WithMany(p => p.Players)
+            //         .HasForeignKey(d => d.TournamentId);
+            // });
         }
 
             // modelBuilder.Entity<Comment>(entity =>

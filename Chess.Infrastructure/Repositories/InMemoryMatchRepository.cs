@@ -12,12 +12,10 @@ namespace Chess.Infrastructure.Repositories
         private static ISet<Match> _matches = new HashSet<Match>
         {
             Match.Create(
-                new Player(new User("user1@email.com", "user1", "secert", "salt")),
-                new Player(new User("user10@email.com", "user10", "secert10", "salt10"))
+                new Player(new User("user1@email.com", "user3", "secert", "salt"))
                 ),
             Match.Create(
-                new Player(new User("user2@email.com", "user2", "secert2", "salt2")),
-                new Player(new User("user3@email.com", "user3", "secert3", "salt3"))
+                new Player(new User("user2@email.com", "user2", "secert2", "salt2"))
                 )
         };
         public async Task<IEnumerable<Match>> GetAllAsync()
@@ -29,5 +27,8 @@ namespace Chess.Infrastructure.Repositories
             _matches.Add(match);
             await Task.CompletedTask;
         }
+
+        public async Task<IEnumerable<Match>> GetMatchByPlayerAsync(Guid playerId)
+            => await Task.FromResult(_matches.Where(x => x.PlayerId == playerId));
     }
 }

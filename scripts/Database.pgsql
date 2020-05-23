@@ -62,3 +62,12 @@ CREATE TABLE public.drills (
 	start_position varchar(100) NOT NULL,
 	CONSTRAINT drills_pkey PRIMARY KEY (id)
 );
+
+CREATE TABLE public.matches (
+	id uuid NOT NULL,
+	player_id uuid NOT NULL,
+	begin_at timestamp NOT NULL,
+	end_at timestamp NOT NULL,
+	CONSTRAINT matches_pkey PRIMARY KEY (id),
+	CONSTRAINT matches_player_user_id_fkey FOREIGN KEY (player_id) REFERENCES players(user_id)
+);

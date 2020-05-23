@@ -5,42 +5,38 @@ namespace Chess.Core.Domain
     public class Match
     {
         public Guid Id { get; set; }
-        public Player Player1 { get; protected set; }
-        public Player Player2 { get; protected set; }
+        // public Guid FirstPlayerId { get; protected set; }
+        // public Guid SecondPlayerId { get; protected set; }
+        public Guid PlayerId { get; protected set; }
+        public Player Player { get; protected set; }
         public DateTime BeginAt  { get; set; }
-        public MatchResultEnum Result { get; set; }
+        // public MatchResultEnum Result { get; set; }
         public DateTime EndAt { get; set; }
-        public bool IsFull { get; protected set; }
 
-        public MatchStatistic Statistic { get; set; }
+        // public MatchStatistic Statistic { get; set; }
 
 
         public void RegisterPlayer(Player newPlayer)
         {
             CheckPlayerExistInMatch(newPlayer);
-            if(Player1 != null)
+            if(Player != null)
             {
-                Player1 = newPlayer;
-            }
-            else if(Player2 != null)
-            {
-                Player2 = newPlayer;
+                Player = newPlayer;
             }
         }
 
         protected Match(){}
-        protected Match(Player player1, Player player2)
+        protected Match(Player player)
         {
-            Player1 = player1;
-            Player2 = player2;
+            Id = Guid.NewGuid();
+            Player = player;
         }
-        public static Match Create(Player player1, Player player2)
-            => new Match(player1,player2);
+        public static Match Create(Player player)
+            => new Match(player);
         
         private void CheckPlayerExistInMatch(Player newPlayer)
         {
-            CheckPlayer(newPlayer,Player1);
-            CheckPlayer(newPlayer,Player2);
+            CheckPlayer(newPlayer,Player);
         }
         private void CheckPlayer(Player newPlayer, Player player)
         {

@@ -67,6 +67,7 @@ namespace Chess.WebSite
                     name:"default",
                     pattern:"{controller=Tournament}/{action=Index}/{id?}"
                 );
+                endpoints.MapHub<RoomHub>("/roomHub");
                 endpoints.MapHub<ChatHub>("/chatHub");
                 endpoints.MapHub<ChessMatchHub>("/chessMatchHub");
                 endpoints.MapRazorPages();

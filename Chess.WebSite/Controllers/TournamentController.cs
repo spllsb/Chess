@@ -67,23 +67,8 @@ namespace Chess.WebSite.Controllers
         }
 
 
-        // [HttpGet("{id}")]
-        // public async Task<IActionResult> Get(Guid id)
-        // {
-        //     var tournament = await _tournamentService.GetAsync(id);
-        //     if(tournament == null)
-        //     {
-        //             return NotFound();
-        //     }
-            
-        //     return Ok(tournament);
-        // }
-        // [HttpPost]
-        // public async Task<IActionResult> Post([FromBody] CreateTournament command)
-        // {
-        //     await CommandDispatcher.DispatchAsync(command);
-
-        //     return Created($"tournaments/{command.Name}",new object());
-        // }
+        public ActionResult GetTournament(){
+            return View();
+        }
     }
 }

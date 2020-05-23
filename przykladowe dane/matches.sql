@@ -1,0 +1,3 @@
+insert into matches (id, player_id, begin_at, end_at) values ('0d78f06a-c8ea-4495-828d-6a2bae99d6b4','c5b84954-d711-40fe-8bb2-8620b7e4b8be', '2019-01-23T09:14:19Z', '2019-02-11T01:54:01Z');
+insert into matches (id, player_id, begin_at, end_at) values ('0d78f06a-c8ea-4495-838d-6a2bae99d6b4','c5b84954-d711-40fe-8bb2-8620b7e4b8be', '2019-01-23T09:14:19Z', '2019-02-11T01:54:01Z');
+insert into matches (id, player_id, begin_at, end_at) values ('0d78f06a-c8ea-4495-821d-6a2bae99d6b4','c5b84954-d711-40fe-8bb2-8620b7e4b8be', '2019-01-23T09:14:19Z', '2019-02-11T01:54:01Z');

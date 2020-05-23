@@ -21,6 +21,8 @@ namespace Chess.Infrastructure.IoC
             builder.RegisterModule<RepositoryModule>();
             builder.RegisterModule<DatabaseModule>();
             builder.RegisterModule<ServiceModule>();
+
+
             builder.RegisterInstance(new SettingsModule(_configuration));
 
 

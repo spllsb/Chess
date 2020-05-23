@@ -24,7 +24,6 @@ namespace Chess.Infrastructure.Mappers
                     cfg.CreateMap<Player,PlayerDto>()
                         .ForMember(x => x.PlayerId, opt => opt.MapFrom(y => y.UserId));
                     cfg.CreateMap<Drill,DrillDto>();
-
                 })
                 .CreateMapper();
     }

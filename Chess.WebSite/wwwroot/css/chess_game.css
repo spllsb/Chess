@@ -68,12 +68,12 @@
   width: 100%;
 }
 
-.border__layout_img {
+.border__layout_player .border__layout_img {
   -ms-flex-preferred-size: 10%;
       flex-basis: 10%;
 }
 
-.border__layout_usernameDetail {
+.border__layout_player .border__layout_usernameDetail {
   -ms-flex-preferred-size: 60%;
       flex-basis: 60%;
 }
@@ -81,6 +81,11 @@
 .clock__component {
   -ms-flex-preferred-size: 30%;
       flex-basis: 30%;
-  background-color: skyblue;
+  text-align: right;
+}
+
+.clock__component div {
+  font-size: 25px;
+  background-color: grey;
 }
 /*# sourceMappingURL=chess_game.css.map */

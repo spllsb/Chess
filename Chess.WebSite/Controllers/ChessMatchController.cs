@@ -10,6 +10,7 @@ namespace Chess.WebSite.Controllers
         {
         }
 
+
         public IActionResult Index()
         {
             return View();
@@ -17,6 +18,12 @@ namespace Chess.WebSite.Controllers
 
         public IActionResult ChessGame()
         {
+            return View();
+        }
+    
+        public IActionResult SearchGame(int durationTime){
+            //available player list 
+            
             return View();
         }
     }

@@ -45,17 +45,22 @@
 .border__layout_player{
     display: flex;
     width: 100%;
+    .border__layout_img{
+        flex-basis: 10%;
+    }
+    .border__layout_usernameDetail{
+        flex-basis: 60%;
+    }
 }
 
-.border__layout_img{
-    flex-basis: 10%;
-}
-.border__layout_usernameDetail{
-    flex-basis: 60%;
-}
+
 .clock__component{
     flex-basis: 30%;
-    background-color: skyblue;
+    text-align: right;
+    div{
+        font-size: 25px;
+        background-color: grey;
+    }
 }
 
 

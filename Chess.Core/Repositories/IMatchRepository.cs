@@ -10,6 +10,7 @@ namespace Chess.Core.Repositories
     public interface IMatchRepository : IRepository
     {
         Task<Match> GetAsync(Guid id);
+        Task<IEnumerable<Match>> GetMatchByPlayerAsync(Guid playerId);
         Task<IEnumerable<Match>> GetAllAsync();
         Task AddAsync(Match match);
     }

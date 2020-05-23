@@ -1,10 +1,9 @@
 @using Chess.Infrastructure.DTO
-@model IEnumerable<UserDto>
+@model IEnumerable<PlayerDto>
 
 
 @foreach (var item in Model) {
+    @item.PlayerId
     @item.Username  
-    
-    @item.Email
     <br>
 }

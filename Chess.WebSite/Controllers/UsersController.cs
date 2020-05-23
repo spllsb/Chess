@@ -22,9 +22,10 @@ namespace Chess.WebSite.Controllers
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var users = await _userService.GetAllAsync(); 
+            return View(users);
         }
 
 

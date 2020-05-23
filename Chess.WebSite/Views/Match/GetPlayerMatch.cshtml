@@ -1,0 +1,9 @@
+@using Chess.Infrastructure.DTO
+@model IEnumerable<MatchDto>
+
+
+@foreach (var item in Model) {
+    @item.BeginAt;
+    @item.Id
+
+}

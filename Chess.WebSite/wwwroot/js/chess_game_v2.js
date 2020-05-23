@@ -331,28 +331,48 @@ class Timer{
 
 
 
-var Timer2 = new Timer(60,"opponentTimer");
-var Timer1 = new Timer(60,"myTimer");
-var timerTimeout2;
+var Timer2 = new Timer($("#opponentTimer").data('timer'),"opponentTimer");
+var Timer1 = new Timer($("#opponentTimer").data('timer'),"myTimer");
+var timerTimeout;
 var timerTimeout1;
 
 
-function timeIt(timer){
+
+function timeIt(t,timer){
     document.getElementById(timer.htmlName).innerHTML = convertSeconds(timer.getAvailableTime());
     timer.counter++;
-    timerTimeout2 = setTimeout(timeIt, 1000, timer);
+    t = setTimeout(timeIt, 1000, t, timer);
 }
 
-function startTimer(){
+function startTimer(t){
     let timer = Timer2;
     if (!timer.isOn) {
         timer.isOn = 1;
-        timeIt(timer);
+        timeIt(t,timer);
     }
 }
 
-function stopTimer() {
+function stopTimer(t) {
     let timer = Timer2;
-    clearInterval(timerTimeout2);
+    clearTimeout(t);
     timer.isOn = 0;
 }
+
+
+
+function startTimer1(t){
+    let timer = Timer1;
+    if (!timer.isOn) {
+        timer.isOn = 1;
+        timeIt(t,timer);
+    }
+}
+
+function stopTimer1(t) {
+    let timer = Timer1;
+    clearInterval(t);
+    timer.isOn = 0;
+}
+
+
+

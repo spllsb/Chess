@@ -1,73 +1,33 @@
-
+@{
+    Layout = "_Layout";
+}
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet" />
-<link rel="img" asp-href-include="~/lib/chessboardjs/img/chesspieces/wikipedia/*.png" />
-<link href="~/lib/chessboardjs/css/chessboard-1.0.0.css" rel="stylesheet" />
-<link href="~/css/chess_game.css" rel="stylesheet"/>
-
-<div>HELLO WORLD</div>
-    <div class="row">
-        <div id="layout__main" class="col-md-9">
-            <div id="myBoard"></div>
-        </div>
-
-        <div id="layout__sidebar" class="col-md-3">
-            <div class="game__controls__component">
-                <div class="game__controls__wrapper">
-                    <div id="vertical__move__list__component">
-                        @* <div class="vertical__move__list__element" >
-                            <div class="vertical__move__list__element__move col-2"><span>1.</span></div>
-                            <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">Q3</span>
-                            <span class="vertical__move__list__element__fen">r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R</span>
-                            <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">P2</span>
-                        </div>
-                        <div class="vertical__move__list__element" >
-                            <div class="vertical__move__list__element__move col-2"><span>1.</span></div>
-                            <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">T3</span>
-                            <span class="vertical__move__list__element__fen">rnbqkbnr/pppppppp/8/8/5P2/8/PPPPP1PP/RNBQKBNR</span>
-                            <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">P3</span>
-                        </div> *@
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex-d">
-                <input value="Rezygnuj" onclick="Resign()" type="button"/>
-                <input value="Remis" onclick="Draw()" type="button"/>
-                <input value="Poczatek" onclick="Begin()" type="button"/>
-                <input value="Biezacty" onclick="Current()" type="button"/>
-            </div>
-            
-            <div class="flex-d">
-                <input value="Back" onclick="Back()" type="button"/>
-                <input value="Next" onclick="Next()" type="button"/>
-            </div>
-            <label>Status:</label>
-            <div id="status"></div>
-            <label>FEN:</label>
-            <div id="fen"></div>
-            <label>PGN:</label>
-            <div id="pgn"></div>
-            <div id="root"></div>
-            <h3>Lista ruchów</h3>
-    </div>
-        </div>
-
-    <h1>ChessMatch</h1>
-    <input id="name"/>
- 
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            <input type="button" id="sendButton" value="Send Message" />
-        </div>
-    </div>
 
 
-@* <partial name="_ChessBoard"></partial> *@
-@* <partial name="_Chat"></partial> *@
+@* <form asp-controller="Demo" asp-action="Register" method="post">
+    <!-- Input and Submit elements -->
+</form> *@
+
+
+<div id="nameForm">
+    <label for="playerName">First name:</label>
+    <input placeholder="your name" type="text" id="playerName" name="playerName"><br><br>
+    <button id="enterName">Enter Name</button>
+</div>
+
+
+<div id="roomForm">
+    <label for="roomName">First name:</label>
+    <input placeholder="your group" type="text" id="roomName" name="roomName"><br><br>
+    <button id="enterRoom">Enter Name</button>
+</div>
+
+<div id="playerContent"></div>
+<div id="roomContent"></div>
+<div>
+    Lista dostępnyc pokoji
+</div>
 
 
 
@@ -76,5 +36,5 @@
     <script src="~/lib/chessjs/chess.js"></script>
     <script src="~/lib/chessboardjs/js/chessboard-1.0.0.js"></script>
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/chess_game.js"></script>
+    <script src="~/js/enjoy_game.js"></script>
 }

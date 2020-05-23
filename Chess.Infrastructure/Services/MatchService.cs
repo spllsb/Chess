@@ -31,13 +31,13 @@ namespace Chess.Infrastructure.Services
         public async Task<IEnumerable<MatchDto>> BrowseAsync()
         {
             var matches = await _matchRepository.GetAllAsync();
-
             return _mapper.Map<IEnumerable<Match>,IEnumerable<MatchDto>>(matches);
         }
 
-        public Task CreateAsync(string title)
+        public async Task<IEnumerable<MatchDto>> GetByPlayerAsync(Guid playerId)
         {
-            throw new NotImplementedException();
+            var matches = await _matchRepository.GetMatchByPlayerAsync(playerId);
+            return _mapper.Map<IEnumerable<Match>,IEnumerable<MatchDto>>(matches);
         }
     }
 }
