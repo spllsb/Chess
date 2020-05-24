@@ -7,7 +7,9 @@
 //#endregion  
 
 //#region variables declaration
-var game = new Chess('r1k4r/p2nb1p1/2b4p/1p1n1p2/2PP4/3Q1NB1/1P3PPP/R5K1 b - - 1 19');
+const chess_fen_html = document.getElementById("chess_fen").innerHTML.trim();
+const game_fen = chess_fen_html + ' b - - 1 19';
+var game = new Chess(game_fen);
 var board_id_name = 'chessboard';
 var board = Chessboard(board_id_name);
 //#endregion  veriable declaration
@@ -61,7 +63,7 @@ $(document).ready(function () {
         orientation: getOrientation(),
         onSnapEnd: onSnapEnd,
         onDrop: onDrop,
-        position: 'r1k4r/p2nb1p1/2b4p/1p1n1p2/2PP4/3Q1NB1/1P3PPP/R5K1'
+        position: game.fen()
     };
 
     board = Chessboard(board_id_name, config);

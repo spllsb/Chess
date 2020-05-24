@@ -29,6 +29,6 @@ namespace Chess.Infrastructure.Repositories
         }
 
         public async Task<IEnumerable<Match>> GetMatchByPlayerAsync(Guid playerId)
-            => await Task.FromResult(_matches.Where(x => x.PlayerId == playerId));
+            => await Task.FromResult(_matches.Where(x => x.FirstPlayerId == playerId));
     }
 }

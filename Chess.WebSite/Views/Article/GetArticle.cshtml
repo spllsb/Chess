@@ -1,31 +1,28 @@
 @using Chess.Infrastructure.DTO
 @model ArticleDto
 
-<div class="container">
-        <main role="main">
-            <div class="row">
-                <div class="col-sm-9">
-                    <div class="row">
-                        <article class="col-sm-12">
-                            <figure>
-                                <img src="~/img/artykuł1.jpg" class="img-fluid" />
-                            </figure>
-                            <header>
-                                <h1>@Model.Title</h1>
-                                <p><i class="far fa-newspaper"></i> @Html.DisplayFor(modelItem => Model.CreatedAt) | @Model.FullNameAuthor</p>
-                            </header>
-                            <p>
-                                @Html.DisplayFor(modelItem => Model.Content)
-                            </p>
-                        </article>
-                    </div>
-                </div>
-                <aside class="col-sm-3">
-                    <div class="card">
-                        <div class="card-header">Header</div>
-                        <div class="card-body">Content</div>
-                    </div>
-                </aside>
-            </div>
-        </main>
+<div class="row">
+    <div class="col-sm-9">
+        <div class="row">
+            <article class="col-sm-12">
+                <figure>
+                    <img src="~/img/artykuł1.jpg" class="img-fluid" />
+                </figure>
+                <header>
+                    <h1>@Model.Title</h1>
+                    <p><i class="far fa-newspaper"></i> @Html.DisplayFor(modelItem => Model.CreatedAt) | @Model.FullNameAuthor</p>
+                </header>
+                <p>
+                    @Html.DisplayFor(modelItem => Model.Content)
+                </p>
+            </article>
+        </div>
     </div>
+    <aside class="col-sm-3">
+        <div class="card">
+            <div class="card-header">Header</div>
+            <div class="card-body">Content</div>
+        </div>
+    </aside>
+</div>
+ 

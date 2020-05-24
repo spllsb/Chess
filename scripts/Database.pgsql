@@ -63,11 +63,11 @@ CREATE TABLE public.drills (
 	CONSTRAINT drills_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE public.matches (
-	id uuid NOT NULL,
-	player_id uuid NOT NULL,
+create table public.matches (
+	id uuid NOT null primary key,
+	first_player_id uuid NOT null references players(user_id),
+	second_player_id uuid NOT null references players(user_id),
 	begin_at timestamp NOT NULL,
-	end_at timestamp NOT NULL,
-	CONSTRAINT matches_pkey PRIMARY KEY (id),
-	CONSTRAINT matches_player_user_id_fkey FOREIGN KEY (player_id) REFERENCES players(user_id)
+	end_at timestamp NOT null
 );
+

@@ -7,8 +7,10 @@ namespace Chess.Core.Domain
         public Guid Id { get; set; }
         // public Guid FirstPlayerId { get; protected set; }
         // public Guid SecondPlayerId { get; protected set; }
-        public Guid PlayerId { get; protected set; }
-        public Player Player { get; protected set; }
+        public Guid FirstPlayerId { get; protected set; }
+        public Player FirstPlayer { get; protected set; }
+        public Guid SecondPlayerId { get; protected set; }
+        public Player SecondPlayer { get; protected set; }
         public DateTime BeginAt  { get; set; }
         // public MatchResultEnum Result { get; set; }
         public DateTime EndAt { get; set; }
@@ -18,25 +20,21 @@ namespace Chess.Core.Domain
 
         public void RegisterPlayer(Player newPlayer)
         {
-            CheckPlayerExistInMatch(newPlayer);
-            if(Player != null)
-            {
-                Player = newPlayer;
-            }
+ 
         }
 
         protected Match(){}
         protected Match(Player player)
         {
             Id = Guid.NewGuid();
-            Player = player;
+            // Player = player;
         }
         public static Match Create(Player player)
             => new Match(player);
         
         private void CheckPlayerExistInMatch(Player newPlayer)
         {
-            CheckPlayer(newPlayer,Player);
+            // CheckPlayer(newPlayer,Player);
         }
         private void CheckPlayer(Player newPlayer, Player player)
         {

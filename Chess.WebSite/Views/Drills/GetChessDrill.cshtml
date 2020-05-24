@@ -9,9 +9,6 @@
     <link href="~/css/chess_game.css" rel="stylesheet"/>
 }
 
-@Model.Name
-@Model.StartPosition
-
 
 <div class="row">
         <div id="layout__main" class="col-md-9">
@@ -21,26 +18,81 @@
         <div id="layout__sidebar" class="col-md-3">
             <div class="game__controls__component">
                 <p>
+
+                </p>
+                <p>
                     @Html.DisplayFor(modelItem => @Model.Name)
                 </p>
+                <span id="chess_fen" style="display: none;">
+                    @Html.DisplayFor(modelItem => @Model.StartPosition)
+                </span>
+                
                 <div class="game__controls__wrapper">
-                    <div id="vertical__move__list__component">
-                        <div class="vertical__move__list__element" >
-                            <div class="vertical__move__list__element__move col-2"><span>1.</span></div>
-                            <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">Q3</span>
-                            <span class="vertical__move__list__element__fen">r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R</span>
-                            <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">P2</span>
-                        </div>
-                        <div class="vertical__move__list__element" >
-                            <div class="vertical__move__list__element__move col-2"><span>1.</span></div>
-                            <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">T3</span>
-                            <span class="vertical__move__list__element__fen">rnbqkbnr/pppppppp/8/8/5P2/8/PPPPP1PP/RNBQKBNR</span>
-                            <span class="vertical__move__list__element__move col-5 vertical__move__list__element__move__clickable">P3</span>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
+</div>
+
+
+<div>HELLO WORLD</div>
+    <div class="row">
+        <div id="layout__main" class="col-lg-9">
+            <div class="border__layout_player p-2">
+                <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div> 
+                <div class="border__layout_usernameDetail"> 
+                    <span>Jakis gracz1</span>
+                    <span>(ilosc punktow)</span>
+                    <img src="https://unsplash.it/20/20" class="img-fluid">
+                </div>
+                <div class="clock__component">
+                    <div id="opponentTimer" data-timer="900">00:00</div>
+                </div>
+            </div>
+
+            <div id="chessboard"></div>
+
+            <div class="border__layout_player p-2">
+                <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div> 
+                <div class="border__layout_usernameDetail"> 
+                    <span>Tu jestem ja</span>
+                    <span>(ilosc punktow)</span>
+                    <img src="https://unsplash.it/20/20" class="img-fluid">
+                </div>
+                <div class="clock__component">
+                    <div id="myTimer" data-timer="900">00:00</div>
+                </div>
+            </div>
+
+        </div>
+        <div id="layout__sidebar" class="col-lg-3 ">
+            <div class="game__controls__component">
+                <p>
+                    @Html.DisplayFor(modelItem => @Model.Name)
+                </p>
+                <span id="chess_fen" style="display: none;">
+                    @Html.DisplayFor(modelItem => @Model.StartPosition)
+                </span>
+                <div class="game__controls__wrapper ">
+                    @* moves list content *@
+                </div>
+                <div class="section_wrapper "> 
+                    <div>
+                        <button type="button" class="fas fa-chevron-left fa-ls fa-3x"></button>
+                        <button type="button" class="fas fa-chevron-right fa-3x"></button>
+                    </div>
+                    <div class="section_icon">
+                        <i class="fas fa-retweet fa-2x"></i>
+                        <i class="fas fa-download fa-2x"></i>
+                        <i class="fas fa-share-alt fa-2x"></i>
+                    </div>
+                </div>
+                <div class="about_player player_bottom">
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

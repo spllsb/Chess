@@ -16,8 +16,8 @@ namespace Chess.Infrastructure.Repositories
         {
             _context = context;
         }
-         public async Task<IEnumerable<Match>> GetAllAsync()
-            => await _context.Matches.Include(x => x.Player).ToListAsync();
+        //  public async Task<IEnumerable<Match>> GetAllAsync()
+        //     => await _context.Matches.Include(x => x.Player).ToListAsync();
         public async Task<Match> GetAsync(Guid id)
             => await _context.Matches.SingleOrDefaultAsync(x => x.Id == id);
         public async Task AddAsync(Match match)
@@ -27,6 +27,11 @@ namespace Chess.Infrastructure.Repositories
         }
 
         public async Task<IEnumerable<Match>> GetMatchByPlayerAsync(Guid playerId)
-            => await _context.Matches.Where(x => x.PlayerId == playerId).ToListAsync();
+            => await _context.Matches.Where(x => x.FirstPlayerId == playerId || x.SecondPlayerId == playerId).Include(x => x.FirstPlayer).Include(x => x.SecondPlayer).ToListAsync();
+
+        public Task<IEnumerable<Match>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

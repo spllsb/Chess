@@ -1,9 +1,34 @@
 @using Chess.Infrastructure.DTO
 @model IEnumerable<PlayerDto>
 
-
-@foreach (var item in Model) {
-    @item.PlayerId
-    @item.Username  
-    <br>
-}
+<div class="card">
+    <div class="card-header">
+        Lista graczy
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(item => item.Username)
+                    </th>
+                    <th>
+                        Wynik
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        <a asp-controller="Match" asp-action="GetPlayerMatch" asp-route-id="@item.PlayerId">@Html.DisplayFor(modelItem => item.Username)</a>
+                    </td>
+                    <td>
+                        Wynik
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

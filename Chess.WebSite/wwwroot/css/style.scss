@@ -7,15 +7,22 @@ $color-secondary : #21d4fd;
 
 $avatar-size : 15vh;
 
-html{
+html,body{
     box-sizing: border-box;
+    background: #efefef;
+    font-family: "Arial";
 }
 *, *:before, *:after {
     box-sizing: inherit;
 }
 
-body{
-    font-family: Arial, Helvetica, sans-serif;
+.container {
+    max-width: 1250px;
+    margin: 30px auto 30px;
+    padding: 0 !important;
+    width: 90%;
+    background-color: #fff;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.10), 0 3px 6px rgba(0,0,0,0.10);
 }
 
 a{
