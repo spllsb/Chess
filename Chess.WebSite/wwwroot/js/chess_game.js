@@ -51,14 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     var connection = new signalR.HubConnectionBuilder().withUrl("/chessMatchHub").build();
 
-
     connection.on("ReceivePosition", function (roomId, user, move) {
-        console.log("Info z signalR: " + roomId + '  ' + user)
+    console.log("Info z signalR: " + roomId + '  ' + user)
 
-      chess_game.game.move(move);
-      chess_game.board.position(chess_game.game.fen());
+    chess_game.game.move(move);
+    chess_game.board.position(chess_game.game.fen());
     //   updateListMoves(move.color,move.san,game.fen());
-      console.log(chess_game.game.pgn());
+    console.log(chess_game.game.pgn());
     //   updateStatus();
 
     //remove active class

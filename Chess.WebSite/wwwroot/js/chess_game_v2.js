@@ -6,7 +6,7 @@ const pieceTheme_path = "/lib/chessboardjs/img/chesspieces/wikipedia/{piece}.png
 
 //SignalR configuration
 const chessHub_connect_URL = "/chessMatchHub";
-const chessGameSignalR = 1;
+const chessGameSignalR = 0;
 
 
 //HTML game tag
@@ -20,6 +20,7 @@ var move_list_content;
 var moves;
 
 //control game
+const chess_mod = 'DRILLS';
 const config = {
     pieceTheme: pieceTheme_path,
     draggable: isDraggable(),
@@ -37,18 +38,32 @@ var playerColor = "black";
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    if(chess_mod == "DRILLS")
+    {
+        config.position = getStartPositionFromHTML();
+    }
+    
     move_list_content = document.querySelector('.'+container_for_list_move_html_name);
     moves = document.querySelectorAll('.'+container_for_list_move_html_name+" "+new_move_added_to_list_move_class_name);
     moves.forEach(move => {
         move.addEventListener('click', clickSelectMoveToDisplay);
     })
+    console.log('Start position: ' + config.position);
     chess_game = new ChessGame('chessboard', config);
+    chess_game.game.load(config.position);
+
     $(window).resize(chess_game.board.resize);
     if (chessGameSignalR){
         initChessGameSignalR();
     }
 })
 
+function getStartPositionFromHTML()
+{
+    const chess_fen_html = document.getElementById("chess_fen").innerHTML.trim();
+    const game_fen = chess_fen_html + ' b - - 1 19';
+    return game_fen;
+}
 
 /**
  * A move 
@@ -209,6 +224,7 @@ function creatChessMoveElementHTML(textInnerElement){
     new_element_list.innerHTML = textInnerElement;
     return new_element_list;
 }
+
 
 function clearClassFromDiv(class_name) {
     let div_with_move_active_class = document.querySelectorAll('.' + class_name);
