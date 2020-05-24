@@ -115,17 +115,20 @@ function initChessGameSignalR (){
         return console.error(err.toString());
     });
 
-    connection.on("ReceivePosition", updatePosition);
+    connection.on("ReceivePosition", updatePositionSignalR);
 }
 
 
-function updatePosition (roomId, user, move) {
+function updatePositionSignalR (roomId, user, move) {
     console.log("Info z signalR: " + roomId + '  ' + user)
     chess_game.game.move(move);
     chess_game.board.position(chess_game.game.fen());
     console.log(chess_game.game.pgn());
   //   updateStatus();
+    addNewItemToMoveListHTML(move);
+}
 
+function addNewItemToMoveListHTML(move){
     //remove active class
     clearClassFromDiv(active_move_class_name);
     //create new element from html with active class
@@ -135,7 +138,6 @@ function updatePosition (roomId, user, move) {
     chess_game.moves_array.push(new Move(chess_game.moves_array.length, chess_game.game.fen(), move.san, move.color));
     console.log("Current index: " + chess_game.current_active_index);
 }
-
 
 
 
@@ -183,7 +185,7 @@ function onDrop(source, target, orientation) {
     }
     else
     {
-
+        addNewItemToMoveListHTML(move);
     }
 }
 
