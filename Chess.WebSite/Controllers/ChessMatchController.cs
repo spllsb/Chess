@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Chess.Infrastructure.Commands;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +16,9 @@ namespace Chess.WebSite.Controllers
         {
             return View();
         }
-
-        public IActionResult ChessGame()
+        public IActionResult ChessGame(Guid id)
         {
+            ViewBag.ChessGameId = id;
             return View();
         }
     

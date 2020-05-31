@@ -27,6 +27,12 @@ namespace Chess.WebSite.Controllers
             var matches = await _matchService.GetByPlayerAsync(id);
             return View(matches);
         }
+
+        public async Task<ActionResult> GetMatchOfTournament()
+        {
+            var matches = await _matchService.BrowseAsync();
+            return View(matches);
+        }
         
     }
 }

@@ -9,6 +9,9 @@
     <link href="~/css/chess_game.css" rel="stylesheet"/>
 }
 
+
+<div id="basicUsage">00:00:00</div>
+
 <div>HELLO WORLD</div>
     <div class="row">
         <div id="layout__main" class="col-lg-9">
@@ -19,15 +22,12 @@
                 <p>
                     @Html.DisplayFor(modelItem => @Model.Name)
                 </p>
-                <span id="chess_fen" style="display: none;">
-                    @Html.DisplayFor(modelItem => @Model.StartPosition)
-                </span>
                 <div class="game__controls__wrapper ">
                     @* moves list content *@
                 </div>
                 <div class="section_wrapper "> 
                     <div>
-                        <button type="button" class="fas fa-chevron-left fa-ls fa-3x"></button>
+                         <button type="button" class="fas fa-chevron-left fa-ls fa-3x"></button>
                         <button type="button" class="fas fa-chevron-right fa-3x"></button>
                     </div>
                     <div class="section_icon">
@@ -37,20 +37,21 @@
                     </div>
                 </div>
                 <div class="about_player player_bottom">
-
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div id="PGN" style="padding: 50px;">
 
-
+@Html.HiddenFor(x => x.StartPosition);
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="~/lib/chessjs/chess.js"></script>
     <script src="~/lib/chessboardjs/js/chessboard-1.0.0.js"></script>
     <script src="~/js/chess_game_v2.js"></script>
+
 }
 
 

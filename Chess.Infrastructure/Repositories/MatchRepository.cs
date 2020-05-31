@@ -29,9 +29,7 @@ namespace Chess.Infrastructure.Repositories
         public async Task<IEnumerable<Match>> GetMatchByPlayerAsync(Guid playerId)
             => await _context.Matches.Where(x => x.FirstPlayerId == playerId || x.SecondPlayerId == playerId).Include(x => x.FirstPlayer).Include(x => x.SecondPlayer).ToListAsync();
 
-        public Task<IEnumerable<Match>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<Match>> GetAllAsync()
+            => await _context.Matches.Take(10).Include(x => x.FirstPlayer).Include(x => x.SecondPlayer).ToListAsync();
     }
 }

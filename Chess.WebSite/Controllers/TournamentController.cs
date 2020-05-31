@@ -1,31 +1,20 @@
-using System;
 using System.Threading.Tasks;
 using Chess.Infrastructure.Commands;
-using Chess.Infrastructure.Commands.Tournament;
-using Chess.Infrastructure.EF;
-using Chess.Infrastructure.Services;
-using Chess.Infrastructure.Settings;
+using Chess.WebSite.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Chess.WebSite.Controllers
+namespace Chess.Infrastructure.Services
 {
     public class TournamentController : WebControllerBase
     {
         private readonly ITournamentService _tournamentService;
 
         public TournamentController(ITournamentService tournamentService,
-            ICommandDispatcher commandDispatcher) : base(commandDispatcher)
+                                    ICommandDispatcher commandDispatcher) : base(commandDispatcher)
         {
             _tournamentService = tournamentService;
         }
-    // ITournamentService tournamentService,
-    // public TournamentController(
-    //     ICommandDispatcher commandDispatcher) : base(commandDispatcher)
-    // {
-    //     // _tournamentService = tournamentService;
-    // }
 
-    // [HttpGet]
         public async Task<IActionResult> Index(string message, string status)
         {
             ViewBag.StatusCode = status;
@@ -44,31 +33,6 @@ namespace Chess.WebSite.Controllers
                 return NotFound();
             }
             return View(tournamentDetails);
-        }
-
-        public IActionResult Create()
-        {
-            ViewBag.Information = "Create new tournament";
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(CreateTournament command)
-        {
-            if(ModelState.IsValid)
-            {
-                // await CommandDispatcher.DispatchAsync(command);
-                this.HttpContext.Response.StatusCode = 201;
-                return RedirectToAction("Index", new {message ="JUPI udalo sie utworzyc nowy turniej", status = "success"});
-            }
-            ViewBag.Message = "NIe udalo sie stworzyc turnieju";
-            return View();
-        }
-
-
-        public ActionResult GetTournament(){
-            return View();
         }
     }
 }

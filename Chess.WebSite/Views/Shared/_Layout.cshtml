@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/css/style.css" rel="stylesheet" />
-
 </head>
 <body>
     <header>
@@ -34,6 +33,20 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="ChessMatch" asp-action="Index">Szachy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Match" asp-action="GetMatchOfTournament">Mecze turniejowe</a>
+                        </li>
+                        <li>
+                            <div class="notification-box">
+                                <span class="notification-count">6</span>
+                                <div class="notification-bell">
+                                    <span class="bell-top"></span>
+                                    <span class="bell-middle"></span>
+                                    <span class="bell-bottom"></span>
+                                    <span class="bell-rad"></span>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>

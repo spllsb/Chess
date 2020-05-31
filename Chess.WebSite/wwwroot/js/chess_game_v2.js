@@ -1,12 +1,27 @@
 "use strict";
 
+
+const chessboard_color = {
+    WHITE: 'white',
+    BLACK: 'black'
+};
+
+const chess_mod = {
+    LIVE_GAME: 'live_game',
+    DRILLS: 'drills'
+};
+
+var currentPlayer;
+
+
+
 // Configure chessGame
 //Chess layout
 const pieceTheme_path = "/lib/chessboardjs/img/chesspieces/wikipedia/{piece}.png";
 
 //SignalR configuration
 const chessHub_connect_URL = "/chessMatchHub";
-const chessGameSignalR = 0;
+let config_chessGameSignalR = 0;
 
 
 //HTML game tag
@@ -18,9 +33,14 @@ const new_move_added_to_list_move_class_name = "div";
 //HTML DOM
 var move_list_content;
 var moves;
+var chessGameId;
 
 //control game
-const chess_mod = 'DRILLS';
+// const chess_mod = 'DRILLSs';
+const chess_mod_selected = chess_mod.LIVE_GAME
+
+
+
 const config = {
     pieceTheme: pieceTheme_path,
     draggable: isDraggable(),
@@ -30,19 +50,56 @@ const config = {
     position: 'start' 
 }
 
-//connect to signalR
+//connect to signalRd
 var connection;
 //chess game
 var chess_game;
 var playerColor = "black";
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    if(chess_mod == "DRILLS")
-    {
-        config.position = getStartPositionFromHTML();
+/**
+ * Get the URL parameters
+ * source: https://css-tricks.com/snippets/javascript/get-url-variables/
+ * @param  {String} url The URL
+ * @return {Object}     The URL parameters
+ */
+var getParams = function (url) {
+    var params = {};
+    var parser = document.createElement('a');
+    parser.href = url;
+    var query = parser.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        params[pair[0]] = decodeURIComponent(pair[1]);
     }
+    return params;
+};
+
+function initPlayer(){
+    return new Player(generateName());
+}
+
+function updatePlayerSectionHTML(playerInfo, section_HTML_Id){
+    document.getElementById(section_HTML_Id).textContent = currentPlayer.playerName;
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
     
+    currentPlayer = initPlayer();
+    updatePlayerSectionHTML(currentPlayer, "currentPlayer")
+
+    switch(chess_mod_selected) {
+        case chess_mod.DRILLS:
+            config.position = getStartPositionFromHTML();
+            break;
+        case chess_mod.LIVE_GAME:
+            chessGameId = document.getElementById("ChessGameId").textContent;
+            initChessGameSignalR();
+            break;
+    }
+
     move_list_content = document.querySelector('.'+container_for_list_move_html_name);
     moves = document.querySelectorAll('.'+container_for_list_move_html_name+" "+new_move_added_to_list_move_class_name);
     moves.forEach(move => {
@@ -53,14 +110,49 @@ document.addEventListener('DOMContentLoaded', () => {
     chess_game.game.load(config.position);
 
     $(window).resize(chess_game.board.resize);
-    if (chessGameSignalR){
-        initChessGameSignalR();
-    }
 })
+
+
+
+
+function capFirst(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function getRandomInt(min, max) {
+  	return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function generateGuidId(){
+    var guidId = ["c5b84954-d711-40fe-8bb2-8620b7e4b8be","ea83fbac-d08f-4109-8312-1c7924b716ad","0d78f06a-c8ea-4495-828d-6a2bae99d6b4"];
+	var guid = guidId[getRandomInt(0, guidId.length + 1)];
+	return guid;
+
+}
+
+
+function generateName(){
+	var name1 = ["abandoned","able","absolute","adorable","adventurous","academic","acceptable","acclaimed","accomplished","accurate","aching","acidic","acrobatic","active","actual","adept","admirable","admired","adolescent","adorable","adored","advanced","afraid","affectionate","aged","aggravating","aggressive","agile","agitated","agonizing","agreeable","ajar","alarmed","alarming","alert","alienated","alive","all","altruistic","amazing","ambitious","ample","amused","amusing","anchored","ancient","angelic","angry","anguished","well-off","well-to-do","well-worn","wet","which","whimsical","whirlwind","whispered","white","whole","whopping","wicked","wide","wide-eyed","wiggly","wild","willing","wilted","winding","windy","winged","wiry","wise","witty","wobbly","woeful","wonderful","wooden","woozy","wordy","worldly","worn","worried","worrisome","worse","worst","worthless","worthwhile","worthy","wrathful","wretched","writhing","wrong","wry","yawning","yearly","yellow","yellowish","young","youthful","yummy","zany","zealous","zesty","zigzag","rocky"];
+
+	var name2 = ["people","history","way","art","world","information","map","family","government","health","system","computer","meat","year","thanks","music","person","reading","method","data","food","understanding","theory","law","bird","literature","problem","software","control","knowledge","power","ability","economics","love","internet","television","science","library","nature","fact","product","idea","temperature","beat","burn","deposit","print","raise","sleep","somewhere","advance","consist","dark","double","upstairs","usual","abroad","brave","calm","concentrate","estimate","grand","male","mine","prompt","quiet","refuse","regret","reveal","rush","shake","shift","shine","steal","suck","surround","bear","brilliant","dare","dear","delay","drunk","female","hurry","inevitable","invite","kiss","neat","pop","punch","quit","reply","representative","resist","rip","rub","silly","smile","spell","stretch","stupid","tear","temporary","tomorrow","wake","wrap","yesterday","Thomas","Tom"];
+
+	var name = capFirst(name1[getRandomInt(0, name1.length + 1)]) + ' ' + capFirst(name2[getRandomInt(0, name2.length + 1)]);
+	return name;
+
+}
+
+
+
+
+
+
+
+
+
 
 function getStartPositionFromHTML()
 {
-    const chess_fen_html = document.getElementById("chess_fen").innerHTML.trim();
+    const chess_fen_html = document.getElementById("StartPosition").value;
     const game_fen = chess_fen_html + ' b - - 1 19';
     return game_fen;
 }
@@ -112,15 +204,17 @@ class ChessGame {
 * @type {Player}
 */
 class Player{
-    constructor(playerName, startOrientation){
+    constructor(playerName){
         this.playerName = playerName;
-        this.startOrientation = startOrientation;
+        // this.startOrientation = startOrientation;
         this.isYourMove = false;
         this.timeLeft = 0;
     }
 }
 
 function initChessGameSignalR (){
+    config_chessGameSignalR = 1;
+
     connection = new signalR.HubConnectionBuilder()
         .withUrl(chessHub_connect_URL)
         .build();
@@ -128,8 +222,19 @@ function initChessGameSignalR (){
     connection.start().then(function () {
     }).catch(function (err) {
         return console.error(err.toString());
+    }).then(function(){
+        connection.invoke('JoinChessMatch', chessGameId);
+        connection.invoke('GetConnectionId').then(function(connectionId){
+            // TODO
+        });
+        let aa = generateGuidId();
+        connection.invoke('SearchChessGame', aa)
+        .catch(function (err){ alert(err)})    
+        .then(function(message){
+            alert(message);
+            });
     });
-
+    // connection.ser.JoinChessMatch(chessGameId);
     connection.on("ReceivePosition", updatePositionSignalR);
 }
 
@@ -193,9 +298,9 @@ function onDrop(source, target, orientation) {
     // illegal move
     if (move === null) return 'snapback';
 
-    if(chessGameSignalR)
+    if(config_chessGameSignalR)
     {
-        connection.invoke("SendPosition", "test", "userTest", move).catch(function (err) {
+        connection.invoke("SendPosition", chessGameId, "userTest", move).catch(function (err) {
         return console.error(err.toString());})
     }
     else
@@ -257,25 +362,6 @@ function convertSeconds(s){
 
 
 
-class Timer{
-    constructor(fullTime, htmlName){
-        this.fullTime = fullTime;
-        this.htmlName = htmlName;
-        this.counter = 0;
-        this.isOn = false;
-        this.timerInterval;
-    }
-
-    getAvailableTime(){
-        return this.fullTime - this.counter;
-    }
-
-    stopTimer(){
-
-    }
-
-
-}
 
 // var timeFull = 60;
 // var timerInterval;
@@ -306,51 +392,7 @@ class Timer{
 // }
 
 
-
-
-var Timer2 = new Timer($("#opponentTimer").data('timer'),"opponentTimer");
-var Timer1 = new Timer($("#opponentTimer").data('timer'),"myTimer");
-var timerTimeout;
-var timerTimeout1;
-
-
-
-function timeIt(t,timer){
-    document.getElementById(timer.htmlName).innerHTML = convertSeconds(timer.getAvailableTime());
-    timer.counter++;
-    t = setTimeout(timeIt, 1000, t, timer);
-}
-
-function startTimer(t){
-    let timer = Timer2;
-    if (!timer.isOn) {
-        timer.isOn = 1;
-        timeIt(t,timer);
-    }
-}
-
-function stopTimer(t) {
-    let timer = Timer2;
-    clearTimeout(t);
-    timer.isOn = 0;
-}
-
-
-
-function startTimer1(t){
-    let timer = Timer1;
-    if (!timer.isOn) {
-        timer.isOn = 1;
-        timeIt(t,timer);
-    }
-}
-
-function stopTimer1(t) {
-    let timer = Timer1;
-    clearInterval(t);
-    timer.isOn = 0;
-}
-
+// https://jsbin.com/IgaXEVI/167/edit?html,js,output
 
 
 const flipBoardIcon = document.querySelector(".fa-retweet");
@@ -411,3 +453,189 @@ flipBoardIcon.addEventListener("click",function(){
         document.getElementById("layout__main").setAttribute("style", "flex-direction:column");
     }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var Stopwatch = function(elem, options) {
+  
+    var timer       = createTimer(),
+        startButton = createButton("start", start),
+        stopButton  = createButton("stop", stop),
+        resetButton = createButton("reset", reset),
+        offset,
+        clock,
+        interval;
+    
+    // default options
+    options = options || {};
+    options.delay = options.delay || 1;
+   
+    // append elements     
+    elem.appendChild(timer);
+    elem.appendChild(startButton);
+    elem.appendChild(stopButton);
+    elem.appendChild(resetButton);
+    
+    // initialize
+    reset();
+    
+    // private functions
+    function createTimer() {
+      return document.createElement("span");
+    }
+    
+    function createButton(action, handler) {
+      var a = document.createElement("a");
+      a.href = "#" + action;
+      a.innerHTML = action;
+      a.addEventListener("click", function(event) {
+        handler();
+        event.preventDefault();
+      });
+      return a;
+    }
+    
+    function start() {
+      if (!interval) {
+        offset   = Date.now();
+        interval = setInterval(update, options.delay);
+      }
+    }
+    
+    function stop() {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
+    }
+    
+    function reset() {
+      clock = 0;
+      render(0);
+    }
+    
+    function update() {
+      clock += delta();
+      render();
+    }
+    
+    function render() {
+      timer.innerHTML = clock/1000; 
+    }
+    
+    function delta() {
+      var now = Date.now(),
+          d   = now - offset;
+      
+      offset = now;
+      return d;
+    }
+    
+    // public API
+    this.start  = start;
+    this.stop   = stop;
+    this.reset  = reset;
+  };
+
+// programmatic examples
+var a = document.getElementById("a-timer");
+aTimer = new Stopwatch(a);
+aTimer.start();
+
+var b = document.getElementById("b-timer");
+bTimer = new Stopwatch(b, {delay: 100});
+bTimer.start();
+
+var c = document.getElementById("c-timer");
+cTimer = new Stopwatch(c, {delay: 456});
+cTimer.start();
+
+var d = document.getElementById("d-timer");
+dTimer = new Stopwatch(d, {delay: 1000});
+dTimer.start();
+
+
+
+class Timer{
+    constructor(fullTime, htmlName){
+        this.fullTime = fullTime;
+        this.htmlName = htmlName;
+        this.counter = 0;
+        this.isOn = false;
+        this.timerInterval;
+    }
+
+    getAvailableTime(){
+        return this.fullTime - this.counter;
+    }
+
+
+
+}
+
+var Timer1 = new Timer($("#opponentTimer").data('timer'),"opponentTimer");
+var Timer2 = new Timer($("#opponentTimer").data('timer'),"myTimer");
+var timerTimeout;
+
+
+
+function timeIt(timerTimeout,timer){
+    if(timer.isOn){
+        document.getElementById(timer.htmlName).innerHTML = convertSeconds(timer.getAvailableTime());
+        timer.counter++;
+    }
+    
+}
+
+function startTimer(t){
+    let timer = Timer1;
+    if (!timer.isOn) {
+        timer.isOn = 1;
+        timeIt(t,timer);
+    }
+}
+
+function stopTimer(t) {
+    let timer = Timer1;
+    let timer1 = Timer1;
+    timer.isOn = 0;
+    timer1.isOn = 0;
+    clearTimeout(timerTimeout);
+    
+}
+
+
+
+function startTimer1(t){
+    let timer = Timer2;
+    if (!timer.isOn) {
+        timer.isOn = 1;
+        timeIt(t,timer);
+    }
+}
+
+function stopTimer1(t) {
+    let timer = Timer2;
+    let timer1 = Timer1;
+    clearInterval(t);
+    timer.isOn = 0;
+}
+
+
+
+
+

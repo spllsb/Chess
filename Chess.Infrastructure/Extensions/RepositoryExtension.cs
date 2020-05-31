@@ -30,6 +30,18 @@ namespace Chess.Infrastructure.Extensions
             return user;
         }
 
+        public static async Task<Player> GetOrFailAsync(this IPlayerRepository repository, Guid id)
+        {
+            var player = await repository.GetAsync(id);
+            if(player == null)
+            {
+                throw new Exception($"Player with id: '{id}' was not found exists");
+            }
+
+            return player;
+        }
+
+
         public static async Task<Article> GetOrFailAsync(this IArticleRepository repository, Guid id)
         {
             var article = await repository.GetAsync(id);
