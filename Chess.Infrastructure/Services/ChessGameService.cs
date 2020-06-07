@@ -14,7 +14,7 @@ namespace Chess.Infrastructure.Services
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly IMapper _mapper;
-        private static ISet<Player> _waitingPlayerList = new HashSet<Player>();
+        private static ISet<PlayerInRoom> _waitingPlayerList = new HashSet<PlayerInRoom>();
 
         
         public ChessGameService(IPlayerRepository playerRepository,
@@ -25,20 +25,42 @@ namespace Chess.Infrastructure.Services
         }
         
         
-        public async Task AddToWaitingList(string userId)
+        public async Task AddToWaitingList(string userId, string connectionId)
         {
-            var player = await _playerRepository.GetOrFailAsync(Guid.Parse(userId));
+            var player = new PlayerInRoom(userId, connectionId);
             _waitingPlayerList.Add(player);
         }
 
-        public async Task<PlayerDto> GetPlayerFromWaitingList(){
-            var player = _waitingPlayerList.FirstOrDefault();
+        public int CountOpponent()
+            => _waitingPlayerList.Count;
+        
+
+        public async Task<PlayerInRoom> GetPlayerFromWaitingList(){
+            var player = _waitingPlayerList.SingleOrDefault();
             if(player == null)
             {
-                new Exception($"Any player was not found in waiting list");
-                return null;
+                throw new Exception($"Any player was not found in waiting list");
+
             }
-            return _mapper.Map<Player,PlayerDto>(player);
+            return player;
+        }
+
+        public async Task RemoveFromWaitingList(PlayerInRoom player)
+        {
+            _waitingPlayerList.Remove(player);
         }
     }
+
+    public class PlayerInRoom{
+        public string PlayerId { get; set; }
+        public string ConnectionId { get; set; }
+        public PlayerInRoom(string playerId, string connectionId)
+        {
+            PlayerId = playerId;
+            ConnectionId = connectionId;
+        }
+    }   
+
 }
+
+

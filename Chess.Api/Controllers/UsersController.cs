@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Chess.Infrastructure.Commands;
 using Chess.Infrastructure.Commands.Users;
 using Chess.Infrastructure.DTO;
-using Chess.Infrastructure.Service;
+using Chess.Infrastructure.Services;
 using Chess.Infrastructure.Settings;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

@@ -9,10 +9,15 @@ namespace Chess.Core.Domain
         public DateTime CreateAt { get; set; }
         public IEnumerable<Player> Players { get; set; }
 
-        public Room()
+        private Room()
         {
-            this.Id = new Guid();
+            this.Id = Guid.NewGuid();
             this.CreateAt = DateTime.UtcNow;
         }
+
+        public static Room CreateRoom()
+            => new Room();
+
+
     }
 }

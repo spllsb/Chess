@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Chess.Infrastructure.Commands;
 using Chess.Infrastructure.Commands.Users;
-using Chess.Infrastructure.Service;
+using Chess.Infrastructure.Services;
 
 namespace Chess.Infrastructure.Handlers.Users
 {

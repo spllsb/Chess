@@ -36,8 +36,8 @@ var moves;
 var chessGameId;
 
 //control game
-// const chess_mod = 'DRILLSs';
-const chess_mod_selected = chess_mod.LIVE_GAME
+// const chess_mod_selected = chess_mod.DRILLS;
+const chess_mod_selected = chess_mod.LIVE_GAME;
 
 
 
@@ -81,12 +81,11 @@ function initPlayer(){
 }
 
 function updatePlayerSectionHTML(playerInfo, section_HTML_Id){
-    document.getElementById(section_HTML_Id).textContent = currentPlayer.playerName;
+    document.getElementById(section_HTML_Id).textContent = playerInfo.playerName;
 }
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    
     currentPlayer = initPlayer();
     updatePlayerSectionHTML(currentPlayer, "currentPlayer")
 
@@ -124,7 +123,7 @@ function getRandomInt(min, max) {
 }
 
 function generateGuidId(){
-    var guidId = ["c5b84954-d711-40fe-8bb2-8620b7e4b8be","ea83fbac-d08f-4109-8312-1c7924b716ad","0d78f06a-c8ea-4495-828d-6a2bae99d6b4"];
+    var guidId = ["c5b84954-d711-40fe-8bb2-8620b7e4b8be","ea83fbac-d08f-4109-8312-1c7924b716ad","0d78f06a-c8ea-4495-828d-6a2bae99d6b4","a5b84954-d711-40fe-8bb2-8620b7e4b8be"];
 	var guid = guidId[getRandomInt(0, guidId.length + 1)];
 	return guid;
 
@@ -219,24 +218,38 @@ function initChessGameSignalR (){
         .withUrl(chessHub_connect_URL)
         .build();
 
-    connection.start().then(function () {
-    }).catch(function (err) {
-        return console.error(err.toString());
-    }).then(function(){
-        connection.invoke('JoinChessMatch', chessGameId);
-        connection.invoke('GetConnectionId').then(function(connectionId){
-            // TODO
-        });
-        let aa = generateGuidId();
-        connection.invoke('SearchChessGame', aa)
-        .catch(function (err){ alert(err)})    
-        .then(function(message){
-            alert(message);
+    connection.start()
+        .then( document.getElementById("chessboard").style.display = "")
+        .catch(function (err) {
+            return console.error(err.toString());
+        })
+            .then(function(){
+                connection.invoke('GetConnectionId').then(function(connectionId){
+            })
+            .then(function(){
+                let aa = generateGuidId();
+                connection.invoke('SearchRandomChessGame', aa)
+                .then(function(message){
+                    if (message == "Player found game"){
+                        connection.invoke('SendCommunication',"No to zaczynajmy gre");
+                    }
+                })
             });
     });
     // connection.ser.JoinChessMatch(chessGameId);
+    connection.on("ReceiveCommunication", function (communication){
+        alert(communication);
+    });
+
+    connection.on("ReceiveRoom", function (roomId){
+        sessionStorage.setItem("roomId", roomId);
+    });
+    
     connection.on("ReceivePosition", updatePositionSignalR);
 }
+
+
+
 
 
 function updatePositionSignalR (roomId, user, move) {
@@ -300,7 +313,7 @@ function onDrop(source, target, orientation) {
 
     if(config_chessGameSignalR)
     {
-        connection.invoke("SendPosition", chessGameId, "userTest", move).catch(function (err) {
+        connection.invoke("SendPosition", sessionStorage.getItem("roomId"), "userTest", move).catch(function (err) {
         return console.error(err.toString());})
     }
     else

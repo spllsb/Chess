@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Chess.Core.Domain;
 using Chess.Core.Repositories;
-using Chess.Infrastructure.Service;
+using Chess.Infrastructure.Services;
 using Moq;
 using NUnit.Framework;
 

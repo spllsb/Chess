@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Chess.Infrastructure.DTO;
-using Chess.Infrastructure.Services;
 
-namespace Chess.Infrastructure.Service
+namespace Chess.Infrastructure.Services
 {
     public interface IUserService : IService
     {

@@ -6,7 +6,7 @@ using Chess.Core.Domain;
 using Chess.Core.Repositories;
 using Chess.Infrastructure.DTO;
 
-namespace Chess.Infrastructure.Service
+namespace Chess.Infrastructure.Services
 {
     public class UserService : IUserService
     {
