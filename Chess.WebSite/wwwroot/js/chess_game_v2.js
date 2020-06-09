@@ -11,6 +11,12 @@ const chess_mod = {
     DRILLS: 'drills'
 };
 
+const chess_searching_typ = {
+    RANDOM: 'random',
+    PARTICULAR: 'particular'
+};
+
+
 var currentPlayer;
 
 
@@ -38,13 +44,13 @@ var chessGameId;
 //control game
 // const chess_mod_selected = chess_mod.DRILLS;
 const chess_mod_selected = chess_mod.LIVE_GAME;
-
+const chess_searching_typ_selected = chess_searching_typ.RANDOM;
 
 
 const config = {
     pieceTheme: pieceTheme_path,
     draggable: isDraggable(),
-    orientation: getOrientation(),
+    orientation: generateOrientation(),
     onSnapEnd: onSnapEnd,
     onDrop: onDrop,
     position: 'start' 
@@ -54,7 +60,7 @@ const config = {
 var connection;
 //chess game
 var chess_game;
-var playerColor = "black";
+var playerColor = generateOrientation();
 
 
 /**
@@ -87,16 +93,27 @@ function updatePlayerSectionHTML(playerInfo, section_HTML_Id){
 
 document.addEventListener('DOMContentLoaded', () => {
     currentPlayer = initPlayer();
-    updatePlayerSectionHTML(currentPlayer, "currentPlayer")
+    sessionStorage.setItem("playerId", generateGuidId());
+    sessionStorage.setItem("playerName", currentPlayer.playerName);
+    updatePlayerSectionHTML(sessionStorage.getItem("playerName"), "currentPlayer");
 
+    
     switch(chess_mod_selected) {
         case chess_mod.DRILLS:
             config.position = getStartPositionFromHTML();
             break;
-        case chess_mod.LIVE_GAME:
-            chessGameId = document.getElementById("ChessGameId").textContent;
-            initChessGameSignalR();
-            break;
+            case chess_mod.LIVE_GAME:
+                chessGameId = document.getElementById("ChessGameId").textContent;
+                switch(chess_searching_typ_selected){
+                    case chess_searching_typ.RANDOM:
+
+                    break;
+                    case chess_searching_typ.PARTICULAR:
+
+                    break;
+                }
+        initChessGameSignalR();
+        break;
     }
 
     move_list_content = document.querySelector('.'+container_for_list_move_html_name);
@@ -140,10 +157,11 @@ function generateName(){
 
 }
 
-
-
-
-
+function generateOrientation(){
+    var color = ["white","black"];
+    var orientation = color[getRandomInt(0, color.length)];
+	return orientation;
+}
 
 
 
@@ -227,8 +245,7 @@ function initChessGameSignalR (){
                 connection.invoke('GetConnectionId').then(function(connectionId){
             })
             .then(function(){
-                let aa = generateGuidId();
-                connection.invoke('SearchRandomChessGame', aa)
+                connection.invoke('SearchRandomChessGame', sessionStorage.getItem("playerId"))
                 .then(function(message){
                     if (message == "Player found game"){
                         connection.invoke('SendCommunication',"No to zaczynajmy gre");
@@ -259,7 +276,22 @@ function updatePositionSignalR (roomId, user, move) {
     console.log(chess_game.game.pgn());
   //   updateStatus();
     addNewItemToMoveListHTML(move);
+    manageTimer(user);
 }
+
+function manageTimer(user){
+    if(sessionStorage.getItem("playerName") == user)
+    {
+        clock_my.stop();
+        clock_opponent.start();
+    }else
+    {
+        clock_opponent.stop();
+        clock_my.start(); 
+    }
+}
+
+
 
 function addNewItemToMoveListHTML(move){
     //remove active class
@@ -287,10 +319,7 @@ function onSnapEnd() {
 //#endregion chess function move 
 
 //#region chess configuration function  
-// losowanie kto jest jakim kolorem ? 
-function getOrientation() {
-    return playerColor;
-}
+
 
 //opcja false, ustawiona jest np w przypadku "zdjęć"
 function isDraggable() {
@@ -313,7 +342,7 @@ function onDrop(source, target, orientation) {
 
     if(config_chessGameSignalR)
     {
-        connection.invoke("SendPosition", sessionStorage.getItem("roomId"), "userTest", move).catch(function (err) {
+        connection.invoke("SendPosition", sessionStorage.getItem("roomId"), sessionStorage.getItem("playerName"), move).catch(function (err) {
         return console.error(err.toString());})
     }
     else
@@ -475,20 +504,10 @@ flipBoardIcon.addEventListener("click",function(){
 
 
 
-
-
-
-
-
-
-
-
 var Stopwatch = function(elem, options) {
   
     var timer       = createTimer(),
-        startButton = createButton("start", start),
-        stopButton  = createButton("stop", stop),
-        resetButton = createButton("reset", reset),
+        startValue = initStartValue(),
         offset,
         clock,
         interval;
@@ -497,31 +516,21 @@ var Stopwatch = function(elem, options) {
     options = options || {};
     options.delay = options.delay || 1;
    
-    // append elements     
-    elem.appendChild(timer);
-    elem.appendChild(startButton);
-    elem.appendChild(stopButton);
-    elem.appendChild(resetButton);
     
     // initialize
     reset();
     
+
+
     // private functions
     function createTimer() {
       return document.createElement("span");
     }
     
-    function createButton(action, handler) {
-      var a = document.createElement("a");
-      a.href = "#" + action;
-      a.innerHTML = action;
-      a.addEventListener("click", function(event) {
-        handler();
-        event.preventDefault();
-      });
-      return a;
+    function initStartValue(){
+        return elem.dataset.timer;
     }
-    
+
     function start() {
       if (!interval) {
         offset   = Date.now();
@@ -547,7 +556,7 @@ var Stopwatch = function(elem, options) {
     }
     
     function render() {
-      timer.innerHTML = clock/1000; 
+      elem.dataset.timer = convertSeconds(startValue - ((clock/1000).toFixed()));
     }
     
     function delta() {
@@ -557,96 +566,199 @@ var Stopwatch = function(elem, options) {
       offset = now;
       return d;
     }
+
+    function manageState(){
+        let state = interval;
+        if(interval){
+            stop();
+        }
+        else{
+            start();
+        }
+    }
     
     // public API
     this.start  = start;
     this.stop   = stop;
+    this.manageState  = manageState;
+
     this.reset  = reset;
   };
 
-// programmatic examples
-var a = document.getElementById("a-timer");
-aTimer = new Stopwatch(a);
-aTimer.start();
+  const clock_opponent = new Stopwatch(document.getElementById("clock-top"));
+  const clock_my = new Stopwatch(document.getElementById("clock-bottom"));
 
-var b = document.getElementById("b-timer");
-bTimer = new Stopwatch(b, {delay: 100});
-bTimer.start();
-
-var c = document.getElementById("c-timer");
-cTimer = new Stopwatch(c, {delay: 456});
-cTimer.start();
-
-var d = document.getElementById("d-timer");
-dTimer = new Stopwatch(d, {delay: 1000});
-dTimer.start();
+ 
 
 
 
-class Timer{
-    constructor(fullTime, htmlName){
-        this.fullTime = fullTime;
-        this.htmlName = htmlName;
-        this.counter = 0;
-        this.isOn = false;
-        this.timerInterval;
-    }
-
-    getAvailableTime(){
-        return this.fullTime - this.counter;
-    }
 
 
 
-}
-
-var Timer1 = new Timer($("#opponentTimer").data('timer'),"opponentTimer");
-var Timer2 = new Timer($("#opponentTimer").data('timer'),"myTimer");
-var timerTimeout;
-
-
-
-function timeIt(timerTimeout,timer){
-    if(timer.isOn){
-        document.getElementById(timer.htmlName).innerHTML = convertSeconds(timer.getAvailableTime());
-        timer.counter++;
-    }
+// var Stopwatch = function(elem, options) {
+  
+//     var timer       = createTimer(),
+//         startButton = createButton("start", start),
+//         stopButton  = createButton("stop", stop),
+//         resetButton = createButton("reset", reset),
+//         offset,
+//         clock,
+//         interval;
     
-}
-
-function startTimer(t){
-    let timer = Timer1;
-    if (!timer.isOn) {
-        timer.isOn = 1;
-        timeIt(t,timer);
-    }
-}
-
-function stopTimer(t) {
-    let timer = Timer1;
-    let timer1 = Timer1;
-    timer.isOn = 0;
-    timer1.isOn = 0;
-    clearTimeout(timerTimeout);
+//     // default options
+//     options = options || {};
+//     options.delay = options.delay || 1;
+   
+//     // append elements     
+//     elem.appendChild(timer);
+//     elem.appendChild(startButton);
+//     elem.appendChild(stopButton);
+//     elem.appendChild(resetButton);
     
-}
+//     // initialize
+//     reset();
+    
+//     // private functions
+//     function createTimer() {
+//       return document.createElement("span");
+//     }
+    
+//     function createButton(action, handler) {
+//       var a = document.createElement("a");
+//       a.href = "#" + action;
+//       a.innerHTML = action;
+//       a.addEventListener("click", function(event) {
+//         handler();
+//         event.preventDefault();
+//       });
+//       return a;
+//     }
+    
+//     function start() {
+//       if (!interval) {
+//         offset   = Date.now();
+//         interval = setInterval(update, options.delay);
+//       }
+//     }
+    
+//     function stop() {
+//       if (interval) {
+//         clearInterval(interval);
+//         interval = null;
+//       }
+//     }
+    
+//     function reset() {
+//       clock = 0;
+//       render(0);
+//     }
+    
+//     function update() {
+//       clock += delta();
+//       render();
+//     }
+    
+//     function render() {
+//       timer.innerHTML = clock/1000; 
+//     }
+    
+//     function delta() {
+//       var now = Date.now(),
+//           d   = now - offset;
+      
+//       offset = now;
+//       return d;
+//     }
+    
+//     // public API
+//     this.start  = start;
+//     this.stop   = stop;
+//     this.reset  = reset;
+//   };
+
+// // programmatic examples
+// var a = document.getElementById("a-timer");
+// aTimer = new Stopwatch(a);
+// aTimer.start();
+
+// var b = document.getElementById("b-timer");
+// bTimer = new Stopwatch(b, {delay: 100});
+// bTimer.start();
+
+// var c = document.getElementById("c-timer");
+// cTimer = new Stopwatch(c, {delay: 456});
+// cTimer.start();
+
+// var d = document.getElementById("d-timer");
+// dTimer = new Stopwatch(d, {delay: 1000});
+// dTimer.start();
 
 
 
-function startTimer1(t){
-    let timer = Timer2;
-    if (!timer.isOn) {
-        timer.isOn = 1;
-        timeIt(t,timer);
-    }
-}
+// class Timer{
+//     constructor(fullTime, htmlName){
+//         this.fullTime = fullTime;
+//         this.htmlName = htmlName;
+//         this.counter = 0;
+//         this.isOn = false;
+//         this.timerInterval;
+//     }
 
-function stopTimer1(t) {
-    let timer = Timer2;
-    let timer1 = Timer1;
-    clearInterval(t);
-    timer.isOn = 0;
-}
+//     getAvailableTime(){
+//         return this.fullTime - this.counter;
+//     }
+
+
+
+// }
+
+// var Timer1 = new Timer($("#opponentTimer").data('timer'),"opponentTimer");
+// var Timer2 = new Timer($("#opponentTimer").data('timer'),"myTimer");
+// var timerTimeout;
+
+
+
+// function timeIt(timerTimeout,timer){
+//     if(timer.isOn){
+//         document.getElementById(timer.htmlName).innerHTML = convertSeconds(timer.getAvailableTime());
+//         timer.counter++;
+//     }
+    
+// }
+
+// function startTimer(t){
+//     let timer = Timer1;
+//     if (!timer.isOn) {
+//         timer.isOn = 1;
+//         timeIt(t,timer);
+//     }
+// }
+
+// function stopTimer(t) {
+//     let timer = Timer1;
+//     let timer1 = Timer1;
+//     timer.isOn = 0;
+//     timer1.isOn = 0;
+//     clearTimeout(timerTimeout);
+    
+// }
+
+
+
+// function startTimer1(t){
+//     let timer = Timer2;
+//     if (!timer.isOn) {
+//         timer.isOn = 1;
+//         timeIt(t,timer);
+//     }
+// }
+
+// function stopTimer1(t) {
+//     let timer = Timer2;
+//     let timer1 = Timer1;
+//     clearInterval(t);
+//     timer.isOn = 0;
+// }
 
 
 
