@@ -35,7 +35,7 @@
             <div class="border__layout_player p-2">
                 <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div> 
                 <div class="border__layout_usernameDetail"> 
-                    <span id="currentPlayer">Jakis gracz1</span>
+                    <span id="chess_opponent_name">Jakis gracz1</span>
                     <span>(ilosc punktow)</span>
                     <img src="https://unsplash.it/20/20" class="img-fluid">
                 </div>
@@ -48,7 +48,7 @@
             <div class="border__layout_player p-2">
                 <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div> 
                 <div class="border__layout_usernameDetail"> 
-                    <span>@Context.User.Identity.Name</span>
+                    <span id="chess_my_name">@Context.User.Identity.Name</span>
                     <span>(ilosc punktow)</span>
                     <img src="https://unsplash.it/20/20" class="img-fluid">
                 </div>
@@ -61,8 +61,6 @@
         </div>
         <div id="layout__sidebar" class="col-lg-3 ">
             <div class="game__controls__component">
-                <button onclick="startTimer('timerTimeout');">Start</button>
-                <button onclick="stopTimer('timerTimeout');">Stop</button>
                 <div>
                     Jakis typ spotkania
                 </div>
@@ -81,10 +79,7 @@
                     </div>
                 </div>
                 <div class="about_player player_bottom">
-
                 </div>
-                <button onclick="startTimer1('timerTimeout1');">Start</button>
-                <button onclick="stopTimer1('timerTimeout1');">Stop</button>
             </div>
         </div>
     </div>

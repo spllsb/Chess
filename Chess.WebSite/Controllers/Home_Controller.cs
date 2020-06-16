@@ -10,7 +10,7 @@ namespace Chess.WebSite.Controllers
         }
 
         public IActionResult Index(){
-            ViewBag.MyName = HttpContext.User;
+            
             return View();
         }
     }

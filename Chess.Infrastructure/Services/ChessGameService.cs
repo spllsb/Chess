@@ -25,9 +25,9 @@ namespace Chess.Infrastructure.Services
         }
         
         
-        public async Task AddToWaitingList(string userId, string connectionId)
+        public async Task AddToWaitingList(string playerName, string connectionId)
         {
-            var player = new PlayerInRoom(userId, connectionId);
+            var player = new PlayerInRoom(playerName, connectionId);
             _waitingPlayerList.Add(player);
         }
 
@@ -53,10 +53,12 @@ namespace Chess.Infrastructure.Services
 
     public class PlayerInRoom{
         public string PlayerId { get; set; }
+        public string PlayerName { get; set; }
         public string ConnectionId { get; set; }
-        public PlayerInRoom(string playerId, string connectionId)
+
+        public PlayerInRoom(string playerName, string connectionId)
         {
-            PlayerId = playerId;
+            PlayerName = playerName;
             ConnectionId = connectionId;
         }
     }   
