@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TEST.Controllers
+namespace Chess.WebSite.Controllers
 {
     public class HomeController : Controller
     {

@@ -1,6 +1,6 @@
 "use strict";
 
-
+// !! zmienne koniecznie musza byc malymi znakami
 const chessboard_color = {
     WHITE: 'white',
     BLACK: 'black'
@@ -18,7 +18,7 @@ const chess_searching_typ = {
 
 
 var currentPlayer;
-
+const orientation = generateOrientation();
 
 
 // Configure chessGame
@@ -50,9 +50,10 @@ const chess_searching_typ_selected = chess_searching_typ.RANDOM;
 const config = {
     pieceTheme: pieceTheme_path,
     draggable: isDraggable(),
-    orientation: generateOrientation(),
+    orientation: orientation,
     onSnapEnd: onSnapEnd,
     onDrop: onDrop,
+    onDragStart : onDragStart,
     position: 'start' 
 }
 
@@ -328,7 +329,13 @@ function isDraggable() {
 //#endregion  chess function configuration 
 //#endregion chess function  
 
-
+function onDragStart (source, piece, position, orientation) {
+    // do not pick up pieces if the game is over
+    if (chess_game.game.game_over()) return false
+  
+    // only pick up pieces for White
+    if (piece.search(orientation.substr(0,1))) return false
+  }
 
 function onDrop(source, target, orientation) {
     // see if the move is legal
@@ -589,178 +596,4 @@ var Stopwatch = function(elem, options) {
   const clock_my = new Stopwatch(document.getElementById("clock-bottom"));
 
  
-
-
-
-
-
-
-// var Stopwatch = function(elem, options) {
-  
-//     var timer       = createTimer(),
-//         startButton = createButton("start", start),
-//         stopButton  = createButton("stop", stop),
-//         resetButton = createButton("reset", reset),
-//         offset,
-//         clock,
-//         interval;
-    
-//     // default options
-//     options = options || {};
-//     options.delay = options.delay || 1;
-   
-//     // append elements     
-//     elem.appendChild(timer);
-//     elem.appendChild(startButton);
-//     elem.appendChild(stopButton);
-//     elem.appendChild(resetButton);
-    
-//     // initialize
-//     reset();
-    
-//     // private functions
-//     function createTimer() {
-//       return document.createElement("span");
-//     }
-    
-//     function createButton(action, handler) {
-//       var a = document.createElement("a");
-//       a.href = "#" + action;
-//       a.innerHTML = action;
-//       a.addEventListener("click", function(event) {
-//         handler();
-//         event.preventDefault();
-//       });
-//       return a;
-//     }
-    
-//     function start() {
-//       if (!interval) {
-//         offset   = Date.now();
-//         interval = setInterval(update, options.delay);
-//       }
-//     }
-    
-//     function stop() {
-//       if (interval) {
-//         clearInterval(interval);
-//         interval = null;
-//       }
-//     }
-    
-//     function reset() {
-//       clock = 0;
-//       render(0);
-//     }
-    
-//     function update() {
-//       clock += delta();
-//       render();
-//     }
-    
-//     function render() {
-//       timer.innerHTML = clock/1000; 
-//     }
-    
-//     function delta() {
-//       var now = Date.now(),
-//           d   = now - offset;
-      
-//       offset = now;
-//       return d;
-//     }
-    
-//     // public API
-//     this.start  = start;
-//     this.stop   = stop;
-//     this.reset  = reset;
-//   };
-
-// // programmatic examples
-// var a = document.getElementById("a-timer");
-// aTimer = new Stopwatch(a);
-// aTimer.start();
-
-// var b = document.getElementById("b-timer");
-// bTimer = new Stopwatch(b, {delay: 100});
-// bTimer.start();
-
-// var c = document.getElementById("c-timer");
-// cTimer = new Stopwatch(c, {delay: 456});
-// cTimer.start();
-
-// var d = document.getElementById("d-timer");
-// dTimer = new Stopwatch(d, {delay: 1000});
-// dTimer.start();
-
-
-
-// class Timer{
-//     constructor(fullTime, htmlName){
-//         this.fullTime = fullTime;
-//         this.htmlName = htmlName;
-//         this.counter = 0;
-//         this.isOn = false;
-//         this.timerInterval;
-//     }
-
-//     getAvailableTime(){
-//         return this.fullTime - this.counter;
-//     }
-
-
-
-// }
-
-// var Timer1 = new Timer($("#opponentTimer").data('timer'),"opponentTimer");
-// var Timer2 = new Timer($("#opponentTimer").data('timer'),"myTimer");
-// var timerTimeout;
-
-
-
-// function timeIt(timerTimeout,timer){
-//     if(timer.isOn){
-//         document.getElementById(timer.htmlName).innerHTML = convertSeconds(timer.getAvailableTime());
-//         timer.counter++;
-//     }
-    
-// }
-
-// function startTimer(t){
-//     let timer = Timer1;
-//     if (!timer.isOn) {
-//         timer.isOn = 1;
-//         timeIt(t,timer);
-//     }
-// }
-
-// function stopTimer(t) {
-//     let timer = Timer1;
-//     let timer1 = Timer1;
-//     timer.isOn = 0;
-//     timer1.isOn = 0;
-//     clearTimeout(timerTimeout);
-    
-// }
-
-
-
-// function startTimer1(t){
-//     let timer = Timer2;
-//     if (!timer.isOn) {
-//         timer.isOn = 1;
-//         timeIt(t,timer);
-//     }
-// }
-
-// function stopTimer1(t) {
-//     let timer = Timer2;
-//     let timer1 = Timer1;
-//     clearInterval(t);
-//     timer.isOn = 0;
-// }
-
-
-
-
 

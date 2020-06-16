@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Chess.WebSite.Controllers
 {
-    public class HomeController : WebControllerBase
+    public class Home_Controller : WebControllerBase
     {
-        public HomeController(ICommandDispatcher commandDispatcher) : base(commandDispatcher)
+        public Home_Controller(ICommandDispatcher commandDispatcher) : base(commandDispatcher)
         {
         }
 
         public IActionResult Index(){
+            ViewBag.MyName = HttpContext.User;
             return View();
         }
     }
