@@ -1,18 +1,35 @@
-using Chess.Infrastructure.Commands;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Chess.WebSite.Controllers
+namespace TEST.Controllers
 {
-    public class HomeController : WebControllerBase
+    public class HomeController : Controller
     {
-        public HomeController(ICommandDispatcher commandDispatcher) : base(commandDispatcher)
+        public IActionResult Index()
         {
+            return View();
         }
 
-        public IActionResult Index(){
+        public IActionResult About()
+        {
+            ViewData["Message"] = "Your application description page.";
+
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "Your contact page.";
+
+            return View();
+        }
+
+        public IActionResult Error()
+        {
             return View();
         }
     }
 }
-
-

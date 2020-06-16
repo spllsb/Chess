@@ -15,14 +15,19 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />  
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
     <!-- Dzieki paczce, nie musimy się martwić o małe litery do postgresa -->
     <PackageReference Include="EFCore.NamingConventions" Version="1.0.0" /> 
 
 
-    <PackageReference Include="JSDoc" Version="3.4.0" />
+    <PackageReference Include="JSDoc" Version="3.4.0" /> 
+
+
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
   </ItemGroup>
  
 </Project>

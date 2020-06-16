@@ -15,7 +15,7 @@ namespace Chess.Api.Controllers
 
         [HttpPut]
         [Route("password")]
-        public async Task<IActionResult> Put([FromBody] ChangeUserPassword command)
+        public async Task<IActionResult> Put([FromBody] SetPassword command)
         {
             await CommandDispatcher.DispatchAsync(command);
             return NoContent();

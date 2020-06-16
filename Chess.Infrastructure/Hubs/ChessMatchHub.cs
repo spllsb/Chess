@@ -26,6 +26,12 @@ namespace Chess.Infrastructure.Hubs
             return base.OnConnectedAsync();
         }
 
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            Console.WriteLine(exception);
+            return base.OnDisconnectedAsync(exception);
+        }
+
         // public async Task SendPosition(string roomId, string user, MoveObject move)
         // {
         //     await Clients.All.SendAsync("ReceivePosition", roomId, user, move);

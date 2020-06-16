@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
+using Chess.Core.Domain;
 using Chess.Infrastructure.EF;
 using Chess.Infrastructure.Hubs;
 using Chess.Infrastructure.IoC;
+using Chess.Infrastructure.Services;
 using Chess.WebSite.Framework;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,10 +36,21 @@ namespace Chess.WebSite
             services.AddRazorPages();
             services.AddSignalR();
             services.AddEntityFrameworkNpgsql()
-                .AddDbContext<MyDbContext>(options => options
+                    .AddDbContext<MyDbContext>(options => options
                     .UseNpgsql(Configuration.GetValue<string>("Database:ConnectionString"))
                     .UseSnakeCaseNamingConvention());
             // services.AddOptions();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddDefaultTokenProviders()
+                    .AddEntityFrameworkStores<MyDbContext>();
+            // services.AddIdentityCore<ApplicationUser>()
+            //         .AddDefaultTokenProviders()
+            //         .AddEntityFrameworkStores<MyDbContext>();
+
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
+
+
+            services.AddTransient<IEmailSender, AuthMessageSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,12 +69,13 @@ namespace Chess.WebSite
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            
             app.UseMyExceptionHandler();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
