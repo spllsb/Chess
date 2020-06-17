@@ -5,30 +5,9 @@
 <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet" />
 
 
-@* <form asp-controller="Demo" asp-action="Register" method="post">
-    <!-- Input and Submit elements -->
-</form> *@
-
-
-<div id="nameForm">
-    <label for="playerName">First name:</label>
-    <input placeholder="your name" type="text" id="playerName" name="playerName"><br><br>
-    <button id="enterName">Enter Name</button>
-</div>
-
-
-<div id="roomForm">
-    <label for="roomName">First name:</label>
-    <input placeholder="your group" type="text" id="roomName" name="roomName"><br><br>
-    <button id="enterRoom">Enter Name</button>
-</div>
-
-<div id="playerContent"></div>
-<div id="roomContent"></div>
-<div>
-    Lista dostępnyc pokoji
-</div>
-
+<a asp-area="" asp-controller="ChessMatch" asp-action="ChessGame" asp-route-duration=3>3 minuty</a></li>
+<a asp-area="" asp-controller="ChessMatch" asp-action="ChessGame" asp-route-duration=6>6 minuty</a></li>
+<a asp-area="" asp-controller="ChessMatch" asp-action="ChessGame" asp-route-duration=8>8 minuty</a></li>
 
 
 @section Scripts {

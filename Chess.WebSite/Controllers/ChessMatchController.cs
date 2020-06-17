@@ -18,8 +18,9 @@ namespace Chess.WebSite.Controllers
         {
             return View();
         }
-        public IActionResult ChessGame(Guid id)
+        public IActionResult ChessGame(Guid id, string duration)
         {
+            ViewBag.ChessGameDuration = duration;
             ViewBag.ChessGameId = id;
             return View();
         }

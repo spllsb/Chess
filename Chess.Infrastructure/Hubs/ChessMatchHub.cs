@@ -45,13 +45,13 @@ namespace Chess.Infrastructure.Hubs
         //     // Console.WriteLine("--> Connection to group " + chessGameId);
         // }
 
-        public async Task SendPosition(string chessGameId, string user, MoveObject move)
+        public async Task SendPosition(string chessGameId, MoveObject move)
         {
-            await Clients.Group(chessGameId).SendAsync("ReceivePosition", chessGameId, user, move);
+            await Clients.Group(chessGameId).SendAsync("ReceivePosition", chessGameId, Context.User.Identity.Name, move);
         }
-        public async Task SendCommunication(string communication)
+        public async Task SendCommunication(string communication, string groupId)
         {
-            await Clients.All.SendAsync("ReceiveCommunication", communication);
+            await Clients.Group(groupId).SendAsync("ReceiveCommunication", communication);
         }
 
         // public async Task ChoosePieceColor(string )
@@ -89,12 +89,15 @@ namespace Chess.Infrastructure.Hubs
         // }
 
         
-        public async Task<string> SearchRandomChessGame(){
+        public async Task<string> SearchRandomChessGame(string gameDuration){
+            int gameDurationParsered = int.Parse(gameDuration);
+            Console.WriteLine(gameDurationParsered); 
             string userName = Context.User.Identity.Name;
             Console.WriteLine("--> Connection id: " + this.Context.ConnectionId + " and userId " + userName + " serching game");
-            if(_chessGameService.CountOpponent() == 0)
+            if(_chessGameService.CountOpponent(gameDurationParsered) == 0)
             {
-                await _chessGameService.AddToWaitingList(userName, this.Context.ConnectionId);
+                var playerInRoom = new PlayerInRoom(userName, gameDurationParsered, this.Context.ConnectionId);
+                await _chessGameService.AddToWaitingList(playerInRoom);
                 Console.WriteLine("--> Connected user witch connectionId " + userName + " was added to waiting player list");
                 return "Added to waiting list";
             }
@@ -102,7 +105,7 @@ namespace Chess.Infrastructure.Hubs
             {
                 //NA tym etapie, powinno być dołczenie do grup i zwrotka do obu graczy ze się zaczeło
                 Console.WriteLine("--> Searching good opponent");
-                var opponent = await _chessGameService.GetPlayerFromWaitingList();
+                var opponent = await _chessGameService.GetPlayerFromWaitingList(gameDurationParsered);
                 Console.WriteLine("--> Connected user witch userId " + userName + " found player with id " + opponent.PlayerId + " " + opponent.ConnectionId);
                 var room = Room.CreateRoom();
                 Console.WriteLine("--> Create new room with id " + room.Id.ToString());
@@ -113,16 +116,14 @@ namespace Chess.Infrastructure.Hubs
                 t1.Wait();
                 t2.Wait();
                 
+                await _chessGameService.RemoveFromWaitingList(opponent);
+
                 await Clients.Client(this.Context.ConnectionId).SendAsync("GetColorPiece",ChessboardPieceColor.white.ToString());
                 await  Clients.Client(opponent.ConnectionId).SendAsync("GetColorPiece",ChessboardPieceColor.black.ToString());
                                 
                 await Clients.Client(this.Context.ConnectionId).SendAsync("GetOpponent",opponent.PlayerName);
                 await  Clients.Client(opponent.ConnectionId).SendAsync("GetOpponent",userName);
                                 
-                
-                
-                await _chessGameService.RemoveFromWaitingList(opponent);
-     
                 await Clients.Group(room.Id.ToString()).SendAsync("ReceiveRoom", room.Id.ToString());
                 return "Player found game";
             }

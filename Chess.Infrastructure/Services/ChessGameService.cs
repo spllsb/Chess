@@ -25,18 +25,17 @@ namespace Chess.Infrastructure.Services
         }
         
         
-        public async Task AddToWaitingList(string playerName, string connectionId)
+        public async Task AddToWaitingList(PlayerInRoom playerInRoom)
         {
-            var player = new PlayerInRoom(playerName, connectionId);
-            _waitingPlayerList.Add(player);
+            _waitingPlayerList.Add(playerInRoom);
         }
 
-        public int CountOpponent()
-            => _waitingPlayerList.Count;
+        public int CountOpponent(int gameDuration)
+            => _waitingPlayerList.Where(x => x.GameDuration == gameDuration).ToList().Count;
         
 
-        public async Task<PlayerInRoom> GetPlayerFromWaitingList(){
-            var player = _waitingPlayerList.SingleOrDefault();
+        public async Task<PlayerInRoom> GetPlayerFromWaitingList(int gameDuration){
+            var player = _waitingPlayerList.Where(x => x.GameDuration == gameDuration).FirstOrDefault();
             if(player == null)
             {
                 throw new Exception($"Any player was not found in waiting list");
@@ -54,11 +53,13 @@ namespace Chess.Infrastructure.Services
     public class PlayerInRoom{
         public string PlayerId { get; set; }
         public string PlayerName { get; set; }
+        public int GameDuration { get; set; }
         public string ConnectionId { get; set; }
 
-        public PlayerInRoom(string playerName, string connectionId)
+        public PlayerInRoom(string playerName, int gameDuration, string connectionId)
         {
             PlayerName = playerName;
+            GameDuration = gameDuration;
             ConnectionId = connectionId;
         }
     }   

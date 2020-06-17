@@ -7,5 +7,6 @@ namespace Chess.Infrastructure.DTO
         public string Description { get; set; }
         public string Category { get; set; }
         public string StartPosition { get; set; }
+        public string OrientationMove { get; set; }
     }
 }

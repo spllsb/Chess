@@ -1,35 +1,5 @@
 "use strict";
 
-var whiteSquareGrey = '#a9a9a9'
-var blackSquareGrey = '#696969'
-
-
-function greySquare (square) {
-    var $square = $('#chessboard .square-' + square)
-
-    var background = whiteSquareGrey
-    if ($square.hasClass('black-3c85d')) {
-        background = blackSquareGrey
-    }
-    $square.css('background', background)
-}
-
-  
-function removeColorChessboard(){
-    $('#chessboard .square-55d63').css('background', '');
-}
-
-function colorChessboard(from, to){
-    greySquare(from);
-    greySquare(to);
-}
-
-
-
-  
-
-
-
 // !! zmienne koniecznie musza byc malymi znakami
 const chessboard_piece_color = {
     WHITE: 'white',
@@ -57,7 +27,7 @@ const pieceTheme_path = "/lib/chessboardjs/img/chesspieces/wikipedia/{piece}.png
 const chessHub_connect_URL = "/chessMatchHub";
 let config_chessGameSignalR = 0;
 
-const chessGameDurationInfoHTML = document.getElementById("clock-top").dataset.timer;
+
 //HTML game tag
 
 
@@ -75,8 +45,8 @@ var moves;
 var chessGameId;
 
 //control game
-// const chess_mod_selected = chess_mod.DRILLS;
-const chess_mod_selected = chess_mod.LIVE_GAME;
+const chess_mod_selected = chess_mod.DRILLS;
+// const chess_mod_selected = chess_mod.LIVE_GAME;
 const chess_searching_typ_selected = chess_searching_typ.RANDOM;
 
 
@@ -99,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     switch(chess_mod_selected) {
         case chess_mod.DRILLS:
             config.position = getStartPositionFromHTML();
-            config.orientation = chessboard_piece_color.WHITE;
+            config.orientation = getOrientationMoveFromHTML();
             break;
         case chess_mod.LIVE_GAME:
             chessGameId = document.getElementById("ChessGameId").textContent;
@@ -126,12 +96,25 @@ document.addEventListener('DOMContentLoaded', () => {
     $(window).resize(chess_game.board.resize);
 })
 
+function getOrientationMoveFromHTML()
+{
+    const chess_orientation = document.getElementById("OrientationMove").value;
+    return chess_orientation;
+}
 
 function getStartPositionFromHTML()
 {
-    const chess_fen_html = document.getElementById("StartPosition").value;
-    const game_fen = chess_fen_html + ' b - - 1 19';
+    const game_fen = generateFen();
     return game_fen;
+}
+
+function generateFen()
+{
+    const chess_fen_html = document.getElementById("StartPosition").value;
+    const chess_orientation = document.getElementById("OrientationMove").value;
+    const game_fen = chess_fen_html + ' ' + chess_orientation.substr(0,1) + ' - - 1 19';
+    return game_fen;
+
 }
 
 /**
@@ -145,21 +128,18 @@ function getStartPositionFromHTML()
 * @type {Move}
 */
 class Move {
-    constructor(index, fen, from, to, display_move, orientation) {
+    constructor(index, fen, display_move, orientation) {
         this.index = index;
         this.fen = fen;
-        this.from = from;
-        this.to = to;
         this.display_move = display_move;
         this.orientation = orientation;
-        
     }
     /**
      * Move 
      * @returns {string} - Display all information about variable
      */
     getInformation() {
-        return 'Move: ' + this.index + ' Fen: ' + this.fen + 'From: ' + this.from + ' To: ' + this.to + ' Display_move ' + this.display_move + ' Orientation ' + this.orientation;
+        return 'Move: ' + this.index + ' Fen: ' + this.fen + ' Display_move ' + this.display_move + ' Orientation ' + this.orientation;
     }
 }
 
@@ -241,15 +221,12 @@ function updatePositionSignalR (roomId, user, move) {
     chess_game.board.position(chess_game.game.fen());
     console.log(chess_game.game.pgn());
   //   updateStatus();
-    removeColorChessboard();
-    colorChessboard(move.from, move.to);
-
     addNewItemToMoveListHTML(move);
     manageTimer(user);
 }
 
 function manageTimer(user){
-    if(currentUserHTML.textContent == user)
+    if(sessionStorage.getItem("playerName") == user)
     {
         clock_my.stop();
         clock_opponent.start();
@@ -271,7 +248,7 @@ function addNewItemToMoveListHTML(move){
     move_list_content.appendChild(creatChessMoveElementHTML(move.san));
     moves = document.querySelectorAll('.'+container_for_list_move_html_name+" "+new_move_added_to_list_move_class_name);
     chess_game.current_active_index = chess_game.moves_array.length;
-    chess_game.moves_array.push(new Move(chess_game.moves_array.length, chess_game.game.fen(), move.from, move.to, move.san, move.color));
+    chess_game.moves_array.push(new Move(chess_game.moves_array.length, chess_game.game.fen(), move.san, move.color));
     console.log("Current index: " + chess_game.current_active_index);
 }
 
@@ -317,10 +294,9 @@ function onDrop(source, target, orientation) {
     // illegal move
     if (move === null) return 'snapback';
 
-    
     if(config_chessGameSignalR)
     {
-        connection.invoke("SendPosition", sessionStorage.getItem("roomId"), move).catch(function (err) {
+        connection.invoke("SendPosition", sessionStorage.getItem("roomId"), sessionStorage.getItem("playerName"), move).catch(function (err) {
         return console.error(err.toString());})
     }
     else
@@ -337,8 +313,6 @@ function clickSelectMoveToDisplay(e) {
     clearClassFromDiv(active_move_class_name);
     updateActiveMoveFromHTMLBoard(index);
     updateMoveInHTMLBoard(index);
-
-    
 }
 
 
@@ -367,9 +341,6 @@ function updateActiveMoveFromHTMLBoard(index){
     moves[index].classList.add(active_move_class_name);
     chess_game.current_active_index = index;
     console.log("Current index: " + chess_game.current_active_index);
-
-    removeColorChessboard();
-    colorChessboard(chess_game.moves_array[index].from,chess_game.moves_array[index].to);
 }
 
 function updateMoveInHTMLBoard(index) {
@@ -450,91 +421,6 @@ flipBoardIcon.addEventListener("click",function(){
 
 
 
-
-
-
-var Stopwatch = function(elem, options) {
-  
-    var timer       = createTimer(),
-        startValue = initStartValue(),
-        offset,
-        clock,
-        interval;
-    
-    // default options
-    options = options || {};
-    options.delay = options.delay || 1;
-   
-    
-    // initialize
-    reset();
-    
-
-
-    // private functions
-    function createTimer() {
-      return document.createElement("span");
-    }
-    
-    function initStartValue(){
-        return elem.dataset.timer;
-    }
-
-    function start() {
-      if (!interval) {
-        offset   = Date.now();
-        interval = setInterval(update, options.delay);
-      }
-    }
-    
-    function stop() {
-      if (interval) {
-        clearInterval(interval);
-        interval = null;
-      }
-    }
-    
-    function reset() {
-      clock = 0;
-      render(0);
-    }
-    
-    function update() {
-      clock += delta();
-      render();
-    }
-    
-    function render() {
-      elem.dataset.timer = convertSeconds(startValue - ((clock/1000).toFixed()));
-    }
-    
-    function delta() {
-      var now = Date.now(),
-          d   = now - offset;
-      
-      offset = now;
-      return d;
-    }
-
-    function manageState(){
-        let state = interval;
-        if(interval){
-            stop();
-        }
-        else{
-            start();
-        }
-    }
-    
-    // public API
-    this.start  = start;
-    this.stop   = stop;
-    this.manageState  = manageState;
-
-    this.reset  = reset;
-  };
-  const clock_opponent = new Stopwatch(document.getElementById("clock-top"));
-  const clock_my = new Stopwatch(document.getElementById("clock-bottom"));
 
  
 

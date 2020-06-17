@@ -6,10 +6,10 @@ namespace Chess.Infrastructure.Services
 {
     public interface IChessGameService : IService
     {
-        Task AddToWaitingList(string playerName, string connectionId);
+        Task AddToWaitingList(PlayerInRoom playerInRoom);
         Task RemoveFromWaitingList(PlayerInRoom player);
-        Task<PlayerInRoom> GetPlayerFromWaitingList();
-        int CountOpponent();
+        Task<PlayerInRoom> GetPlayerFromWaitingList(int gameDuration);
+        int CountOpponent(int gameDuration);
 
     }
 
