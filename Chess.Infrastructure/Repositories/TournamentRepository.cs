@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Chess.Core.Domain;
 using Chess.Core.Repositories;
@@ -25,10 +26,10 @@ namespace Chess.Infrastructure.Repositories
             => await _context.Tournaments.Include(x => x.Players).ThenInclude(x=>x.Player).SingleOrDefaultAsync(x => x.Id == id);
 
         public async Task<Tournament> GetAsync(string name)
-            => await _context.Tournaments.Include(x => x.Players).ThenInclude(x=>x.Player).SingleOrDefaultAsync(x => x.Name == name);
+            => await _context.Tournaments.Where(x => x.Name == name).Include(x => x.Players).ThenInclude(x=>x.Player).SingleOrDefaultAsync();
         //Dodac paginację (np funkcje Take lub Skip)
-
-
+        public async Task<Tournament> GetTournamentAsync(string name)
+            => await _context.Tournaments.Where(x => x.Name == name).FirstOrDefaultAsync();
         public async Task<IEnumerable<Tournament>> GetAllAsync()
         
             => await _context.Tournaments.Take(10).ToListAsync();
@@ -49,5 +50,8 @@ namespace Chess.Infrastructure.Repositories
             _context.Tournaments.Remove(tournament);
             await _context.SaveChangesAsync();
         }
+
+        public IQueryable<Tournament> FindByCondition(Expression<Func<Tournament,bool>> expression)
+            => _context.Tournaments.Where(expression).AsNoTracking();
     }
 }

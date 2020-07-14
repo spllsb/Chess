@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Chess.Core.Domain;
 using Chess.Core.Repositories;
@@ -37,7 +38,14 @@ namespace Chess.Infrastructure.Repositories
             await Task.CompletedTask;
         }
 
+        public Task<Tournament> GetTournamentAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
 
-
+        public IQueryable<Tournament> FindByCondition(Expression<Func<Tournament, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

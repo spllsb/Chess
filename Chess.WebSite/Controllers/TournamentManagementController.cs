@@ -54,11 +54,11 @@ namespace Chess.WebSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CreateTournament command)
+        public async Task<ActionResult> Create(CreateTournament command)
         {
             if(ModelState.IsValid)
             {
-                // await CommandDispatcher.DispatchAsync(command);
+                await CommandDispatcher.DispatchAsync(command);
                 this.HttpContext.Response.StatusCode = 201;
                 return RedirectToAction("Index", new {message ="JUPI udalo sie utworzyc nowy turniej", status = "success"});
             }

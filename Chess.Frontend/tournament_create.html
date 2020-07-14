@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>create tournament</title>
+</head>
+<body>
+    <form action="javascript:makeTournament()">
+        <div class="form-group">
+            <label class="control-label">Nazwa turneju</label>
+            <input class="form-control" id="tournament_name" />
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Ilość graczy</label>
+            <input class="form-control" />
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="tournament_type" class="control-label">Rodzaj turnieju</label>
+            <input class="form-control" />
+            <span class="text-danger"></span>
+
+            <select name="tournament_type" id="tournament_type">
+                <option value="free_for_all">Każdy na każdego</option>
+                <option value="playoff">Rozgrywki playoff</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+
+
+    <div class="tournament_section">
+        <div id="tournament_details">
+        </div>
+        <div id="tournament_bracket">
+
+        </div>
+    </div>
+
+
+
+<div>
+    
+</div>
+    <div class="card">
+        <div class="card-header">
+            Lista turniejów
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Asdsadsad
+                        </th>
+                        <th>
+                            asdasdsad
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td>
+                                xzczxczxcxz
+                            </td>
+                            <td>
+                                zxczczxczxzxc
+                            </td>
+                            <td>
+                                <a>Dołącz</a=>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<script>
+    const tournament_name_form = document.getElementById("tournament_name");
+    const tournament_details_html = document.getElementById("tournament_details");
+    const tournament_bracket_html = document.getElementById("tournament_bracket");
+    function makeTournament(){
+        let newSpan = document.createElement("SPAN");
+        newSpan.textContent = tournament_name_form.value;
+        tournament_details_html.appendChild(newSpan);        
+    }
+</script>

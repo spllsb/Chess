@@ -13,6 +13,12 @@
         Lista turniejów
     </div>
     <div class="card-body">
+        <form asp-controller="Tournament" asp-action="Index" method="get">
+            <p>
+                Turniej: <input type="text" name="SearchString">
+                <input type="submit" value="Filter" />
+            </p>
+        </form>
         <table class="table">
             <thead>
                 <tr>

@@ -1,14 +1,13 @@
 @using Chess.Infrastructure.DTO
 @model IEnumerable<MatchDto>
 
+
 <div class="card">
-  <div class="card-header text-center">
-    Nadchodzące spotkania
-  </div>
-  <div class="card-body">
-    @* <h5 class="card-title">Turniej o nazwie</h5>
-    <h6 class="card-subtitle text-muted">12.02.2020</h6> *@
-    <table class="table">
+    <div class="card-header">
+        @ViewBag.CardTitle
+    </div>
+    <div class="card-body">
+        <table class="table">
             <thead>
                 <tr>
                     <th>
@@ -17,26 +16,34 @@
                     <th>
                         Gracze
                     </th>
+                    <th>
+                        Wynik
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(item => item.BeginAt)
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
-                {
+            @foreach (var item in Model) {
                 <tr>
                     <td>
-                        Ranking
+                        Typ gry
                     </td>
                     <td>
                         <a asp-controller="Match" asp-action="GetPlayerMatch" asp-route-id="@item.FirstPlayerId">@Html.DisplayFor(modelItem => item.FirstPlayer.Username)</a>
                         <br>
-                       <a asp-controller="Match" asp-action="GetPlayerMatch" asp-route-id="@item.SecondPlayerId">@Html.DisplayFor(modelItem => item.SecondPlayer.Username)</a>
+                        <a asp-controller="Match" asp-action="GetPlayerMatch" asp-route-id="@item.SecondPlayerId">@Html.DisplayFor(modelItem => item.SecondPlayer.Username)</a>
                     </td>
                     <td>
-                        <a class="btn btn-primary" asp-controller="ChessMatch" asp-action="ChessGame" asp-route-id="@item.Id">Dołącz</a>
+                        Wynik
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BeginAt)
                     </td>
                 </tr>
-                }
+            }
             </tbody>
-    </table>
-  </div>
+        </table>
+    </div>
 </div>

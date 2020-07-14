@@ -7,6 +7,7 @@ using Chess.Core.Repositories;
 using Chess.Infrastructure.DTO;
 using Chess.Infrastructure.Settings;
 using Chess.Infrastructure.Extensions;
+using System.Linq;
 
 namespace Chess.Infrastructure.Services
 {
@@ -37,7 +38,7 @@ namespace Chess.Infrastructure.Services
         }
         public async Task CreateAsync(string name, int maxPlayers)
         {
-            var tournament = await _tournamentRepository.GetAsync(name);
+            var tournament = await _tournamentRepository.GetTournamentAsync(name);
             if(tournament != null)
             {
                 throw new Exception($"Tournament with name: '{tournament.Name}' already exists");
@@ -52,5 +53,30 @@ namespace Chess.Infrastructure.Services
             return _mapper.Map<IEnumerable<Tournament>,IEnumerable<TournamentDto>>(tournaments);
         }
 
+        public async Task <IEnumerable<TournamentDto>> PagedList(TournamentParameters parameters)
+        {
+            var tournaments = _tournamentRepository.FindByCondition(x => true);
+            SearchByName(ref tournaments, parameters.Name);
+            return _mapper.Map<IEnumerable<Tournament>,IEnumerable<TournamentDto>>(tournaments);
+
+        }
+    
+        private void SearchByName(ref IQueryable<Tournament> tournaments, string ownerName)
+        {
+            if (!tournaments.Any() || string.IsNullOrWhiteSpace(ownerName))
+                return;
+
+            tournaments = tournaments.Where(o => o.Name.ToLower().Contains(ownerName.Trim().ToLower()));
+        }
+    }
+
+    public class TournamentParameters
+    {
+        public string Name { get; set; }
+        
+        public TournamentParameters(string name)
+        {
+            Name = name;
+        }
     }
 }

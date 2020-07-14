@@ -8,6 +8,9 @@ namespace Chess.Infrastructure.DTO
     {
         // public Guid TournamentId { get; set; }
         // public Guid PlayerId { get; set; }
+
+        
+
         public IEnumerable<PlayerDto> Players { get; set; } 
 
     }

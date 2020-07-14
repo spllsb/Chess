@@ -301,10 +301,9 @@ function isDraggable() {
 
 function onDragStart (source, piece, position, orientation) {
     // do not pick up pieces if the game is over
-    if (chess_game.game.game_over()) return false
+    if (chess_game.game.game_over()) return false;
   
-    // only pick up pieces for White
-    if (piece.search(config.orientation.substr(0,1))) return false
+    if (piece.search(config.orientation.substr(0,1))) return false;
   }
 
 function onDrop(source, target, orientation) {
@@ -315,6 +314,7 @@ function onDrop(source, target, orientation) {
         promotion: 'q' // NOTE: always promote to a queen for example simplicity
     });
     // illegal move
+    
     if (move === null) return 'snapback';
 
     
@@ -444,11 +444,6 @@ flipBoardIcon.addEventListener("click",function(){
         document.getElementById("layout__main").setAttribute("style", "flex-direction:column");
     }
 });
-
-
-
-
-
 
 
 

@@ -1,93 +1,58 @@
 @using Chess.Infrastructure.DTO
 @model TournamentDetailsDto
 
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Informacje o turnieju</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Szczegóły</h6>
+    <p class="card-text">Tu będzie opis szczegółów gry  </p>
+  </div>
+</div>
+
+
 <tr>
     <td>
-            @await Component.InvokeAsync("PlayerList",
-                new {
-                    testa = "aa"
-                });
+        @await Component.InvokeAsync("PlayerList",
+            new {
+                testa = "aa"
+            });
     </td>
 </tr>
 
 
 
-@* <div class="card">
-    <div class="card-body">
-        @Model.Name
-        @Model.MaxPlayers
-    </div>
-</div>
 
-<!-- Tournaments -->
+
+    
 <div class="card">
-    <div class="card-header">
-        Wynik turnieju
+    <div class="card-header text-center">
+        Historia meczy
     </div>
-    <div class="card-body">
-<!-- Tournaments -->
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        PlayerId
-                    </th>
-                    <th>
-                        Username
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-        @foreach (var item in Model.Players) {
-                <tr>
-                    <td>
-                        <a asp-controller="Match" asp-action="GetPlayerMatch" asp-route-id="@item.PlayerId">@Html.DisplayFor(modelItem => item.PlayerId)</a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Username)
-                    </td>
-                </tr>
+    <div class="card-body pt-0">
+        @foreach (var item in @Model.Players)
+        {
+        <div class="row p-2 border-bottom">
+            <div class="col-md-4">
+                @Html.Partial("_SmallPlayerInfo",item)
+            </div>
+            <div class="col-md-4 text-center">0 : 1</div>
+            <div class="col-md-4">
+                @Html.Partial("_SmallPlayerInfo",item)
+            </div>
+        </div>
         }
-            </tbody>
-        </table>
+    </div>
+        <ul class="pagination pg-blue justify-content-end">
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link">Next</a>
+            </li>
+        </ul>
     </div>
 </div>
-
-
-<!-- Tournaments -->
-<div class="card">
-    <div class="card-header">
-        Lista rozegranych spotkań
-    </div>
-    <div class="card-body">
-<!-- Tournaments -->
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        PlayerId
-                    </th>
-                    <th>
-                        Username
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-        @foreach (var item in Model.Players) {
-                <tr>
-                    <td>
-                        <a asp-controller="Match" asp-action="GetPlayerMatch" asp-route-id="@item.PlayerId">@Html.DisplayFor(modelItem => item.PlayerId)</a>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Username)
-                    </td>
-                </tr>
-        }
-            </tbody>
-        </table>
-    </div>
-</div>
-
- *@

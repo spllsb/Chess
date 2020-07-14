@@ -12,12 +12,26 @@ namespace Chess.Core.Domain
         public Guid Id { get; protected set;}
         public string Name { get; protected set; }
         public int MaxPlayers { get; protected set; }
+        public string ClubName { get; protected set; }
+        public string GameTyp { get; protected set; }
+        public DateTime StartEvent { get; protected set; }
+        public int RoundAmount { get; protected set; }
+        public int MinRank { get; protected set; }
+        public int MaxRank { get; protected set; }
+        public int MinPlayers { get; protected set; }
         public DateTime UpdatedAt {get; private set;}
         public virtual IEnumerable<PlayerTournamentParticipation> Players 
         { 
             get { return _players;} 
             set { _players = new HashSet<PlayerTournamentParticipation>(value);} 
         }
+
+
+
+
+
+
+
         protected Tournament()
         {
         }
