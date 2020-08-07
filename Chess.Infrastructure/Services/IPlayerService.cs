@@ -8,5 +8,6 @@ namespace Chess.Infrastructure.Services
     {
         Task<PlayerDto> GetAsync(string email);
         Task<IEnumerable<PlayerDto>> GetAllAsync();
+        Task <IEnumerable<PlayerDto>> PagedList(PlayerParameters parameters);
     }
 }

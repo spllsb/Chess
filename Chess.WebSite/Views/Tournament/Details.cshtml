@@ -11,21 +11,18 @@
 </div>
 
 
-<tr>
-    <td>
-        @await Component.InvokeAsync("PlayerList",
-            new {
-                testa = "aa"
-            });
-    </td>
-</tr>
+@* wyświetlana jest lista graczy, w określonym szablonie  *@
+@await Component.InvokeAsync("PlayerList",
+    new {
+        template = "aa"
+    });
 
 
 
 
 
     
-<div class="card">
+@* <div class="card">
     <div class="card-header text-center">
         Historia meczy
     </div>
@@ -55,4 +52,4 @@
             </li>
         </ul>
     </div>
-</div>
+</div> *@

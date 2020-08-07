@@ -32,7 +32,8 @@ namespace Chess.Infrastructure.Services
             ViewBag.Message = message;
             // !string.IsNullOrEmpty(searchString) ? View(await _tournamentService.GetAsync(searchString)) : View (await _tournamentService.BrowseAsync());
 
-            var a = new TournamentParameters(searchString);
+            var a = new TournamentParameters();
+            a.Name = searchString;
 
 
             var tournaments = await _tournamentService.PagedList(a);         

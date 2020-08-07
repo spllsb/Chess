@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Chess.Core.Domain;
 using Chess.Core.Repositories;
@@ -39,5 +40,8 @@ namespace Chess.Infrastructure.Repositories
             _context.Remove(Player);
             await _context.SaveChangesAsync();
         }
+
+         public IQueryable<Player> FindByCondition(Expression<Func<Player,bool>> expression)
+            => _context.Players.Where(expression).AsNoTracking();
     }
 }

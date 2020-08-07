@@ -57,26 +57,26 @@ namespace Chess.Infrastructure.Services
         {
             var tournaments = _tournamentRepository.FindByCondition(x => true);
             SearchByName(ref tournaments, parameters.Name);
-            return _mapper.Map<IEnumerable<Tournament>,IEnumerable<TournamentDto>>(tournaments);
+
+            var tournamentsAfterPagination =  tournaments
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .ToList();
+            return _mapper.Map<IEnumerable<Tournament>,IEnumerable<TournamentDto>>(tournamentsAfterPagination);
 
         }
     
-        private void SearchByName(ref IQueryable<Tournament> tournaments, string ownerName)
+        private void SearchByName(ref IQueryable<Tournament> tournaments, string searchingName)
         {
-            if (!tournaments.Any() || string.IsNullOrWhiteSpace(ownerName))
+            if (!tournaments.Any() || string.IsNullOrWhiteSpace(searchingName))
                 return;
 
-            tournaments = tournaments.Where(o => o.Name.ToLower().Contains(ownerName.Trim().ToLower()));
+            tournaments = tournaments.Where(o => o.Name.ToLower().Contains(searchingName.Trim().ToLower()));
         }
     }
 
-    public class TournamentParameters
+    public class TournamentParameters : QueryStringParameters
     {
         public string Name { get; set; }
-        
-        public TournamentParameters(string name)
-        {
-            Name = name;
-        }
     }
 }

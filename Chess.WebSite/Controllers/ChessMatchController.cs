@@ -1,9 +1,9 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Chess.Infrastructure.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 namespace Chess.WebSite.Controllers
 {
     [Authorize]
@@ -13,9 +13,9 @@ namespace Chess.WebSite.Controllers
         {
         }
 
-
         public IActionResult Index()
         {
+
             return View();
         }
         public IActionResult ChessGame(Guid id, string duration)
@@ -27,7 +27,6 @@ namespace Chess.WebSite.Controllers
     
         public IActionResult SearchGame(int durationTime){
             //available player list 
-            
             return View();
         }
     }

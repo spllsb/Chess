@@ -228,7 +228,6 @@ function initChessGameSignalR (){
         updateOpponentInformationHTML(message);
     });
     connection.on("ReceivePosition", updatePositionSignalR);
-
 }
 
 
@@ -240,7 +239,6 @@ function updatePositionSignalR (roomId, user, move) {
     chess_game.game.move(move);
     chess_game.board.position(chess_game.game.fen());
     console.log(chess_game.game.pgn());
-  //   updateStatus();
     removeColorChessboard();
     colorChessboard(move.from, move.to);
 
@@ -327,9 +325,46 @@ function onDrop(source, target, orientation) {
     {
         addNewItemToMoveListHTML(move);
     }
+    updateStatus();
 }
 
+function endGame(){
+    connection.invoke("EndGame", getPGN())
+        .catch(function (err) {
+            return console.error(err.toString());})
+}
 
+function updateStatus () {
+    var status = ''
+  
+    var moveColor = 'White'
+    if (chess_game.game.turn() === 'b') {
+      moveColor = 'Black'
+    }
+  
+    // checkmate?
+    if (chess_game.game.in_checkmate()) {
+      status = 'Game over, ' + moveColor + ' is in checkmate.';
+      endGame();
+    }
+  
+    // draw?
+    else if (chess_game.game.in_draw()) {
+      status = 'Game over, drawn position';
+      endGame();
+    }
+  
+    // game still on
+    else {
+      status = moveColor + ' to move'
+  
+      // check?
+      if (chess_game.game.in_check()) {
+        status += ', ' + moveColor + ' is in check'
+      }
+    }
+    console.log(status);
+  }
 //list element
 function clickSelectMoveToDisplay(e) {
     const moveArray = Array.from(moves);
@@ -385,6 +420,25 @@ function convertSeconds(s){
     return formattedNumber + ':' + formattedSecond;
 }
 
+function preparePGN(){
+    chess_game.game.header('Site', 'Szachy.pl');
+    chess_game.game.header('Date', '2020.04.24');
+    chess_game.game.header('Event', 'Player vs Player');
+    chess_game.game.header('Round', '0');
+    chess_game.game.header('White', 'Player1');
+    chess_game.game.header('Black', 'Player10');
+    chess_game.game.header('Result', '*');
+    chess_game.game.header('CurrentPosition', chess_game.moves_array[chess_game.current_active_index].fen);
+}
+
+function getPGN(){
+    console.log("Printing PGN");
+    preparePGN();
+    // separator for windows "\r\n"
+    // separator for linux "\n"
+    return chess_game.game.pgn({ max_width: 5, newline_char: "\r\n" });
+}
+
 
 const flipBoardIcon = document.querySelector(".fa-retweet");
 const downloadPGNIcon = document.querySelector(".fa-download");
@@ -394,17 +448,9 @@ const previousMoveIcon = document.querySelector(".fa-chevron-left");
 const nextMoveIcon = document.querySelector(".fa-chevron-right");
 
 downloadPGNIcon.addEventListener("click",function(){
-    console.log("Printing PGN");
-    chess_game.game.header('Site', 'Szachy.pl');
-    chess_game.game.header('Date', '2020.04.24');
-    chess_game.game.header('Event', 'Player vs Player');
-    chess_game.game.header('Round', '0');
-    chess_game.game.header('White', 'Player1');
-    chess_game.game.header('Black', 'Player10');
-    chess_game.game.header('Result', '*');
-    chess_game.game.header('CurrentPosition', chess_game.moves_array[chess_game.current_active_index].fen);
-    document.getElementById("PGN").innerHTML = chess_game.game.pgn({ max_width: 5, newline_char: '<br />' });
+    document.getElementById("PGN").innerHTML = getPGN(); ;
 });
+
 shareIcon.addEventListener("click",function(){
     alert("shareIcon");
 });

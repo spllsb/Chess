@@ -10,13 +10,16 @@ namespace Chess.Infrastructure.Hubs
     public class ChessMatchHub : Hub
     {
         private readonly IChessGameService _chessGameService;
+        private readonly IFileProvider _fileProvider;
         private readonly IUserService _userService;
 
         public ChessMatchHub(IChessGameService chessGameService,
-                            IUserService userService)
+                            IUserService userService,
+                            IFileProvider fileProvider)
         {
             _chessGameService = chessGameService;
             _userService = userService;
+            _fileProvider = fileProvider;
         }
 
         public override async Task OnConnectedAsync() 
@@ -52,6 +55,12 @@ namespace Chess.Infrastructure.Hubs
         public async Task SendCommunication(string communication, string groupId)
         {
             await Clients.Group(groupId).SendAsync("ReceiveCommunication", communication);
+        }
+
+        public async Task EndGame(string pgn)
+        {
+            //TODO plik powinien zawierać loginy graczy
+            await _fileProvider.SaveFile(@"C:\Users\spllsb\Desktop\Moje pliki\Szachy\RozegranePartieSzachowe\", DateTime.Now.ToString("yyyyddMMHHmmss") + ".pgn",pgn);
         }
 
         // public async Task ChoosePieceColor(string )

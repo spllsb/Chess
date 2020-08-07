@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Chess.Core.Domain;
@@ -35,5 +36,30 @@ namespace Chess.Infrastructure.Services
             }
             return _mapper.Map<Player,PlayerDto>(player);
         }
+
+        public async Task <IEnumerable<PlayerDto>> PagedList(PlayerParameters parameters)
+        {
+            var players = _playerRepository.FindByCondition(x => true);
+            SearchByName(ref players, parameters.Name);
+
+            var playersAfterPagination =  players
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .ToList();
+            return _mapper.Map<IEnumerable<Player>,IEnumerable<PlayerDto>>(playersAfterPagination);
+        }
+
+        private void SearchByName(ref IQueryable<Player> players, string searchingName)
+        {
+            if (!players.Any() || string.IsNullOrWhiteSpace(searchingName))
+                return;
+
+            players = players.Where(o => o.Username.ToLower().Contains(searchingName.Trim().ToLower()));
+        }
+    }
+    public class PlayerParameters : QueryStringParameters
+    {
+        // public new int PageSize = 2;
+        public string Name { get; set; }
     }
 }
