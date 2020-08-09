@@ -15,6 +15,7 @@ namespace Chess.Core.Domain
         
         public string PgnPath {get; set; }
         public Guid TournamentId { get; set; }
+        public string Fen { get; set; }
 
         // public MatchStatistic Statistic { get; set; }
 

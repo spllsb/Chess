@@ -10,9 +10,11 @@ namespace Chess.WebSite.Views.Shared.Components.ChessBoard
                 
         }
 
-        public  IViewComponentResult Invoke()
+        public  IViewComponentResult Invoke(string fen, string boardName)
         {
-            return View("Default");
+            ViewBag.BoardName = boardName;
+            ViewBag.Fen = fen;
+            return View("ChessboardAsPicture");
         }
     }
 }

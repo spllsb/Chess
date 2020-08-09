@@ -1,0 +1,21 @@
+<link href="~/lib/chessboardjs/css/chessboard-1.0.0.css" rel="stylesheet" />
+
+
+<div id=@ViewBag.BoardName  class="small-board"></div>
+
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/chessboardjs/js/chessboard-1.0.0.js"></script>
+<script>
+    (function() {
+        const position = '@(ViewBag.Fen)';
+        const boardName = '@(ViewBag.BoardName)';
+        const pieceTheme_path = '/lib/chessboardjs/img/chesspieces/wikipedia/{piece}.png';
+        const config = {
+            pieceTheme: pieceTheme_path,
+            position: position,
+            showNotation: false
+        }   
+        var board1 = Chessboard(boardName, config);
+    })();
+</script>

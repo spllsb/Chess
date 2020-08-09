@@ -9,7 +9,11 @@ namespace Chess.Infrastructure.Services
         Task AddToWaitingList(PlayerInRoom playerInRoom);
         Task RemoveFromWaitingList(PlayerInRoom player);
         Task<PlayerInRoom> GetPlayerFromWaitingList(int gameDuration);
+        Task RemoveCurrentPlayerFromWaitingList(string connectionId);
         int CountOpponent(int gameDuration);
+
+        Task InitMatch(PlayerInRoom playerOne, PlayerInRoom playerTwo, string gameId); 
+        Task<string> GetRoomId(string connectionId); 
 
     }
 

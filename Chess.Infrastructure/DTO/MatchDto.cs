@@ -12,5 +12,7 @@ namespace Chess.Infrastructure.DTO
 
         public Guid SecondPlayerId{ get; protected set; }
         public PlayerDto SecondPlayer { get; set; }
+
+        public string Fen { get; set; }
     }
 }

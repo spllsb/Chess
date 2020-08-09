@@ -76,7 +76,7 @@ var chessGameId;
 
 //control game
 // const chess_mod_selected = chess_mod.DRILLS;
-const chess_mod_selected = chess_mod.LIVE_GAME;
+// const chess_mod_selected = chess_mod.LIVE_GAME;
 const chess_searching_typ_selected = chess_searching_typ.RANDOM;
 
 

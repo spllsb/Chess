@@ -14,7 +14,7 @@ namespace Chess.WebSite.Views.Shared.Components.PlayerList
             _playerService = playerService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string template, string filtr)
+        public async Task<IViewComponentResult> InvokeAsync(string template, string filter)
         {
             var a = new PlayerParameters();
             var players = await _playerService.PagedList(a); 

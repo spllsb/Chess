@@ -45,8 +45,6 @@ var moves;
 var chessGameId;
 
 //control game
-const chess_mod_selected = chess_mod.DRILLS;
-// const chess_mod_selected = chess_mod.LIVE_GAME;
 const chess_searching_typ_selected = chess_searching_typ.RANDOM;
 
 
@@ -75,10 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
             chessGameId = document.getElementById("ChessGameId").textContent;
             switch(chess_searching_typ_selected){
                 case chess_searching_typ.RANDOM:
-
                 break;
                 case chess_searching_typ.PARTICULAR:
-
                 break;
             }
             initChessGameSignalR();

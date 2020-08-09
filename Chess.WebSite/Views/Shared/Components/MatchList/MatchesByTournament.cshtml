@@ -28,9 +28,21 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.SecondPlayer.Username)
                     </td>
+                    <td>
+                        <div style="width: 200px;">
+                            @await Component.InvokeAsync("ChessBoard",
+                            new {
+                                fen = @item.Fen,
+                                boardName = $"board_{@item.Id.ToString()}"
+                            });
+                        </div>
+                        
+                    </td>
                 </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
+
+
