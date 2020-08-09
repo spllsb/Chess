@@ -1,0 +1,36 @@
+@using Chess.Infrastructure.DTO
+@model IEnumerable<MatchDto>
+
+<div class="card">
+    <div class="card-header">
+        Wynik turnieju
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        PlayerId
+                    </th>
+                    <th>
+                        Username
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstPlayer.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SecondPlayer.Username)
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

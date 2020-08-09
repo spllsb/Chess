@@ -15,11 +15,15 @@ namespace Chess.Infrastructure.Services
     {
 
         private readonly ITournamentRepository _tournamentRepository;
+        private readonly IPlayerService _playerService;
         private readonly IMapper _mapper;
 
-        public TournamentService(ITournamentRepository tournamentRepository,IMapper mapper)
+        public TournamentService(ITournamentRepository tournamentRepository,
+                                IPlayerService playerService,
+                                IMapper mapper)
         {
             _tournamentRepository = tournamentRepository;
+            _playerService = playerService;
             _mapper = mapper;
         }
         public async Task<TournamentDetailsDto> GetAsync(Guid tournamentId)
@@ -66,6 +70,8 @@ namespace Chess.Infrastructure.Services
 
         }
     
+  
+
         private void SearchByName(ref IQueryable<Tournament> tournaments, string searchingName)
         {
             if (!tournaments.Any() || string.IsNullOrWhiteSpace(searchingName))

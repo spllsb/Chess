@@ -13,9 +13,11 @@ namespace Chess.Infrastructure.Repositories
         {
             Match.Create(
                 new Player(new User("user1@email.com", "user3", "secert", "salt"))
+                // new Player(new User("user1@email.com", "user3", "secert", "salt"))
                 ),
             Match.Create(
                 new Player(new User("user2@email.com", "user2", "secert2", "salt2"))
+                // new Player(new User("user1@email.com", "user3", "secert", "salt"))
                 )
         };
         public async Task<IEnumerable<Match>> GetAllAsync()

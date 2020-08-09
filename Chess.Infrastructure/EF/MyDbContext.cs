@@ -15,6 +15,7 @@ namespace Chess.Infrastructure.EF
         public virtual DbSet<Drill> Drills { get; set; }
         public virtual DbSet<Match> Matches { get; set; }
         public virtual DbSet<ApplicationUser> ApplicationUsers {get; set; }
+        public virtual DbSet<PlayerTournamentParticipation> PlayerTournamentParticipation {get; set;}
 
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
@@ -27,7 +28,6 @@ namespace Chess.Infrastructure.EF
             {
                 entity.HasKey(x => x.UserId);
             });
-
 
             modelBuilder.Entity<PlayerTournamentParticipation>(entity =>
             {

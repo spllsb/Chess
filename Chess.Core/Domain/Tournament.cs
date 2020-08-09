@@ -8,6 +8,7 @@ namespace Chess.Core.Domain
     public class Tournament
     {
         private ISet<PlayerTournamentParticipation> _players = new HashSet<PlayerTournamentParticipation>();
+        // private ISet<Match> _matches = new HashSet<Match>();
 
         public Guid Id { get; protected set;}
         public string Name { get; protected set; }
@@ -26,10 +27,11 @@ namespace Chess.Core.Domain
             set { _players = new HashSet<PlayerTournamentParticipation>(value);} 
         }
 
-
-
-
-
+        // public virtual IEnumerable<Match> Matches
+        // {
+        //     get { return _matches;} 
+        //     set { _matches = new HashSet<Match>(value);} 
+        // }
 
 
         protected Tournament()

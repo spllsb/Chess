@@ -47,5 +47,10 @@ namespace Chess.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task<Tournament> GetDetailsTournament(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

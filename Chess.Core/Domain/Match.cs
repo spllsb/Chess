@@ -5,8 +5,6 @@ namespace Chess.Core.Domain
     public class Match
     {
         public Guid Id { get; set; }
-        // public Guid FirstPlayerId { get; protected set; }
-        // public Guid SecondPlayerId { get; protected set; }
         public Guid FirstPlayerId { get; protected set; }
         public Player FirstPlayer { get; protected set; }
         public Guid SecondPlayerId { get; protected set; }
@@ -14,6 +12,8 @@ namespace Chess.Core.Domain
         public DateTime BeginAt  { get; set; }
         // public MatchResultEnum Result { get; set; }
         public DateTime EndAt { get; set; }
+        
+        public string PgnPath {get; set; }
 
         // public MatchStatistic Statistic { get; set; }
 
@@ -26,7 +26,7 @@ namespace Chess.Core.Domain
         protected Match(){}
         protected Match(Player player)
         {
-            Id = Guid.NewGuid();
+            new Match(player);
             // Player = player;
         }
         public static Match Create(Player player)

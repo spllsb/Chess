@@ -15,12 +15,12 @@ namespace Chess.Core.Domain
 
         protected PlayerTournamentParticipation()
         {}
-        protected PlayerTournamentParticipation(Player player, Tournament tournament)
+        protected PlayerTournamentParticipation(Guid playerId, Guid tournamentId)
         {
-            Player = player;
-            Tournament = tournament;
+            PlayerId = playerId;
+            TournamentId = tournamentId;
         }
-        public static PlayerTournamentParticipation Create(Player player, Tournament tournament)
-            => new PlayerTournamentParticipation(player,tournament);
+        public static PlayerTournamentParticipation Create(Guid playerId, Guid tournamentId)
+            => new PlayerTournamentParticipation(playerId,tournamentId);
     }
 }

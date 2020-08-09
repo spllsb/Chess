@@ -32,15 +32,15 @@
             </thead>
             <tbody>
             @foreach (var item in Model) {
-                    <tr asp-action="Details" asp-route-name="@item.Name">
+                    <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Name)
+                            <a asp-action="Details" asp-route-tournamentId="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a> 
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.MaxPlayers)
                         </td>
                         <td>
-                            <a asp-action="Details" asp-route-name="@item.Name">Szczegóły</a>
+                            <a asp-action="Join" asp-route-tournamentId="@item.Id">Dołącz</a>
                         </td>
                     </tr>
             }

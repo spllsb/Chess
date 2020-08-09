@@ -15,7 +15,7 @@ namespace Chess.Core.Domain
 
         protected Comment()
         {}
-        public Comment(string author, string content)
+        protected Comment(string author, string content)
         {
             Author = author;
             Content = content;

@@ -12,6 +12,7 @@ namespace Chess.Infrastructure.DTO
         
 
         public IEnumerable<PlayerDto> Players { get; set; } 
+        // public IEnumerable<MatchDto> Matches { get; set; }
 
     }
 }

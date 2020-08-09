@@ -30,6 +30,15 @@
             }
             </tbody>
         </table>
+
+
+
+            @* @await Component.InvokeAsync("MatchList",
+            new {
+                id = 
+            }); *@
+
+@* 
             @await Component.InvokeAsync("Diagram",
             new {
                 chart_type = "donut"
@@ -42,7 +51,7 @@
             @await Component.InvokeAsync("ChessgameList",
             new {
                 card_title = "History game"
-            })
+            }) *@
     </div>
 </div>
 

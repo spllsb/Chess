@@ -12,6 +12,7 @@ namespace Chess.Core.Repositories
         Task<Tournament> GetAsync(Guid id); 
         Task<Tournament> GetAsync(string name); 
         Task<Tournament> GetTournamentAsync(string name);
+        Task<Tournament> GetDetailsTournament(Guid id);
         Task<IEnumerable<Tournament>> GetAllAsync();
 
         IQueryable<Tournament> FindByCondition(Expression<Func<Tournament,bool>> expression);

@@ -22,6 +22,7 @@ namespace Chess.Infrastructure.Repositories
         public async Task<Player> GetAsync(string username)
             => await _context.Players.SingleOrDefaultAsync(x => x.Username == username);
 
+
         public async Task<IEnumerable<Player>> GetAllAsync()
             => await _context.Players.Take(10).ToListAsync();
 

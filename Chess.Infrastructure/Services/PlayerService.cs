@@ -12,11 +12,13 @@ namespace Chess.Infrastructure.Services
     public class PlayerService: IPlayerService
     {
         private readonly IPlayerRepository _playerRepository;
+        private readonly IMatchRepository _matchRepository;
         private readonly IMapper _mapper;
 
-        public PlayerService(IPlayerRepository playerRepository, IMapper mapper)
+        public PlayerService(IPlayerRepository playerRepository, IMatchRepository matchRepository, IMapper mapper)
         {
             _playerRepository = playerRepository;
+            _matchRepository = matchRepository;
             _mapper = mapper;   
         }
 
@@ -25,6 +27,13 @@ namespace Chess.Infrastructure.Services
             var players = await _playerRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<Player>,IEnumerable<PlayerDto>>(players);
 
+        }
+
+        public Task<IEnumerable<PlayerDetailsDto>> GetPlayerMatches(Guid playerId)
+        {
+            var player = _playerRepository.GetAsync(playerId);
+            var matches = _matchRepository.GetMatchByPlayerAsync(playerId);
+            throw new NotImplementedException();
         }
 
         public async Task<PlayerDto> GetAsync(string email)
@@ -62,4 +71,7 @@ namespace Chess.Infrastructure.Services
         // public new int PageSize = 2;
         public string Name { get; set; }
     }
+
+
+
 }
