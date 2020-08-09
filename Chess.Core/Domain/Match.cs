@@ -14,6 +14,7 @@ namespace Chess.Core.Domain
         public DateTime EndAt { get; set; }
         
         public string PgnPath {get; set; }
+        public Guid TournamentId { get; set; }
 
         // public MatchStatistic Statistic { get; set; }
 

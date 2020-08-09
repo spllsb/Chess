@@ -36,12 +36,12 @@ namespace Chess.Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public async Task<PlayerDto> GetAsync(string email)
+        public async Task<PlayerDto> GetAsync(string username)
         {
-            var player = await _playerRepository.GetAsync(email);
+            var player = await _playerRepository.GetAsync(username);
             if(player == null)
             {
-                throw new Exception($"player with email: '{email}' was not found.");
+                throw new Exception($"player with username: '{username}' was not found.");
             }
             return _mapper.Map<Player,PlayerDto>(player);
         }

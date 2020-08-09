@@ -14,6 +14,8 @@ namespace Chess.Infrastructure.Services
         //wyswietlamy liste meczy dla klubu
         Task<MatchDto> GetAsync(Guid matchId);
         Task<IEnumerable<MatchDto>> GetByPlayerAsync(Guid playerId);
+        Task<IEnumerable<MatchDto>> GetByTournamentAsync(Guid tournamentId);
+
         Task<IEnumerable<MatchDto>> BrowseAsync();
 
     }

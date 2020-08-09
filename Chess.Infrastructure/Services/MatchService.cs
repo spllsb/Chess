@@ -39,5 +39,14 @@ namespace Chess.Infrastructure.Services
             var matches = await _matchRepository.GetMatchByPlayerAsync(playerId);
             return _mapper.Map<IEnumerable<Match>,IEnumerable<MatchDto>>(matches);
         }
+
+        public async Task<IEnumerable<MatchDto>> GetByTournamentAsync(Guid tournamentId)
+        {
+            var matches = await _matchRepository.GetMatchByTournamentAsync(tournamentId);
+            return _mapper.Map<IEnumerable<Match>,IEnumerable<MatchDto>>(matches);
+        }
+
+
+        
     }
 }

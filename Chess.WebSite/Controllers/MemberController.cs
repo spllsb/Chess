@@ -15,9 +15,9 @@ namespace Chess.WebSite.Controllers
             _playerService = playerService;
         }
     
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string username)
         {
-            var member = await _playerService.GetAsync("bujnolukasz123@gmail.com");
+            var member = await _playerService.GetAsync(username);
             return View(member);
         }
     }
