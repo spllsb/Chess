@@ -9,12 +9,12 @@ namespace Chess.Core.Domain
         public Player FirstPlayer { get; protected set; }
         public Guid SecondPlayerId { get; protected set; }
         public Player SecondPlayer { get; protected set; }
-        public DateTime BeginAt  { get; set; }
+        public DateTime BeginAt  { get; set; } = DateTime.Now;
         // public MatchResultEnum Result { get; set; }
-        public DateTime EndAt { get; set; }
+        public DateTime EndAt { get; set; } = DateTime.Now;
         
-        public string PgnPath {get; set; }
-        public Guid TournamentId { get; set; }
+        public string PgnPath {get; set; } = "aa";
+        public Guid TournamentId { get; set; } 
         public string Fen { get; set; }
 
         // public MatchStatistic Statistic { get; set; }
@@ -28,11 +28,21 @@ namespace Chess.Core.Domain
         protected Match(){}
         protected Match(Player player)
         {
-            new Match(player);
+            
+            // Player = player;
+        }
+
+        protected Match(Guid playerOne, Guid playerTwo)
+        {
+            FirstPlayerId = playerOne;
+            SecondPlayerId = playerTwo;
             // Player = player;
         }
         public static Match Create(Player player)
             => new Match(player);
+
+        public static Match Create(Guid playerOne, Guid playerTwo)
+            => new Match(playerOne, playerTwo);
         
         private void CheckPlayerExistInMatch(Player newPlayer)
         {

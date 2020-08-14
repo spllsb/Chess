@@ -13,6 +13,8 @@ namespace Chess.Infrastructure.Services
         int CountOpponent(int gameDuration);
 
         Task InitMatch(PlayerInRoom playerOne, PlayerInRoom playerTwo, string gameId); 
+        Task<ChessMatch> GetChessMatch (string roomId);
+        Task SaveChessMatchOnDatabase(string roomId);
         Task<string> GetRoomId(string connectionId); 
 
     }

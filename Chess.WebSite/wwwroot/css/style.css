@@ -47,6 +47,26 @@ a:hover {
           box-shadow: 0 5px 10px rgba(183, 33, 255, 0.2);
 }
 
+.hide_popout {
+  display: none !important;
+}
+
+.game-popout {
+  background-color: #fff;
+  position: absolute;
+  width: 330px;
+  top: 60px;
+  left: 50%;
+  margin-left: -165px;
+  border-radius: 3px;
+  overflow: hidden;
+  z-index: 950;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
 /* wylistowanie treningów do wboru */
 .drills__list__item {
   display: -webkit-box;

@@ -318,7 +318,12 @@ function onDrop(source, target, orientation) {
     
     if(config_chessGameSignalR)
     {
-        connection.invoke("SendPosition", sessionStorage.getItem("roomId"), move).catch(function (err) {
+        let session_roomId = sessionStorage.getItem("roomId");
+        connection.invoke("SendPosition", session_roomId, move)
+        .then(function () {
+            connection.invoke("SaveInformationAboutGame", session_roomId, getPGN(), chess_game.game.fen());
+        })
+        .catch(function (err) {
         return console.error(err.toString());})
     }
     else
@@ -428,7 +433,7 @@ function preparePGN(){
     chess_game.game.header('White', 'Player1');
     chess_game.game.header('Black', 'Player10');
     chess_game.game.header('Result', '*');
-    chess_game.game.header('CurrentPosition', chess_game.moves_array[chess_game.current_active_index].fen);
+    // chess_game.game.header('CurrentPosition', chess_game.moves_array[chess_game.current_active_index].fen);
 }
 
 function getPGN(){

@@ -37,6 +37,17 @@ namespace Chess.Infrastructure.Hubs
             var roomId = await _chessGameService.GetRoomId(this.Context.ConnectionId);
             await Clients.Group(roomId).SendAsync("ReceiveCommunication", "Opponent left the game");
 
+            var chessMatch = await _chessGameService.GetChessMatch(roomId);
+            
+            if(!chessMatch.isSaved)
+            {
+                //create pgn file 
+                //save game to database 
+                await SaveGameInFileSystem(chessMatch.PGN);
+                await _chessGameService.SaveChessMatchOnDatabase(roomId);
+                chessMatch.isSaved = true;
+            }
+
             Console.WriteLine($"[{this.Context.ConnectionId}] is closed");
             Console.WriteLine(exception);
             await base.OnDisconnectedAsync(exception);
@@ -46,15 +57,26 @@ namespace Chess.Infrastructure.Hubs
         {
             await Clients.Group(chessGameId).SendAsync("ReceivePosition", chessGameId, Context.User.Identity.Name, move);
         }
+
+        public async Task SaveInformationAboutGame(string chessGameId, string pgn, string fen)
+        {
+                var chessMatch = await _chessGameService.GetChessMatch(chessGameId);
+                chessMatch.PGN = pgn;
+                chessMatch.FEN = fen;
+        }
         public async Task SendCommunication(string communication, string groupId)
         {
             await Clients.Group(groupId).SendAsync("ReceiveCommunication", communication);
         }
 
-        public async Task EndGame(string pgn)
+        public async Task SaveGameInFileSystem(string pgn)
         {
             //TODO plik powinien zawierać loginy graczy
-            await _fileProvider.SaveFile(@"C:\Users\spllsb\Desktop\Moje pliki\Szachy\RozegranePartieSzachowe\", DateTime.Now.ToString("yyyyddMMHHmmss") + ".pgn",pgn);
+            var fileName = DateTime.Now.ToString("yyyyddMMHHmmss") + ".pgn";
+            await _fileProvider.SaveFile(@"C:\Users\spllsb\Desktop\Moje pliki\Szachy\RozegranePartieSzachowe\", fileName, pgn);
+            Console.WriteLine($"File {fileName} was created");
+
+
         }
 
         // public async Task ChoosePieceColor(string )
@@ -68,7 +90,7 @@ namespace Chess.Infrastructure.Hubs
             string userName = Context.User.Identity.Name;
             Console.WriteLine("--> Connection id: " + this.Context.ConnectionId + " and userId " + userName + " serching game");
 
-            var currentPlayer = new PlayerInRoom(userName, gameDurationParsered, this.Context.ConnectionId);
+            var currentPlayer = new PlayerInRoom("c843d008-8610-4959-9b80-9569ff02ddc0", userName, gameDurationParsered, this.Context.ConnectionId);
             if(_chessGameService.CountOpponent(gameDurationParsered) == 0)
             {
                 await _chessGameService.AddToWaitingList(currentPlayer);

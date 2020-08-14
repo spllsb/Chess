@@ -29,6 +29,12 @@
                         @Html.DisplayFor(modelItem => item.SecondPlayer.Username)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.BeginAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
                         <div style="width: 200px;">
                             @await Component.InvokeAsync("ChessBoard",
                             new {
