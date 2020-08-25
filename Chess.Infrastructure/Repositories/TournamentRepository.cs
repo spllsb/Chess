@@ -54,7 +54,7 @@ namespace Chess.Infrastructure.Repositories
         public IQueryable<Tournament> FindByCondition(Expression<Func<Tournament,bool>> expression)
             => _context.Tournaments.Where(expression).AsNoTracking();
 
-        public async Task<Tournament> GetDetailsTournament(Guid id)
+        public  Task<Tournament> GetDetailsTournament(Guid id)
         {
             throw new NotImplementedException();
             // var tournament = await _context.Tournaments

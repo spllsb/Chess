@@ -40,37 +40,6 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="card-header">
-        Rozegrane mecze
-    </div>
-    <div class="card-body">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        AAA
-                    </th>
-                    <th>
-                        BBB
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-        @* @foreach (var item in Model.Matches) {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstPlayer.Username) <br>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SecondPlayer.Username) <br>
-                    </td>
-                </tr>
-        } *@
-            </tbody>
-        </table>
-    </div>
-</div>
 
 @await Component.InvokeAsync("MatchList",
 new {

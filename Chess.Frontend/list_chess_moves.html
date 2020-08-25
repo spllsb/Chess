@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+    <style>
+        .test{
+            background-color: brown;
+        }
+        .moves_container{
+    
+        }
+        .game__controls__wrapper{
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .move_number{
+            width: 20%;
+        }
+        .move{
+            width: 40%;
+        }
+        .move:nth-child(2){
+            background-color: brown;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="test">
+                    a
+                </div>
+            </div>
+            <div class="col-lg-3 game__controls__wrapper">
+                    <div class="move_number">1</div>
+                    <div class="move">2</div>
+                    <div class="move">3</div>
+
+
+                    <div class="move_number">1</div>
+                    <div class="move">2</div>
+                    <div class="move">3</div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+    <script>
+        // var elems = $(".somediv");
+        // var wrapper = $('<div id="wrapper" />');
+        // var pArrLen = elems.length;
+        // for (var i = 0;i < pArrLen;i+=2){
+        //     elems.filter(':eq('+i+'),:eq('+(i+1)+')').wrapAll(wrapper);
+        // };
+
+    const container_for_list_move_html_name = "game__controls__wrapper";
+    const new_move_design_class = "move";
+    const active_move_class_name = "active";
+    const new_move_added_to_list_move_class_name = "div";
+
+    var move_list_content = document.querySelector('.'+container_for_list_move_html_name);
+
+
+
+    function addNewItemToMoveListHTML(){
+        //create new element from html with active class
+        move_list_content.appendChild(createChessMoveElementHTML('1'));
+        moves = document.querySelectorAll('.'+container_for_list_move_html_name+" "+new_move_added_to_list_move_class_name);
+}
+
+    function createChessMoveElementHTML(textInnerElement){
+        let new_element_list = document.createElement(new_move_added_to_list_move_class_name);
+        new_element_list.classList.add(new_move_design_class);
+        new_element_list.innerHTML = textInnerElement;
+        return new_element_list;
+    }
+    </script>
+
+</body>
+</html>
+
+
+
+
+

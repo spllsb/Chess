@@ -65,6 +65,7 @@ const currentUserHTML = document.getElementById("chess_my_name");
 const opponentHTML = document.getElementById("chess_opponent_name");
 
 const container_for_list_move_html_name = "game__controls__wrapper";
+const new_number_move_design_class = "game__controls_number_move";
 const new_move_design_class = "game__controls_move";
 const active_move_class_name = "active";
 const new_move_added_to_list_move_class_name = "div";
@@ -170,6 +171,7 @@ class ChessGame {
         this.board = Chessboard(html_id_name, config);
         this.moves_array = [];
         this.current_active_index = -1; 
+
     }
 }
 
@@ -266,7 +268,11 @@ function addNewItemToMoveListHTML(move){
     //remove active class
     clearClassFromDiv(active_move_class_name);
     //create new element from html with active class
-    move_list_content.appendChild(creatChessMoveElementHTML(move.san));
+    if(move.color == 'w')
+    {
+        move_list_content.appendChild(creatChessMoveElementHTML(chess_game.moves_array.length/2 + 1, new_number_move_design_class));
+    }
+    move_list_content.appendChild(creatChessMoveElementHTML(move.san, new_move_design_class));
     moves = document.querySelectorAll('.'+container_for_list_move_html_name+" "+new_move_added_to_list_move_class_name);
     chess_game.current_active_index = chess_game.moves_array.length;
     chess_game.moves_array.push(new Move(chess_game.moves_array.length, chess_game.game.fen(), move.from, move.to, move.san, move.color));
@@ -383,11 +389,11 @@ function clickSelectMoveToDisplay(e) {
 
 
 
-function creatChessMoveElementHTML(textInnerElement){
+function creatChessMoveElementHTML(textInnerElement, className){
     let new_element_list = document.createElement(new_move_added_to_list_move_class_name);
     new_element_list.addEventListener('click', clickSelectMoveToDisplay);
     new_element_list.className = active_move_class_name;
-    new_element_list.classList.add(new_move_design_class);
+    new_element_list.classList.add(className);
     new_element_list.innerHTML = textInnerElement;
     return new_element_list;
 }

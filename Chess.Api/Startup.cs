@@ -1,6 +1,8 @@
 using Autofac;
 using Chess.Infrastructure.EF;
 using Chess.Infrastructure.IoC;
+using Chess.Infrastructure.IoC.Modules;
+using Chess.Infrastructure.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +27,8 @@ namespace Chess.Api
         {
             services.AddControllers()
                 .AddNewtonsoftJson();
+            var identitySettingsSection = Configuration.GetSection("ChessGameSettings");
+            services.Configure<ChessGameSettings>(identitySettingsSection);
             services.AddEntityFrameworkNpgsql()
                 .AddDbContext<MyDbContext>(options => options
                     .UseNpgsql(Configuration.GetValue<string>("Database:ConnectionString"))

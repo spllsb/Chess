@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet" />
+
+<link href="../Chess.Frontend/chessboardjs/css/chessboard-1.0.0.css" rel="stylesheet" />
+<link href="style.css" rel="stylesheet" />
+<link href="../Chess.Frontend/wwwroot/css/chess_game.css" rel="stylesheet"/>
+
+<style>
+    span{
+        font-size: 50px;
+    }
+
+    .active_move{
+        background-color: brown;
+    }
+</style>
+</head>
+<body>
+    
+
+<div>HELLO WORLD</div>
+<div class="container">
+
+<div class="row">
+    <div id="layout__main" class="col-md-9">
+        <div id="board"></div>
+    </div>
+    <div id="layout__sidebar" class="col-md-3">
+        <div class="game__controls__component">
+            <div class="info">
+                <div id="move-history" class="move-history">
+                </div>
+            </div>
+        </div>
+        <div class="section_wrapper"> 
+            <div>
+                <button type="button" class="fas fa-chevron-left fa-ls fa-3x"></button>
+                <button type="button" class="fas fa-chevron-right fa-3x"></button>
+            </div>
+            <div>
+                <i class="fas fa-retweet fa-2x"></i>
+                <i class="fas fa-download fa-2x"></i>
+                <i class="fas fa-share-alt fa-2x"></i>
+            </div>
+        </div>
+</div>
+</div>
+</div>
+
+<script src="../Chess.Frontend/js/jquery.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script src="../Chess.Frontend/chessboardjs/js/chessboard-1.0.0.js"></script>
+<script src="../Chess.Frontend/js/chessjs/chess.js"></script>
+<script src="../Chess.Frontend/js/chess_game_0824.js"></script>
+<!--ikonki  -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
+</html>
+
+
+

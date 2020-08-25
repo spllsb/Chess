@@ -31,8 +31,8 @@ namespace Chess.Infrastructure.Services
         public async Task AddToWaitingList(PlayerInRoom playerInRoom)
         {
             _waitingPlayerList.Add(playerInRoom);
+            await Task.CompletedTask;
         }
-
         public int CountOpponent(int gameDuration)
             => _waitingPlayerList.Where(x => x.GameDuration == gameDuration).ToList().Count;
         
@@ -51,17 +51,19 @@ namespace Chess.Infrastructure.Services
                 throw new Exception($"Any player was not found in waiting list");
 
             }
-            return player;
+            return await Task.FromResult(player);
         }
 
         public async Task RemoveFromWaitingList(PlayerInRoom player)
         {
             _waitingPlayerList.Remove(player);
+            await Task.CompletedTask;
         }
 
         public async Task InitMatch(PlayerInRoom playerOne, PlayerInRoom playerTwo, string roomId)
         {
             _currentMatches.Add(new ChessMatch(playerOne, playerTwo, roomId));
+            await Task.CompletedTask;
         }
 
 
@@ -69,39 +71,31 @@ namespace Chess.Infrastructure.Services
         public async Task<string> GetRoomId(string connectionId)
         {
             var game = _currentMatches.Where(x => x.PlayerOne.ConnectionId == connectionId || x.PlayerTwo.ConnectionId == connectionId).FirstOrDefault();
-            return game.RoomId;
+            return await Task.FromResult(game.RoomId);
         }
 
         public async Task RemoveMatch(string roomId)
-        {
-
-        }
+        => _currentMatches.Remove(await GetChessMatch(roomId));
 
         public async Task<ChessMatch> GetChessMatch (string roomId)
-        {
-            return _currentMatches.Where(x => x.RoomId == roomId).FirstOrDefault();
-        }
+        => await Task.FromResult(_currentMatches.Where(x => x.RoomId == roomId).FirstOrDefault());
 
 
         public async Task SaveChessMatchOnDatabase(string roomId)
         {
             var chessMatch = await GetChessMatch(roomId);
-            Console.WriteLine("aaaaaaaaaaaaaaaaaa " + chessMatch.PlayerOne.PlayerId);
-            var match = Match.Create(new Guid("0d78f06a-c8ea-4495-828d-6a2bae99d6b4"), new Guid("c5b84954-d711-40fe-8bb2-8620b7e4b8be"));
-            await _matchRepository.AddAsync(match);
+            await _matchRepository.AddAsync(chessMatch.Match);
         }
     }
 
 
-    public class PlayerInRoom{
-        public string PlayerId { get; set; }
-        public string PlayerName { get; set; }
+    public class PlayerInRoom : Player{
         public int GameDuration { get; set; }
         public string ConnectionId { get; set; }
-        public PlayerInRoom(string playerId,string playerName, int gameDuration, string connectionId)
+        public PlayerInRoom(Guid playerId,string playerName, int gameDuration, string connectionId)
         {
-            PlayerId = playerId;
-            PlayerName = playerName;
+            UserId = playerId;
+            Username = playerName;
             GameDuration = gameDuration;
             ConnectionId = connectionId;
         }
@@ -110,16 +104,17 @@ namespace Chess.Infrastructure.Services
     public class ChessMatch{
         public PlayerInRoom PlayerOne { get; set; }
         public PlayerInRoom PlayerTwo { get; set; }
+        public Match Match { get; set; }
         public string RoomId { get; protected set; }  
-        public string PGN {get; set;}
-        public string FEN {get;set;}
+        public string PGN {get;set;}
         public bool isSaved {get;set;} = false;
 
-        public ChessMatch(PlayerInRoom playerOne, PlayerInRoom playerTwo, string roomId)
+        public ChessMatch(PlayerInRoom player1, PlayerInRoom player2, string roomId)
         {
-            PlayerOne = playerOne;
-            PlayerTwo = playerTwo;
+            PlayerOne = player1;
+            PlayerTwo = player2;
             RoomId = roomId;
+            Match = Match.Create(player1.UserId, player2.UserId);
         }
     }
 }

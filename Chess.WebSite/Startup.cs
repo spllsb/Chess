@@ -8,6 +8,7 @@ using Chess.Infrastructure.EF;
 using Chess.Infrastructure.Hubs;
 using Chess.Infrastructure.IoC;
 using Chess.Infrastructure.Services;
+using Chess.Infrastructure.Settings;
 using Chess.WebSite.Framework;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,9 @@ namespace Chess.WebSite
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSignalR();
+            //Settings
+            var identitySettingsSection = Configuration.GetSection("ChessGameSettings");
+            services.Configure<ChessGameSettings>(identitySettingsSection);
             services.AddEntityFrameworkNpgsql()
                     .AddDbContext<MyDbContext>(options => options
                     .UseNpgsql(Configuration.GetValue<string>("Database:ConnectionString"))

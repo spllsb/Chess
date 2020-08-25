@@ -1,3 +1,4 @@
 {
-    "liveServer.settings.multiRootWorkspaceName": "Chess"
+    "liveServer.settings.multiRootWorkspaceName": "Chess",
+    "liveServer.settings.port": 5501
 }

@@ -12,8 +12,9 @@ namespace Chess.Core.Domain
         public DateTime BeginAt  { get; set; } = DateTime.Now;
         // public MatchResultEnum Result { get; set; }
         public DateTime EndAt { get; set; } = DateTime.Now;
+        public DateTime CreateAt { get; set; }
         
-        public string PgnPath {get; set; } = "aa";
+        public string PgnFileName {get; set; } 
         public Guid TournamentId { get; set; } 
         public string Fen { get; set; }
 
@@ -25,18 +26,18 @@ namespace Chess.Core.Domain
  
         }
 
-        protected Match(){}
+        protected Match()
+        {
+        }
         protected Match(Player player)
         {
-            
-            // Player = player;
         }
 
         protected Match(Guid playerOne, Guid playerTwo)
         {
             FirstPlayerId = playerOne;
             SecondPlayerId = playerTwo;
-            // Player = player;
+            CreateAt = DateTime.Now;
         }
         public static Match Create(Player player)
             => new Match(player);

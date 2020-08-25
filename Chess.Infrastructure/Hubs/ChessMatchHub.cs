@@ -2,7 +2,9 @@ using System;
 using System.Threading.Tasks;
 using Chess.Core.Domain;
 using Chess.Infrastructure.Services;
+using Chess.Infrastructure.Settings;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace Chess.Infrastructure.Hubs
@@ -10,14 +12,18 @@ namespace Chess.Infrastructure.Hubs
     public class ChessMatchHub : Hub
     {
         private readonly IChessGameService _chessGameService;
+        private readonly ChessGameSettings _chessGameSettings;
         private readonly IFileProvider _fileProvider;
         private readonly IUserService _userService;
 
         public ChessMatchHub(IChessGameService chessGameService,
+                            IOptions<ChessGameSettings> chessGameSettings,
                             IUserService userService,
-                            IFileProvider fileProvider)
+                            IFileProvider fileProvider
+                            )
         {
             _chessGameService = chessGameService;
+            _chessGameSettings = chessGameSettings.Value;
             _userService = userService;
             _fileProvider = fileProvider;
         }
@@ -43,7 +49,10 @@ namespace Chess.Infrastructure.Hubs
             {
                 //create pgn file 
                 //save game to database 
-                await SaveGameInFileSystem(chessMatch.PGN);
+                var fileName = GenerateFileName("aa", "bb","pgn");
+                // chessMatch.Match.PgnPath = fileName;
+                chessMatch.Match.PgnFileName = fileName;
+                await _fileProvider.SaveFile(_chessGameSettings.PGNFilePath, fileName, chessMatch.PGN);
                 await _chessGameService.SaveChessMatchOnDatabase(roomId);
                 chessMatch.isSaved = true;
             }
@@ -62,22 +71,17 @@ namespace Chess.Infrastructure.Hubs
         {
                 var chessMatch = await _chessGameService.GetChessMatch(chessGameId);
                 chessMatch.PGN = pgn;
-                chessMatch.FEN = fen;
+                chessMatch.Match.Fen = fen;
         }
         public async Task SendCommunication(string communication, string groupId)
         {
             await Clients.Group(groupId).SendAsync("ReceiveCommunication", communication);
         }
 
-        public async Task SaveGameInFileSystem(string pgn)
-        {
-            //TODO plik powinien zawierać loginy graczy
-            var fileName = DateTime.Now.ToString("yyyyddMMHHmmss") + ".pgn";
-            await _fileProvider.SaveFile(@"C:\Users\spllsb\Desktop\Moje pliki\Szachy\RozegranePartieSzachowe\", fileName, pgn);
-            Console.WriteLine($"File {fileName} was created");
 
 
-        }
+        private string GenerateFileName(string player1, string player2, string extension)
+        => $"{player1}_vs_{player2}_{DateTime.Now.ToString("yyyyddMMHHmmss")}.{extension}";
 
         // public async Task ChoosePieceColor(string )
         public string GetConnectionId(){
@@ -90,7 +94,7 @@ namespace Chess.Infrastructure.Hubs
             string userName = Context.User.Identity.Name;
             Console.WriteLine("--> Connection id: " + this.Context.ConnectionId + " and userId " + userName + " serching game");
 
-            var currentPlayer = new PlayerInRoom("c843d008-8610-4959-9b80-9569ff02ddc0", userName, gameDurationParsered, this.Context.ConnectionId);
+            var currentPlayer = new PlayerInRoom(new Guid("c843d008-8610-4959-9b80-9569ff02ddc0"), userName, gameDurationParsered, this.Context.ConnectionId);
             if(_chessGameService.CountOpponent(gameDurationParsered) == 0)
             {
                 await _chessGameService.AddToWaitingList(currentPlayer);
@@ -102,7 +106,7 @@ namespace Chess.Infrastructure.Hubs
                 //NA tym etapie, powinno być dołczenie do grup i zwrotka do obu graczy ze się zaczeło
                 Console.WriteLine("--> Searching good opponent");
                 var opponent = await _chessGameService.GetPlayerFromWaitingList(gameDurationParsered);
-                Console.WriteLine("--> Connected user witch userId " + userName + " found player with id " + opponent.PlayerId + " " + opponent.ConnectionId);
+                Console.WriteLine("--> Connected user witch userId " + userName + " found player with id " + opponent.UserId + " " + opponent.ConnectionId);
                 var room = Room.CreateRoom();
                 Console.WriteLine("--> Create new room with id " + room.Id.ToString());
 
@@ -119,7 +123,7 @@ namespace Chess.Infrastructure.Hubs
                 await Clients.Client(this.Context.ConnectionId).SendAsync("GetColorPiece",ChessboardPieceColor.white.ToString());
                 await  Clients.Client(opponent.ConnectionId).SendAsync("GetColorPiece",ChessboardPieceColor.black.ToString());
                                 
-                await Clients.Client(this.Context.ConnectionId).SendAsync("GetOpponent",opponent.PlayerName);
+                await Clients.Client(this.Context.ConnectionId).SendAsync("GetOpponent",opponent.Username);
                 await  Clients.Client(opponent.ConnectionId).SendAsync("GetOpponent",userName);
                                 
                 await Clients.Group(room.Id.ToString()).SendAsync("ReceiveRoom", room.Id.ToString());
