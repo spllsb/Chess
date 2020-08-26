@@ -17,7 +17,7 @@ namespace Chess.Infrastructure.Services
             _fileProvider = fileProvider;
         }
 
-        public async Task<string> GetPGNContent()
-        => await _fileProvider.GetFileContent(_chessGameSettings.PGNFilePath,"aa_vs_bb_20201608213558.pgn");
+        public async Task<string> GetPGNContent(string pgnFileName)
+        => await _fileProvider.GetFileContent(_chessGameSettings.PGNFilePath,pgnFileName);
     }
 }

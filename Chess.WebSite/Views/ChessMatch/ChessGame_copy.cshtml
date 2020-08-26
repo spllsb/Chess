@@ -1,9 +1,13 @@
-<link href="~/lib/chessboardjs/css/chessboard-1.0.0.css" rel="stylesheet" />
+@{
+    Layout = "_Layout";
+}
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet" />
+<link rel="img" asp-href-include="~/lib/chessboardjs/img/chesspieces/wikipedia/*.png" />
+<link href="~/lib/chessboardjs/css/chessboard-1.0.0.css" rel="stylesheet" />
+<link href="~/css/chess_game.css" rel="stylesheet"/>
 <style>
-    .active_move{
-        background-color: brown;
-    }
     .basic::before {
         content: attr(data-timer);
     }
@@ -40,6 +44,9 @@
                     <span>(ilosc punktow)</span>
                     <img src="https://unsplash.it/20/20" class="img-fluid">
                 </div>
+                <div class="clock__component">
+                    <div id="clock-top" class="basic stopwatch" data-timer="@ViewBag.ChessGameDuration"></div>
+                </div>
             </div>
 
             <div id="chessboard" style="position: relative;"></div>
@@ -50,7 +57,12 @@
                     <span>(ilosc punktow)</span>
                     <img src="https://unsplash.it/20/20" class="img-fluid">
                 </div>
+                <div class="clock__component">
+                    <div id="clock-bottom" class="basic stopwatch" data-timer="@ViewBag.ChessGameDuration"></div>
+                </div>
+                
             </div>
+
         </div>
         <div id="layout__sidebar" class="col-lg-3 ">
             <div class="game__controls__component">
@@ -58,17 +70,14 @@
                     Jakis typ spotkania
                 </div>
                 <div class="game__controls__wrapper ">
-                    <div class="info">
-                        <div id="move-history" class="move-history">
-                        </div>
-                    </div>
+                    @* moves list content *@
                 </div>
-                <div class="section_wrapper"> 
+                <div class="section_wrapper "> 
                     <div>
                         <button type="button" class="fas fa-chevron-left fa-ls fa-3x"></button>
                         <button type="button" class="fas fa-chevron-right fa-3x"></button>
                     </div>
-                    <div>
+                    <div class="section_icon">
                         <i class="fas fa-retweet fa-2x"></i>
                         <i class="fas fa-download fa-2x"></i>
                         <i class="fas fa-share-alt fa-2x"></i>
@@ -84,51 +93,14 @@
 <div id="PGN" style="padding: 50px;"></>
 <p id="ChessGameId" hidden>@ViewBag.ChessGameId</p>
 
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="~/lib/chessjs/chess.js"></script>
+    <script src="~/lib/chessboardjs/js/chessboard-1.0.0.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/chess_game_v2.js"></script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/lib/chessboardjs/js/chessboard-1.0.0.js"></script>
-
-<script src="~/lib/chessjs/chess.js"></script>
-<script src="~/js/chess_game_v4.js"></script>
-
-<script>
-    (function() {
-        
-        const pieceTheme_path = '/lib/chessboardjs/img/chesspieces/wikipedia/{piece}.png';
-        var chess = new Chess();
-
-        const pgn = ('@Html.Raw(ViewBag.PGN)');
-        chess.load_pgn(pgn);
-
-        console.log(chess.fen());
-        console.log(chess.history());
-        
-        
-        const config = {
-        pieceTheme: pieceTheme_path,
-        position : chess.fen(),
-        showNotation: false
-        }   
-        var board1 = Chessboard("aa", config);
-    })();
-</script>
+    <script>
+        const chess_mod_selected = chess_mod.LIVE_GAME;
+    </script>
+}

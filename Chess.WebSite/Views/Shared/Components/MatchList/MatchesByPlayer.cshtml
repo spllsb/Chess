@@ -35,13 +35,16 @@
                         @Html.DisplayFor(modelItem => item.Id)
                     </td>
                     <td>
-                        <div style="width: 200px;">
-                            @await Component.InvokeAsync("ChessBoard",
-                            new {
-                                fen = @item.Fen,
-                                boardName = $"board_{@item.Id.ToString()}"
-                            });
-                        </div>
+                        <a asp-controller="ChessMatch" asp-action="ChessGameRepeat" asp-route-path="@item.PgnFileName">
+                            <div style="width: 200px;">
+                                @await Component.InvokeAsync("ChessBoard",
+                                new {
+                                    fen = @item.Fen,
+                                    boardName = $"board_{@item.Id.ToString()}"
+                                });
+                            </div>
+                        </a>
+                        
                     </td>
                     
                 </tr>

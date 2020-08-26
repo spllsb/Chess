@@ -10,17 +10,17 @@ namespace Chess.WebSite.Views.Shared.Components.ChessBoard
                 
         }
 
-        // public  IViewComponentResult Invoke(string fen, string boardName)
-        // {
-        //     ViewBag.BoardName = boardName;
-        //     ViewBag.Fen = fen;
-        //     return View("ChessboardAsPicture");
-        // }
-    
-        public  IViewComponentResult Invoke(string pgn)
+        public  IViewComponentResult Invoke(string fen, string boardName)
         {
-            ViewBag.PGN = pgn;
-            return View("ChessboardAsRepeatedGame");
+            ViewBag.BoardName = boardName;
+            ViewBag.Fen = fen;
+            return View("ChessboardAsPicture");
         }
+    
+        // public  IViewComponentResult Invoke(string pgn)
+        // {
+        //     ViewBag.PGN = pgn;
+        //     return View("ChessboardAsRepeatedGame");
+        // }
     }
 }

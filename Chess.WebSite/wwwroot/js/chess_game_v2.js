@@ -447,7 +447,7 @@ function getPGN(){
     preparePGN();
     // separator for windows "\r\n"
     // separator for linux "\n"
-    return chess_game.game.pgn({ max_width: 5, newline_char: "\r\n" });
+    return chess_game.game.pgn({ max_width: 5, newline_char: '\\n' });
 }
 
 

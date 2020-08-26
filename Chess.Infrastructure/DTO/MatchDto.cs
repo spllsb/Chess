@@ -14,5 +14,6 @@ namespace Chess.Infrastructure.DTO
         public PlayerDto SecondPlayer { get; set; }
 
         public string Fen { get; set; }
+        public string PgnFileName { get; set; }
     }
 }

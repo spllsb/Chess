@@ -109,7 +109,8 @@ const chessboard_piece_color = {
 
 const chess_mod = {
     LIVE_GAME: 'live_game',
-    DRILLS: 'drills'
+    DRILLS: 'drills',
+    GAME_REPEAT:'game_repeat'
 };
 
 const chess_searching_typ = {
@@ -128,7 +129,7 @@ const pieceTheme_path = "/lib/chessboardjs/img/chesspieces/wikipedia/{piece}.png
 const chessHub_connect_URL = "/chessMatchHub";
 let config_chessGameSignalR = 0;
 
-const chessGameDurationInfoHTML = document.getElementById("clock-top").dataset.timer;
+const chessGameDurationInfoHTML = document.getElementById("clock-top") ? document.getElementById("clock-top").dataset.timer : null;
 //HTML game tag
 
 
@@ -171,6 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
         case chess_mod.DRILLS:
             config.position = getStartPositionFromHTML();
             config.orientation = chessboard_piece_color.WHITE;
+            chess_game = new ChessGame('chessboard', config);
+            chess_game.game.load(config.position);
             break;
         case chess_mod.LIVE_GAME:
             // chessGameId = document.getElementById("ChessGameId").textContent;
@@ -183,11 +186,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             }
             initChessGameSignalR();
+            chess_game = new ChessGame('chessboard', config);
+            chess_game.game.load(config.position);
         break;
+
+        case chess_mod.GAME_REPEAT:
+            chess_game = new ChessGame('chessboard', config);
+            chess_game.game.load_pgn(pgn);
+            chess_game.board.position(chess_game.game.fen());
+            renderMoveHistory(chess_game.game.history());
+            break;
     }
 
-    chess_game = new ChessGame('chessboard', config);
-    chess_game.game.load(config.position);
+
     $(window).resize(chess_game.board.resize);
 })
 
@@ -457,7 +468,7 @@ function getPGN(){
     preparePGN();
     // separator for windows "\r\n"
     // separator for linux "\n"
-    return chess_game.game.pgn({ max_width: 5, newline_char: "\r\n" });
+    return chess_game.game.pgn({ max_width: 5, newline_char: "\\n" });
 }
 
 
@@ -513,88 +524,88 @@ flipBoardIcon.addEventListener("click",function(){
 
 
 
-// var Stopwatch = function(elem, options) {
+var Stopwatch = function(elem, options) {
   
-//     var timer       = createTimer(),
-//         startValue = initStartValue(),
-//         offset,
-//         clock,
-//         interval;
+    var timer       = createTimer(),
+        startValue = initStartValue(),
+        offset,
+        clock,
+        interval;
     
-//     // default options
-//     options = options || {};
-//     options.delay = options.delay || 1;
+    // default options
+    options = options || {};
+    options.delay = options.delay || 1;
    
     
-//     // initialize
-//     reset();
+    // initialize
+    reset();
     
 
 
-//     // private functions
-//     function createTimer() {
-//       return document.createElement("span");
-//     }
+    // private functions
+    function createTimer() {
+      return document.createElement("span");
+    }
     
-//     function initStartValue(){
-//         return elem.dataset.timer;
-//     }
+    function initStartValue(){
+        return elem.dataset.timer;
+    }
 
-//     function start() {
-//       if (!interval) {
-//         offset   = Date.now();
-//         interval = setInterval(update, options.delay);
-//       }
-//     }
+    function start() {
+      if (!interval) {
+        offset   = Date.now();
+        interval = setInterval(update, options.delay);
+      }
+    }
     
-//     function stop() {
-//       if (interval) {
-//         clearInterval(interval);
-//         interval = null;
-//       }
-//     }
+    function stop() {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
+    }
     
-//     function reset() {
-//       clock = 0;
-//       render(0);
-//     }
+    function reset() {
+      clock = 0;
+      render(0);
+    }
     
-//     function update() {
-//       clock += delta();
-//       render();
-//     }
+    function update() {
+      clock += delta();
+      render();
+    }
     
-//     function render() {
-//       elem.dataset.timer = convertSeconds(startValue - ((clock/1000).toFixed()));
-//     }
+    function render() {
+      elem.dataset.timer = convertSeconds(startValue - ((clock/1000).toFixed()));
+    }
     
-//     function delta() {
-//       var now = Date.now(),
-//           d   = now - offset;
+    function delta() {
+      var now = Date.now(),
+          d   = now - offset;
       
-//       offset = now;
-//       return d;
-//     }
+      offset = now;
+      return d;
+    }
 
-//     function manageState(){
-//         let state = interval;
-//         if(interval){
-//             stop();
-//         }
-//         else{
-//             start();
-//         }
-//     }
+    function manageState(){
+        let state = interval;
+        if(interval){
+            stop();
+        }
+        else{
+            start();
+        }
+    }
     
-//     // public API
-//     this.start  = start;
-//     this.stop   = stop;
-//     this.manageState  = manageState;
+    // public API
+    this.start  = start;
+    this.stop   = stop;
+    this.manageState  = manageState;
 
-//     this.reset  = reset;
-//   };
-//   const clock_opponent = new Stopwatch(document.getElementById("clock-top"));
-//   const clock_my = new Stopwatch(document.getElementById("clock-bottom"));
+    this.reset  = reset;
+  };
+  const clock_opponent = new Stopwatch(document.getElementById("clock-top"));
+  const clock_my = new Stopwatch(document.getElementById("clock-bottom"));
 
  
 

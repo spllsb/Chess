@@ -29,7 +29,7 @@ namespace Chess.WebSite.Controllers
             ViewBag.ChessGameId = id;
             return View();
         }
-        public IActionResult ChessGame_v2(Guid id, string duration)
+        public IActionResult ChessGame_copy(Guid id, string duration)
         {
             ViewBag.ChessGameDuration = duration;
             ViewBag.ChessGameId = id;
@@ -42,9 +42,10 @@ namespace Chess.WebSite.Controllers
         }
 
 
-        public async Task<IActionResult> Test()
+        public async Task<IActionResult> ChessGameRepeat(string path)
         {
-            var pgn = await _pgnProvider.GetPGNContent();
+            Console.WriteLine(path);
+            var pgn = await _pgnProvider.GetPGNContent("aa_vs_bb_20202608172929.pgn");
             ViewBag.pgn = pgn.Replace(System.Environment.NewLine, "");
             // ViewBag.pgn = pgn.Replace(System.Environment.NewLine, " ");
             return View();

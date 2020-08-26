@@ -4,6 +4,6 @@ namespace Chess.Infrastructure.Services
 {
     public interface IPGNProvider : IService
     {
-        Task<string> GetPGNContent();
+        Task<string> GetPGNContent(string pgnFileName);
     }
 }
