@@ -20,6 +20,9 @@
                 @Html.DisplayNameFor(model => model.MaxPlayers)
             </th>
             <th></th>
+            <th class="text-center">
+                Wyślij wiadomość
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -35,6 +38,9 @@
                 <a asp-action="Edit" asp-route-name="@item.Name">Edit</a> |
                 <a asp-action="Details" asp-route-name="@item.Name">Details</a> |
                 <a asp-action="Delete" asp-route-name="@item.Name">Delete</a>
+            </td>
+            <td class="text-center">
+                <a asp-action="SendMessage" asp-route-name="@item.Name"><i class="far fa-envelope fa-2x"></i></a>
             </td>
         </tr>
 }

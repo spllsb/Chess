@@ -13,7 +13,9 @@ namespace Chess.Infrastructure.Mappers
                     cfg.CreateMap<Tournament,TournamentDetailsDto>();
                     cfg.CreateMap<PlayerTournamentParticipation,PlayerDto>()
                         .ForMember(x => x.PlayerId, opt => opt.MapFrom(y => y.Player.UserId))
-                        .ForMember(x => x.Username, opt => opt.MapFrom(y => y.Player.Username));
+                        .ForMember(x => x.Username, opt => opt.MapFrom(y => y.Player.Username))
+                        .ForMember(x => x.Email, opt => opt.MapFrom(y => y.Player.Email))
+                        .ForMember(x => x.ClubId, opt => opt.MapFrom(y => y.Player.ClubId));
         
                     cfg.CreateMap<User,UserDto>();
                     cfg.CreateMap<Article,ArticleDto>();
@@ -24,6 +26,7 @@ namespace Chess.Infrastructure.Mappers
                     cfg.CreateMap<Player,PlayerDto>()
                         .ForMember(x => x.PlayerId, opt => opt.MapFrom(y => y.UserId));
                     cfg.CreateMap<Drill,DrillDto>();
+                    cfg.CreateMap<Club,ClubDto>();
                 })
                 .CreateMapper();
     }

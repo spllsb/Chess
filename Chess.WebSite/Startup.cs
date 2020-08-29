@@ -40,6 +40,9 @@ namespace Chess.WebSite
             //Settings
             var identitySettingsSection = Configuration.GetSection("ChessGameSettings");
             services.Configure<ChessGameSettings>(identitySettingsSection);
+            identitySettingsSection = Configuration.GetSection("DrillSettings");
+            services.Configure<DrillSettings>(identitySettingsSection);
+
             services.AddEntityFrameworkNpgsql()
                     .AddDbContext<MyDbContext>(options => options
                     .UseNpgsql(Configuration.GetValue<string>("Database:ConnectionString"))
@@ -55,7 +58,7 @@ namespace Chess.WebSite
             services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
 
 
-            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<IEmailSender, MessageSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -8,6 +8,7 @@ namespace Chess.Infrastructure.EF
     public class MyDbContext : IdentityDbContext<ApplicationUser>
     {
         // public virtual DbSet<User> Users { get; set; }
+        
         public virtual DbSet<Tournament> Tournaments { get; set; }
         public virtual DbSet<Article> Articles {get;set;}
         public virtual DbSet<Comment> Comments { get; set; }
@@ -16,6 +17,7 @@ namespace Chess.Infrastructure.EF
         public virtual DbSet<Match> Matches { get; set; }
         public virtual DbSet<ApplicationUser> ApplicationUsers {get; set; }
         public virtual DbSet<PlayerTournamentParticipation> PlayerTournamentParticipation {get; set;}
+        public virtual DbSet<Club> Clubs { get; set; }
 
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
@@ -40,9 +42,6 @@ namespace Chess.Infrastructure.EF
                     .WithMany(p => p.Players)
                     .HasForeignKey(d => d.TournamentId);
             });
-
-
-
 
 
             modelBuilder.Entity<ApplicationUser>(b =>

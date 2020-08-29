@@ -3,19 +3,25 @@ using System.IO;
 using System.Threading.Tasks;
 using Chess.Infrastructure.Commands;
 using Chess.Infrastructure.Services;
+using Chess.Infrastructure.Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+
 namespace Chess.WebSite.Controllers
 {
     [Authorize]
     public class ChessMatchController : WebControllerBase
     {
-        private readonly IPGNProvider _pgnProvider;
+        private readonly ChessGameSettings _chessGameSettings;
+        private readonly IFileProvider _fileProvider;
 
         public ChessMatchController(ICommandDispatcher commandDispatcher,
-                                    IPGNProvider pgnProvider) : base(commandDispatcher)
+                                    IOptions<ChessGameSettings> chessGameSettings,
+                                    IFileProvider fileProvider) : base(commandDispatcher)
         {
-            _pgnProvider = pgnProvider;
+            _fileProvider = fileProvider;
+            _chessGameSettings = chessGameSettings.Value;
         }
 
         public IActionResult Index()
@@ -45,7 +51,7 @@ namespace Chess.WebSite.Controllers
         public async Task<IActionResult> ChessGameRepeat(string path)
         {
             Console.WriteLine(path);
-            var pgn = await _pgnProvider.GetPGNContent("aa_vs_bb_20202608172929.pgn");
+            var pgn = await _fileProvider.GetFileContent(_chessGameSettings.PGNFilePath,"aa_vs_bb_20202608172929.pgn");
             ViewBag.pgn = pgn.Replace(System.Environment.NewLine, "");
             // ViewBag.pgn = pgn.Replace(System.Environment.NewLine, " ");
             return View();

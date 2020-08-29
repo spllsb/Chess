@@ -1,11 +1,14 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Chess.Infrastructure.Commands;
+using Chess.Infrastructure.Commands.Message;
 using Chess.Infrastructure.Commands.Tournament;
 using Chess.Infrastructure.EF;
 using Chess.Infrastructure.Services;
 using Chess.Infrastructure.Settings;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Chess.WebSite.Controllers
 {
@@ -69,6 +72,34 @@ namespace Chess.WebSite.Controllers
 
         public ActionResult GetTournament(){
             return View();
+        }
+
+
+
+        public async Task<IActionResult> SendMessage(string name)
+        {
+            var tournament = await _tournamentService.GetAsync(name);
+            if(tournament == null)
+            {
+                return NotFound();
+            }
+            ViewBag.PlayersDropDown = new MultiSelectList(tournament.Players,"Email","Username",tournament.Players.Select(x => x.Email));
+            
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendMessage(SendMessage command)
+        {
+            if(ModelState.IsValid)
+            {
+                await CommandDispatcher.DispatchAsync(command);
+            }
+            else
+            {
+                throw new Exception("No input parameter");
+            }
+            return RedirectToAction("Index");
         }
     }
 }

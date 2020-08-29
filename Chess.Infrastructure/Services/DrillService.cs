@@ -27,6 +27,7 @@ namespace Chess.Infrastructure.Services
         public async Task<DrillDto> GetAsync(int id)
         {
             var drill = await _drillRepository.GetAsync(id);
+            
             return _mapper.Map<Drill, DrillDto>(drill);
         }
     }

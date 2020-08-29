@@ -9,6 +9,8 @@ namespace Chess.Core.Domain
         private ISet<PlayerTournamentParticipation> _tournaments = new HashSet<PlayerTournamentParticipation>(); 
         public Guid UserId { get; protected set; }
         public string Username { get; protected set; }
+        public Guid ClubId {get; protected set;}
+        public string Email { get; protected set; }
         public virtual IEnumerable<PlayerTournamentParticipation> Tournaments 
         { 
             get { return _tournaments; }

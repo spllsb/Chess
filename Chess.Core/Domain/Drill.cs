@@ -7,8 +7,7 @@ namespace Chess.Core.Domain
         public string Description { get; protected set; }
         public string Category { get; protected set; }
         public string StartPosition { get; protected set;}
-        public string OrientationMove { get; protected set; }
-
+        public string FileName { get; protected set;}
         protected Drill()
         {
         }

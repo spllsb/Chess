@@ -9,13 +9,13 @@
                 {
                 <article class="drills__list__item container">
                     <div class="drills__list__item__board drills__finished container-fluid col-sm-4">
-                        <div class="drills__icon">
-                        </div>
+                        <a asp-action="GetChessDrill"  asp-route-id="@item.Id">
                         @await Component.InvokeAsync("ChessBoard",
-                            new {
-                                fen = @item.StartPosition,
-                                boardName = $"board_{@item.Id.ToString()}"
+                        new {
+                            fen = @item.StartPosition,
+                            boardName = $"board_{@item.Id.ToString()}"
                         });
+                        </a>
                     </div>
                     <div class="drills__list__item__details col-sm-8">
                         <a asp-action="GetChessDrill"  asp-route-id="@item.Id">

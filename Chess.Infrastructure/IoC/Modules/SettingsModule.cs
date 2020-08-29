@@ -22,6 +22,8 @@ namespace Chess.Infrastructure.IoC.Modules
                 .SingleInstance();
             builder.RegisterInstance(_configuration.GetSettings<DatabaseSettings>())
                 .SingleInstance();
+            builder.RegisterInstance(_configuration.GetSettings<DrillSettings>())
+                .SingleInstance();
         }
     }
 }

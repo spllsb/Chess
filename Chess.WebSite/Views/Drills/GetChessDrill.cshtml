@@ -1,21 +1,11 @@
 @using Chess.Infrastructure.DTO
 @model DrillDto
 
-@{
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet" />
     <link rel="img" asp-href-include="~/lib/chessboardjs/img/chesspieces/wikipedia/*.png" />
     <link href="~/lib/chessboardjs/css/chessboard-1.0.0.css" rel="stylesheet" />
     <link href="~/css/chess_game.css" rel="stylesheet"/>
-}
-
-<span id="currentPlayer">Jakis gracz1</span>
-<div id="basicUsage">00:00:00</div>
-
-<div class="clock__component">
-    <div id="clock-top" class="basic stopwatch" data-timer="@ViewBag.ChessGameDuration"></div>
-</div>
-
 
 <div>HELLO WORLD</div>
     <div class="row">
@@ -28,20 +18,17 @@
                     @Html.DisplayFor(modelItem => @Model.Name)
                 </p>
                 <div class="game__controls__wrapper ">
-                    @* moves list content *@
+                    <div class="info">
+                        <div id="move-history" class="move-history">
+                        </div>
+                    </div>
                 </div>
                 <div class="section_wrapper "> 
                     <div>
-                         <button type="button" class="fas fa-chevron-left fa-ls fa-3x"></button>
-                        <button type="button" class="fas fa-chevron-right fa-3x"></button>
+                        <i class="fas fa-undo fa-2x"></i>
+                        <i class="far fa-lightbulb fa-2x"></i>
+                        <i class="fas fa-arrow-right fa-2x"></i>
                     </div>
-                    <div class="section_icon">
-                        <i class="fas fa-retweet fa-2x"></i>
-                        <i class="fas fa-download fa-2x"></i>
-                        <i class="fas fa-share-alt fa-2x"></i>
-                    </div>
-                </div>
-                <div class="about_player player_bottom">
                 </div>
             </div>
         </div>
@@ -49,8 +36,6 @@
 </div>
 <div id="PGN" style="padding: 50px;">
 
-@Html.HiddenFor(x => x.StartPosition);
-@Html.HiddenFor(x => x.OrientationMove);
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -59,7 +44,10 @@
     <script src="~/js/chess_drill.js"></script>
 
     <script>
+        const pgn = ('@Html.Raw(ViewBag.PGN)');
         const chess_mod_selected = chess_mod.DRILLS;
+        const inputFen = "@Model.StartPosition";
+
     </script>
 
 }
