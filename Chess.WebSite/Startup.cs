@@ -42,6 +42,8 @@ namespace Chess.WebSite
             services.Configure<ChessGameSettings>(identitySettingsSection);
             identitySettingsSection = Configuration.GetSection("DrillSettings");
             services.Configure<DrillSettings>(identitySettingsSection);
+            identitySettingsSection = Configuration.GetSection("EmailSettings");
+            services.Configure<EmailSettings>(identitySettingsSection);
 
             services.AddEntityFrameworkNpgsql()
                     .AddDbContext<MyDbContext>(options => options

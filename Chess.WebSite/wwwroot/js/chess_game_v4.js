@@ -1,7 +1,8 @@
 "use strict";
 
+
 const activateClassConst = "#move-history .active_move";
-const movesListClassConst = "#move-history span";
+const movesListClassConst = "#move-history .move";
 
 
 var whiteSquareGrey = '#a9a9a9'
@@ -12,11 +13,25 @@ var blackSquareGrey = '#696969'
 var renderMoveHistory = function (moves) {
     var historyElement = $('#move-history').empty();
     historyElement.empty();
-
+    let move_tag;
     let movesLength = moves.length;
     for (var i = 0; i < movesLength; i ++) {
-        let new_element_list = createHTMLElement("span", moves[i]);   
-        historyElement.append(new_element_list);
+        if (i%2 === 0)
+        {
+            move_tag = createHTMLTag("div","d-flex");
+
+            let half_move_number_tag = createHTMLTag("div",['p-3', 'flex-shrink-1', "move_number"]);
+            half_move_number_tag.innerHTML = i/2 + 1;
+
+            move_tag.append(half_move_number_tag);
+        }
+        let half_move_tag = createHTMLTag("div",['p-3', 'flex-grow-1', "move"]);
+        half_move_tag.innerHTML = moves[i];
+
+        move_tag.append(half_move_tag);
+
+        historyElement.append(move_tag);
+
     }
     //add event for list move
     let movesHtml = document.querySelectorAll(movesListClassConst);
@@ -25,7 +40,17 @@ var renderMoveHistory = function (moves) {
     })
 
     setActiveMove(movesHtml,movesLength-1);
+
+    let lastItemPosition = $('.move-history div.move:last').offset().top;
+    moveHistoryHTML.scrollTop = lastItemPosition;
+    // $('.move-history ').animate({
+    //     scrollTop: $('.move-history div.move:last').offset().top
+    // }, 'fast');
 };
+
+
+
+
 
 
 
@@ -59,6 +84,12 @@ var createHTMLElement = function(elementName, elementText){
     return new_element_list;
 }
 
+var createHTMLTag = function (element, class_list){
+    let tag = document.createElement(element);
+    typeof class_list === "string" ? tag.classList.add(class_list) : tag.classList.add(...class_list);
+    return tag;
+}
+
 var clearActiveMove = function(parent){
     var movesHtml = document.querySelectorAll(parent);
     [].forEach.call(movesHtml, function(el) {
@@ -66,7 +97,7 @@ var clearActiveMove = function(parent){
     });
 }
 var setActiveMove = function (moves, index){
-    moves[index].className = "active_move";
+    moves[index].classList.add("active_move");
     chess_game.currentIndex = index;
 }
 
@@ -131,8 +162,8 @@ let config_chessGameSignalR = 0;
 
 const chessGameDurationInfoHTML = document.getElementById("clock-top") ? document.getElementById("clock-top").dataset.timer : null;
 //HTML game tag
-
-
+//scroll 
+const moveHistoryHTML =  document.getElementById('move-history');
 const currentUserHTML = document.getElementById("chess_my_name");
 const opponentHTML = document.getElementById("chess_opponent_name");
 
@@ -191,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
 
         case chess_mod.GAME_REPEAT:
+            config.draggable = false;
             chess_game = new ChessGame('chessboard', config);
             chess_game.game.load_pgn(pgn);
             chess_game.board.position(chess_game.game.fen());
@@ -203,12 +235,12 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 
-function getStartPositionFromHTML()
-{
-    const chess_fen_html = document.getElementById("StartPosition").value;
-    const game_fen = chess_fen_html + ' b - - 1 19';
-    return game_fen;
-}
+// function getStartPositionFromHTML()
+// {
+//     const chess_fen_html = document.getElementById("StartPosition").value;
+//     const game_fen = chess_fen_html + ' b - - 1 19';
+//     return game_fen;
+// }
 
 /**
  * A move 

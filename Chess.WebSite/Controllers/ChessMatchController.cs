@@ -51,7 +51,7 @@ namespace Chess.WebSite.Controllers
         public async Task<IActionResult> ChessGameRepeat(string path)
         {
             Console.WriteLine(path);
-            var pgn = await _fileProvider.GetFileContent(_chessGameSettings.PGNFilePath,"aa_vs_bb_20202608172929.pgn");
+            var pgn = await _fileProvider.GetFileContent(_chessGameSettings.PGNFilePath,path);
             ViewBag.pgn = pgn.Replace(System.Environment.NewLine, "");
             // ViewBag.pgn = pgn.Replace(System.Environment.NewLine, " ");
             return View();

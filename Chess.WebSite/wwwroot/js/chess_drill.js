@@ -25,8 +25,8 @@ var whiteSquareGreyColour = '#a9a9a9'
 
 
 var blackSquareGreyColour = '#696969'
-var badMoveSquareColour = '255, 0, 51'
-var goodMoveSquareColour = '127, 255, 0'
+var incorrectMoveSquareColor = '255, 0, 51'
+var correctMoveSquareColor = '127, 255, 0'
 var hintSquareColour = '50, 168, 153'
 var normalSquareColour = '170, 170, 170';
 var normalSquareRgbaValue = '255,0,51';
@@ -108,8 +108,10 @@ var correct_moves;
 document.addEventListener('DOMContentLoaded', () => {
     switch(chess_mod_selected) {
         case chess_mod.DRILLS:
+            
             initDrill();
-
+            initHTML();
+            initTimer();
             break;
     }
     $(window).resize(board.resize);
@@ -118,39 +120,21 @@ document.addEventListener('DOMContentLoaded', () => {
 var initDrill = function (){
     pgn_chess = new Chess();
     pgn_chess.load_pgn(pgn);
-
     drill_chess = new Chess(pgn_chess.header().FEN);
-
     correct_moves = pgn_chess.history({ verbose: true })
-
     config.position = drill_chess.fen(); 
     config.orientation = drill_chess.turn() == 'w' ? 'white' : 'black';
     board = new Chessboard('chessboard', config);
-
     move_index = -1;
 }
+var initHTML = function (){
+    
+    drillStartHTML.classList.remove("d-none");
 
-
-
-function manageTimer(user){
-    if(currentUserHTML.textContent == user)
-    {
-        clock_my.stop();
-        clock_opponent.start();
-    }else
-    {
-        clock_opponent.stop();
-        clock_my.start(); 
-    }
+    drillEndHTML.forEach(element => {
+        element.classList.add('d-none');
+    });
 }
-
-function updateOpponentInformationHTML(userName){
-    opponentHTML.textContent = userName;
-}
-
-
-
-
 
 
 //#region chess function  
@@ -194,7 +178,6 @@ function onDrop(source, target, orientation) {
 
     drillMove(move);
     updateDrillStatus();
-
 }
 
 var drillComputerMove = function(){
@@ -220,37 +203,47 @@ var drillMoveIsCorrect = function (san, move_index)
 }
 
 var drillMove = function(move){
-    //Drill 
     removeColorChessboard();
     if (drillMoveIsCorrect(move.san, ++move_index))
     {
         squareToHighlight = move.to;
-        colorToHighlight = goodMoveSquareColour;
+        colorToHighlight = correctMoveSquareColor;
         colourSquare(squareToHighlight, colorToHighlight);
-        if(!drillIsFinished()){
+        if(!drillIsComplete()){
             window.setTimeout(drillComputerMove, 200);
         }
     }
     else 
     {
         squareToHighlight = move.to;
-        colorToHighlight = badMoveSquareColour;
+        colorToHighlight = incorrectMoveSquareColor;
         colourSquare(squareToHighlight, colorToHighlight);
     }
 }
 
 
 var updateDrillStatus = function(){
-    if (colorToHighlight == badMoveSquareColour){
-        alert("Blad");
+    if (colorToHighlight == incorrectMoveSquareColor){
+        endDrill();
     }
-    else if (drillIsFinished())
+    else if (drillIsComplete())
     {
-        alert("Gratulacje udało sie");
+        endDrill();
     }
 }
 
-var drillIsFinished = function(){
+var endDrill = function(){
+    stopTimer();
+    drillSummaryTimeHTML.innerText = h1.textContent;
+
+    drillStartHTML.classList.add("d-none");
+    drillEndHTML.forEach(element => {
+        element.classList.remove('d-none');
+    });
+}
+
+
+var drillIsComplete = function(){
     return move_index == correct_moves.length-1 ? true : false;
 }
 
@@ -266,10 +259,13 @@ function convertSeconds(s){
     let formattedSecond = ("0" + sec).slice(-2);
     return formattedNumber + ':' + formattedSecond;
 }
+const drillSummaryTimeHTML = document.getElementById("drill_summary_time");
+const drillOrientationMoveHTML = document.getElementById("drill_orientation_move");
 
+const drillSummaryHtml = document.querySelector(".end__drill__summary");
 
-
-
+const drillStartHTML = document.querySelector(".drill_start");
+const drillEndHTML = document.querySelectorAll(".drill_end");
 
 const reloadDrillIcon = document.querySelector(".fa-undo");
 const hintDrillIcon = document.querySelector(".fa-lightbulb");
@@ -285,6 +281,7 @@ const previousMoveIcon = document.querySelector(".fa-chevron-left");
 const nextMoveIcon = document.querySelector(".fa-chevron-right");
 
 reloadDrillIcon.addEventListener("click",function(){
+    initHTML();
     initDrill();
 });
 
@@ -301,3 +298,50 @@ nextDrillIcon.addEventListener("click",function(){
 
 
 
+
+
+
+
+var h1 = document.getElementsByTagName('time')[0],
+    seconds = 0, minutes = 0, hours = 0,
+    t;
+
+function add() {
+    seconds++;
+    if (seconds >= 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes >= 60) {
+            minutes = 0;
+            hours++;
+        }
+    }
+    
+    h1.textContent = (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+    timer();
+}
+function timer() {
+    t = setTimeout(add, 1000);
+}
+
+var initTimer = function (){
+    timer();
+}
+
+var stopTimer = function(){
+    clearTimeout(t);
+}
+// /* Start button */
+// start.onclick = timer;
+
+// /* Stop button */
+// stop.onclick = function() {
+//     clearTimeout(t);
+// }
+
+// /* Clear button */
+// clear.onclick = function() {
+//     h1.textContent = "00:00:00";
+//     seconds = 0; minutes = 0; hours = 0;
+// }

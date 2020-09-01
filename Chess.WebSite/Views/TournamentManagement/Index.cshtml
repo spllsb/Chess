@@ -9,7 +9,7 @@
 
 <!-- Tournaments -->
 
-<a asp-action="Create">Create new tournament</a> |
+<a asp-action="Create">Stwórz nowy turniej</a> 
 <table class="table">
     <thead>
         <tr>
@@ -35,9 +35,9 @@
                 @Html.DisplayFor(modelItem => item.MaxPlayers)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-name="@item.Name">Edit</a> |
-                <a asp-action="Details" asp-route-name="@item.Name">Details</a> |
-                <a asp-action="Delete" asp-route-name="@item.Name">Delete</a>
+                <a asp-action="Edit" asp-route-name="@item.Name">Edytuj</a> |
+                <a asp-action="Details" asp-route-name="@item.Name">Szegóły</a> |
+                <a asp-action="Delete" asp-route-name="@item.Name">Usuń</a>
             </td>
             <td class="text-center">
                 <a asp-action="SendMessage" asp-route-name="@item.Name"><i class="far fa-envelope fa-2x"></i></a>

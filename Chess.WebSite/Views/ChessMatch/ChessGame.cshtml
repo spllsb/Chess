@@ -37,30 +37,31 @@
 <div>HELLO WORLD</div>
     <div class="row">
         <div id="layout__main" class="col-lg-9">
-            <div class="border__layout_player p-2">
-                <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div> 
-                <div class="border__layout_usernameDetail"> 
+            <div class="border__layout_player d-flex p-2">
+                <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div>
+                <div class="border__layout_usernameDetail">
                     <span id="chess_opponent_name">Jakis gracz1</span>
                     <span>(ilosc punktow)</span>
                     <img src="https://unsplash.it/20/20" class="img-fluid">
                 </div>
-                <div class="clock__component">
-                    <div id="clock-top" class="basic stopwatch" data-timer="@ViewBag.ChessGameDuration"></div>
+                <div class="ml-auto clock__component">
+                    <i class="far fa-clock fa-2x"></i>
+                    <h3 id="clock-top" class="basic stopwatch" data-timer="@ViewBag.ChessGameDuration"></h3>
                 </div>
             </div>
-
             <div id="chessboard" style="position: relative;"></div>
-            <div class="border__layout_player p-2">
-                <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div> 
-                <div class="border__layout_usernameDetail"> 
+       
+            <div class="border__layout_player d-flex p-2">
+                <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div>
+                <div class="border__layout_usernameDetail">
                     <span id="chess_my_name">@Context.User.Identity.Name</span>
                     <span>(ilosc punktow)</span>
                     <img src="https://unsplash.it/20/20" class="img-fluid">
                 </div>
-                <div class="clock__component">
-                    <div id="clock-bottom" class="basic stopwatch" data-timer="@ViewBag.ChessGameDuration"></div>
+                <div class="ml-auto clock__component">
+                    <i class="far fa-clock fa-2x"></i>
+                    <h3 id="clock-bottom" class="basic stopwatch" data-timer="@ViewBag.ChessGameDuration"></h3>
                 </div>
-                
             </div>
 
         </div>
@@ -69,25 +70,23 @@
                 <div>
                     Jakis typ spotkania
                 </div>
-                <div class="game__controls__wrapper ">
+                <div class="game__controls__wrapper mb-auto">
                     <div class="info">
                         <div id="move-history" class="move-history">
+   
                         </div>
                     </div>
                 </div>
-                <div class="section_wrapper"> 
+                <div class="section_wrapper m-3"> 
                     <div>
-                        <button type="button" class="fas fa-chevron-left fa-ls fa-3x"></button>
-                        <button type="button" class="fas fa-chevron-right fa-3x"></button>
+                        <i class="fas fa-chevron-left fa-ls fa-3x m-3 btn"></i>
+                        <i class="fas fa-chevron-right fa-3x m-3 btn"></i>
                     </div>
                     <div>
-                        <i class="fas fa-retweet fa-2x"></i>
-                        <i class="fas fa-download fa-2x"></i>
-                        <i class="fas fa-share-alt fa-2x"></i>
-
+                        <i class="fas fa-retweet fa-2x m-3"></i>
+                        <i class="fas fa-download fa-2x m-3"></i>
+                        <i class="fas fa-share-alt fa-2x m-3"></i>
                     </div>
-                </div>
-                <div class="about_player player_bottom">
                 </div>
             </div>
         </div>
@@ -97,7 +96,11 @@
 <p id="ChessGameId" hidden>@ViewBag.ChessGameId</p>
 
 
-
+<div class="d-flex">
+  <div class="p-2">Flex item</div>
+  <div class="p-2">Flex item</div>
+  <div class="ml-auto p-2">Flex item</div>
+</div>
 
 
 

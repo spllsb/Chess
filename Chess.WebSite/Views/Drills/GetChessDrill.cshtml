@@ -7,29 +7,52 @@
     <link href="~/lib/chessboardjs/css/chessboard-1.0.0.css" rel="stylesheet" />
     <link href="~/css/chess_game.css" rel="stylesheet"/>
 
-<div>HELLO WORLD</div>
-    <div class="row">
-        <div id="layout__main" class="col-lg-9">
-            <div id="chessboard"></div>
-        </div>
-        <div id="layout__sidebar" class="col-lg-3 ">
-            <div class="game__controls__component">
-                <p>
-                    @Html.DisplayFor(modelItem => @Model.Name)
-                </p>
-                <div class="game__controls__wrapper ">
-                    <div class="info">
-                        <div id="move-history" class="move-history">
+<div class="row">
+    <div id="layout__main" class="col-lg-9">
+        <div id="chessboard"></div>
+    </div>
+    <div id="layout__sidebar" class="col-lg-3 ">
+        <div class="game__controls__component d-flex">
+
+            <div class="game__controls__wrapper mb-auto">
+                <div class="game__controls__info">
+                        <h2 class="text-center"><i class="far fa-clock"></i> <time>00:00</time></h2>
+
+                    <div class="end__drill__summary drill_end d-none">
+                        <div class="d-flex border-bottom border-info">
+                            <div class="p-2 mr-auto b-t-">Ranking zadania </div>
+                            <div class="p-2 ">1232</div>
+                        </div>
+
+                        <div class="d-flex border-bottom border-info">
+                            <div class="p-2 mr-auto ">Czas</div>
+                            <div id="drill_summary_time" class="p-2">0:00</div>
+                        </div>
+
+                        <div class="d-flex border-bottom border-info">
+                            <div class="p-2 mr-auto ">Podpowiedzi</div>
+                            <div class="p-2 ">2</div>
+                        </div>
+
+                        <div class="d-flex border-bottom border-info">
+                            <div class="p-2 mr-auto ">Liczba błędów</div>
+                            <div class="p-2 ">0</div>
                         </div>
                     </div>
+                    
                 </div>
-                <div class="section_wrapper "> 
-                    <div>
-                        <i class="fas fa-undo fa-2x"></i>
-                        <i class="far fa-lightbulb fa-2x"></i>
-                        <i class="fas fa-arrow-right fa-2x"></i>
-                    </div>
+            </div>
+
+            <div class="section_wrapper m-3 "> 
+                <div class="drill_start">
+                    <i class="far fa-lightbulb fa-2x m-3"></i>
                 </div>
+                
+                <div class="drill_end d-none">
+                    <i class="fas fa-undo fa-2x m-3"></i>
+                    <i class="fas fa-arrow-right fa-2x m-3"></i>
+                </div>
+
             </div>
         </div>
     </div>
@@ -37,8 +60,10 @@
 <div id="PGN" style="padding: 50px;">
 
 
+
+
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    @* <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> *@
     <script src="~/lib/chessjs/chess.js"></script>
     <script src="~/lib/chessboardjs/js/chessboard-1.0.0.js"></script>
     <script src="~/js/chess_drill.js"></script>
@@ -47,7 +72,6 @@
         const pgn = ('@Html.Raw(ViewBag.PGN)');
         const chess_mod_selected = chess_mod.DRILLS;
         const inputFen = "@Model.StartPosition";
-
     </script>
 
 }

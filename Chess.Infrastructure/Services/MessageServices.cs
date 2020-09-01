@@ -4,7 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Chess.Infrastructure.Settings;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
 
 namespace Chess.Infrastructure.Services
 {
@@ -15,6 +17,13 @@ namespace Chess.Infrastructure.Services
     [Authorize]
     public class MessageSender : IEmailSender
     {
+        private readonly EmailSettings _emailSettings;
+
+        public MessageSender(IOptions<EmailSettings> emailSettings)
+        {
+            _emailSettings = emailSettings.Value;
+        }
+
         public Task SendEmailAsync(string email, string subject, string message)
         {
             // Plug in your email service here to send an email.
@@ -22,7 +31,7 @@ namespace Chess.Infrastructure.Services
             {
                 MailMessage msg = new MailMessage();
                 
-                msg.From = new MailAddress("projektmvc2018@gmail.com");
+                msg.From = new MailAddress(_emailSettings.Login);
                 msg.To.Add(email);
                 msg.Subject = subject;
                 msg.Body = message;
@@ -30,9 +39,9 @@ namespace Chess.Infrastructure.Services
                 {
                     client.EnableSsl = true;
                     client.UseDefaultCredentials = false;
-                    client.Credentials = new NetworkCredential("projektmvc2018@gmail.com", "qwopasklzxnm");
-                    client.Host = "smtp.gmail.com";
-                    client.Port = 587;
+                    client.Credentials = new NetworkCredential(_emailSettings.Login, _emailSettings.Password);
+                    client.Host = _emailSettings.Host;
+                    client.Port = _emailSettings.Port;
                     client.DeliveryMethod = SmtpDeliveryMethod.Network;
 
                     client.Send(msg);
