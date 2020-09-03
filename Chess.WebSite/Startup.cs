@@ -73,7 +73,6 @@ namespace Chess.WebSite
             else
             {
                 app.UseExceptionHandler("/Shared/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -92,9 +91,6 @@ namespace Chess.WebSite
                     name:"default",
                     pattern:"{controller=Tournament}/{action=Index}/{id?}"
                 );
-                
-                endpoints.MapHub<RoomHub>("/roomHub");
-                endpoints.MapHub<ChatHub>("/chatHub");
                 endpoints.MapHub<ChessMatchHub>("/chessMatchHub");
                 endpoints.MapRazorPages();
             });

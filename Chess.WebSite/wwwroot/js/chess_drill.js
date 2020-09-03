@@ -129,8 +129,9 @@ var initDrill = function (){
 }
 var initHTML = function (){
     
-    drillStartHTML.classList.remove("d-none");
-
+    drillStartHTML.forEach(element => {
+        element.classList.remove('d-none');
+    });
     drillEndHTML.forEach(element => {
         element.classList.add('d-none');
     });
@@ -236,7 +237,9 @@ var endDrill = function(){
     stopTimer();
     drillSummaryTimeHTML.innerText = h1.textContent;
 
-    drillStartHTML.classList.add("d-none");
+    drillStartHTML.forEach(element => {
+        element.classList.add('d-none');
+    });
     drillEndHTML.forEach(element => {
         element.classList.remove('d-none');
     });
@@ -264,7 +267,7 @@ const drillOrientationMoveHTML = document.getElementById("drill_orientation_move
 
 const drillSummaryHtml = document.querySelector(".end__drill__summary");
 
-const drillStartHTML = document.querySelector(".drill_start");
+const drillStartHTML = document.querySelectorAll(".drill_start");
 const drillEndHTML = document.querySelectorAll(".drill_end");
 
 const reloadDrillIcon = document.querySelector(".fa-undo");

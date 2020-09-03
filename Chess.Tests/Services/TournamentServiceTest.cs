@@ -10,16 +10,16 @@ namespace Chess.Tests.Services
 {
     public class TournamentServiceTest
     {
-        [Test]
-        public async Task register_async_should_invoke_add_async_on_repository()
-        {
-            var TournamentRepositoryMock  = new Mock<ITournamentRepository>();
-            var mapperMock = new Mock<IMapper>();
+        // [Test]
+        // public async Task register_async_should_invoke_add_async_on_repository()
+        // {
+        //     var TournamentRepositoryMock  = new Mock<ITournamentRepository>();
+        //     var mapperMock = new Mock<IMapper>();
 
-            var userService = new TournamentService(TournamentRepositoryMock.Object,mapperMock.Object);
-            await userService.CreateAsync("Lapska masakra",10);
+        //     var userService = new TournamentService(TournamentRepositoryMock.Object,mapperMock.Object);
+        //     await userService.CreateAsync("Lapska masakra",10);
 
-            TournamentRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Tournament>()),Times.Once);    
-        }
+        //     TournamentRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Tournament>()),Times.Once);    
+        // }
     }
 }
