@@ -18,7 +18,7 @@ namespace Chess.WebSite.Framework
             try
             {
                 await _next(context);
-            }
+            } 
             catch (Exception ex) 
             {
                 await HandleExceptionAsync(context,ex);

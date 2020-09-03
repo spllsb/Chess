@@ -520,7 +520,7 @@ var Stopwatch = function(elem, options) {
     
     // initialize
     reset();
-    
+     
 
 
     // private functions

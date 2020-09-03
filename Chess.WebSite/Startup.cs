@@ -78,7 +78,7 @@ namespace Chess.WebSite
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            
+             
             app.UseMyExceptionHandler();
 
             app.UseRouting();

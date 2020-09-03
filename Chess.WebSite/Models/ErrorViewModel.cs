@@ -9,3 +9,4 @@ namespace Chess.WebSite.Models
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
 }
+ 

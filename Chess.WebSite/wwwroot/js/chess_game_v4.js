@@ -43,16 +43,8 @@ var renderMoveHistory = function (moves) {
 
     let lastItemPosition = $('.move-history div.move:last').offset().top;
     moveHistoryHTML.scrollTop = lastItemPosition;
-    // $('.move-history ').animate({
-    //     scrollTop: $('.move-history div.move:last').offset().top
-    // }, 'fast');
+
 };
-
-
-
-
-
-
 
 var getRenderMoveFen = function (moves, index) {
     chess_game.copy_game.reset();
@@ -100,11 +92,6 @@ var setActiveMove = function (moves, index){
     moves[index].classList.add("active_move");
     chess_game.currentIndex = index;
 }
-
-
-
-
-
 
 function greySquare (square) {
     var $square = $('#chessboard .square-' + square)
