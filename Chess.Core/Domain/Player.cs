@@ -11,6 +11,7 @@ namespace Chess.Core.Domain
         public string Username { get; protected set; }
         public Guid ClubId {get; protected set;}
         public string Email { get; protected set; }
+        public int RatingElo { get; set; }
         public virtual IEnumerable<PlayerTournamentParticipation> Tournaments 
         { 
             get { return _tournaments; }

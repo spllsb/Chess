@@ -19,31 +19,22 @@ var renderMoveHistory = function (moves) {
         if (i%2 === 0)
         {
             move_tag = createHTMLTag("div","d-flex");
-
             let half_move_number_tag = createHTMLTag("div",['p-3', 'flex-shrink-1', "move_number"]);
             half_move_number_tag.innerHTML = i/2 + 1;
-
             move_tag.append(half_move_number_tag);
         }
         let half_move_tag = createHTMLTag("div",['p-3', 'flex-grow-1', "move"]);
         half_move_tag.innerHTML = moves[i];
-
         move_tag.append(half_move_tag);
-
         historyElement.append(move_tag);
-
     }
     //add event for list move
     let movesHtml = document.querySelectorAll(movesListClassConst);
     movesHtml.forEach(move => {
         move.addEventListener('click', selectMove);
     })
-
     setActiveMove(movesHtml,movesLength-1);
-
-    let lastItemPosition = $('.move-history div.move:last').offset().top;
-    moveHistoryHTML.scrollTop = lastItemPosition;
-
+    updateMoveHistoryScroll();
 };
 
 var getRenderMoveFen = function (moves, index) {
@@ -116,7 +107,10 @@ function colorChessboard(from, to){
 
 
   
-
+var updateMoveHistoryScroll = function(){
+    let lastItemPosition = $('.move-history .active_move').offset().top;
+    moveHistoryHTML.scrollTop = lastItemPosition;
+}
 
 
 // !! zmienne koniecznie musza byc malymi znakami
@@ -147,12 +141,19 @@ const pieceTheme_path = "/lib/chessboardjs/img/chesspieces/wikipedia/{piece}.png
 const chessHub_connect_URL = "/chessMatchHub";
 let config_chessGameSignalR = 0;
 
-const chessGameDurationInfoHTML = document.getElementById("clock-top") ? document.getElementById("clock-top").dataset.timer : null;
 //HTML game tag
 //scroll 
 const moveHistoryHTML =  document.getElementById('move-history');
-const currentUserHTML = document.getElementById("chess_my_name");
-const opponentHTML = document.getElementById("chess_opponent_name");
+
+
+const currentUserNameHTML = document.getElementById("chess_current_user_name");
+const currentUserRatingHTML = document.getElementById("chess_current_user_rating");
+const opponentNameHTML = document.getElementById("chess_opponent_name");
+const opponentRatingHTML = document.getElementById("chess_opponent_rating");
+
+
+
+
 
 const container_for_list_move_html_name = "game__controls__wrapper";
 const new_move_design_class = "game__controls_move";
@@ -213,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
             chess_game = new ChessGame('chessboard', config);
             chess_game.game.load_pgn(pgn);
             chess_game.board.position(chess_game.game.fen());
+            initHTMLGameRepeat();
             renderMoveHistory(chess_game.game.history());
             break;
     }
@@ -220,8 +222,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     $(window).resize(chess_game.board.resize);
 })
-
-
+var initHTMLGameRepeat = function ()
+{
+    updateOpponentInformationHTML(chess_game.game.header().Black, chess_game.game.header().BlackElo);
+    updateCurrentUserInformationHTML(chess_game.game.header().White, chess_game.game.header().WhiteElo);
+}
 // function getStartPositionFromHTML()
 // {
 //     const chess_fen_html = document.getElementById("StartPosition").value;
@@ -288,24 +293,26 @@ class Player{
     }
 }
 
-function initChessGameSignalR (){
-    config_chessGameSignalR = 1;
+    function initChessGameSignalR (){
+        config_chessGameSignalR = 1;
 
     connection = new signalR.HubConnectionBuilder()
-        .withUrl(chessHub_connect_URL)
-        .build();
-
+                .withUrl(chessHub_connect_URL)
+                .build();
     connection.start()
-        .then( document.getElementById("chessboard").style.display = "")
-        .catch(function (err) {
-            return console.error(err.toString());
-        }).then(function(){
-            connection.invoke('SearchRandomChessGame', chessGameDurationInfoHTML).then(function(message){
-                if (message == "Player found game"){
-                    connection.invoke('SendCommunication',"No to zaczynajmy gre",sessionStorage.getItem("roomId"));
-                }
-            })
-        });
+    .then( document.getElementById("chessboard").style.display = "")
+    .catch(function (err) {
+        return console.error(err.toString());
+    }).then(function(){
+        connection.invoke('SearchRandomChessGame', chess_game_duration, player_id)
+            .then(function(message){
+            if (message == "Player found game"){
+                connection.invoke('SendCommunication',
+                                "Partia rozpoczęta",
+                                sessionStorage.getItem("roomId"));
+            }
+        })
+    });
     connection.on("ReceiveCommunication", function (communication){
         alert(communication);
     });
@@ -314,14 +321,19 @@ function initChessGameSignalR (){
         sessionStorage.setItem("roomId", roomId);
     });
 
+    connection.on("GetNewRatingELO", function(newEloForWin, newEloForDraw, newEloForLose){
+        alert(newEloForWin);
+    });
+    
+
     connection.on("GetColorPiece", function(message){
         config.orientation = message;
         chess_game = new ChessGame('chessboard', config);
         chess_game.game.load(config.position);
     });
     
-    connection.on("GetOpponent", function(message){
-        updateOpponentInformationHTML(message);
+    connection.on("GetOpponentInformation", function(username, ratingELO){
+        updateOpponentInformationHTML(username, ratingELO);
     });
     connection.on("ReceivePosition", updatePositionSignalR);
 }
@@ -352,10 +364,14 @@ function manageTimer(user){
     }
 }
 
-function updateOpponentInformationHTML(userName){
-    opponentHTML.textContent = userName;
+function updateOpponentInformationHTML(userName, ratingELO){
+    opponentNameHTML.textContent = userName;
+    opponentRatingHTML.textContent = ratingELO;
 }
-
+function updateCurrentUserInformationHTML(userName, ratingELO){
+    currentUserNameHTML.textContent = userName;
+    currentUserRatingHTML.textContent = ratingELO;
+}
 
 
 
@@ -424,35 +440,28 @@ function endGame(){
 }
 
 function updateStatus () {
-    var status = ''
-  
     var moveColor = 'White'
     if (chess_game.game.turn() === 'b') {
       moveColor = 'Black'
     }
-  
     // checkmate?
     if (chess_game.game.in_checkmate()) {
-      status = 'Game over, ' + moveColor + ' is in checkmate.';
+      status = 'Gra zakończona, ' + moveColor + ' jest zamatowany.';
       endGame();
     }
-  
     // draw?
     else if (chess_game.game.in_draw()) {
-      status = 'Game over, drawn position';
+      status = 'Gra zakończona, remisowa pozycja';
       endGame();
     }
-  
     // game still on
     else {
-      status = moveColor + ' to move'
-  
+      status = moveColor + ' w ruchu'
       // check?
       if (chess_game.game.in_check()) {
-        status += ', ' + moveColor + ' is in check'
+        status += ', ' + moveColor + ' jest szachowny'
       }
     }
-    console.log(status);
   }
 
 
@@ -487,7 +496,7 @@ function getPGN(){
     preparePGN();
     // separator for windows "\r\n"
     // separator for linux "\n"
-    return chess_game.game.pgn({ max_width: 5, newline_char: "\\n" });
+    return chess_game.game.pgn({ max_width: 5, newline_char: "\r\n" });
 }
 
 

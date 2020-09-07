@@ -8,5 +8,6 @@ namespace Chess.Infrastructure.DTO
         public string Username { get; set; }
         public Guid ClubId {get; set;}
         public string Email { get; set; }
+        public int RatingElo { get; set; }
     }
 }

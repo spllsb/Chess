@@ -19,6 +19,7 @@ namespace Chess.Infrastructure.Repositories
         }
         public async Task<Player> GetAsync(Guid id)
             => await _context.Players.SingleOrDefaultAsync(x => x.UserId == id);
+            
         public async Task<Player> GetAsync(string username)
             => await _context.Players.SingleOrDefaultAsync(x => x.Username == username);
 

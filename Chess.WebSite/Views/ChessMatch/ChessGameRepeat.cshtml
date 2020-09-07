@@ -34,13 +34,13 @@
 
 </style>
 
-<div class="row">
+<article class="row">
     <div id="layout__main" class="col-lg-9">
         <div class="border__layout_player p-2">
             <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div> 
             <div class="border__layout_usernameDetail"> 
                 <span id="chess_opponent_name">Jakis gracz1</span>
-                <span>(ilosc punktow)</span>
+                <span id="chess_opponent_rating">(ilosc punktow)</span>
                 <img src="https://unsplash.it/20/20" class="img-fluid">
             </div>
         </div>
@@ -49,8 +49,8 @@
         <div class="border__layout_player p-2">
             <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div> 
             <div class="border__layout_usernameDetail"> 
-                <span id="chess_my_name">@Context.User.Identity.Name</span>
-                <span>(ilosc punktow)</span>
+                <span id="chess_current_user_name">@Context.User.Identity.Name</span>
+                <span id="chess_current_user_rating">(ilosc punktow)</span>
                 <img src="https://unsplash.it/20/20" class="img-fluid">
             </div>
         </div>
@@ -80,7 +80,7 @@
             </div>
         </div>
     </div>
-</div>
+</article>
 
 <div id="PGN" style="padding: 50px;"></>
 <p id="ChessGameId" hidden>@ViewBag.ChessGameId</p>

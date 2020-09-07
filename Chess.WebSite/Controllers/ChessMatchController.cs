@@ -1,10 +1,13 @@
 using System;
 using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Chess.Core.Domain;
 using Chess.Infrastructure.Commands;
 using Chess.Infrastructure.Services;
 using Chess.Infrastructure.Settings;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -15,12 +18,17 @@ namespace Chess.WebSite.Controllers
     {
         private readonly ChessGameSettings _chessGameSettings;
         private readonly IFileProvider _fileProvider;
-
+        private readonly IPlayerService _playerService;
+        private readonly UserManager<ApplicationUser> _userManager;
         public ChessMatchController(ICommandDispatcher commandDispatcher,
                                     IOptions<ChessGameSettings> chessGameSettings,
+                                    IPlayerService playerService,
+                                    UserManager<ApplicationUser> userManager,
                                     IFileProvider fileProvider) : base(commandDispatcher)
         {
+            _userManager = userManager;
             _fileProvider = fileProvider;
+            _playerService = playerService;
             _chessGameSettings = chessGameSettings.Value;
         }
 
@@ -29,11 +37,14 @@ namespace Chess.WebSite.Controllers
 
             return View();
         }
-        public IActionResult ChessGame(Guid id, string duration)
+        public async Task<IActionResult> ChessGame(Guid id, int duration)
         {
+            var username = User.FindFirstValue(ClaimTypes.Name);
+            var player = await _playerService.GetAsync(username);
             ViewBag.ChessGameDuration = duration;
             ViewBag.ChessGameId = id;
-            return View();
+            ViewBag.PlayerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return View(player);
         }
         public IActionResult ChessGame_copy(Guid id, string duration)
         {
@@ -52,7 +63,8 @@ namespace Chess.WebSite.Controllers
         {
             Console.WriteLine(path);
             var pgn = await _fileProvider.GetFileContent(_chessGameSettings.PGNFilePath,path);
-            ViewBag.pgn = pgn.Replace(System.Environment.NewLine, "");
+            // ViewBag.pgn = pgn.Replace(System.Environment.NewLine, "");
+            ViewBag.pgn = pgn.Replace(System.Environment.NewLine, "\\n");
             // ViewBag.pgn = pgn.Replace(System.Environment.NewLine, " ");
             return View();
         }

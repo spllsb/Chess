@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Chess.Core.Domain;
+using Chess.Core.Domain.Enum;
 using Chess.Core.Repositories;
 using Chess.Infrastructure.DTO;
 using Chess.Infrastructure.Extensions;
@@ -12,6 +13,8 @@ namespace Chess.Infrastructure.Services
 {
     public class ChessGameService : IChessGameService
     {
+        static Random random = new Random();
+        private List<string> pieceColorList = new List<string>(new string[] {ChessboardPieceColorEnum.white.ToString(),ChessboardPieceColorEnum.black.ToString()});
         private readonly IPlayerRepository _playerRepository;
         private readonly IMatchRepository _matchRepository;
         private readonly IMapper _mapper;
@@ -28,13 +31,16 @@ namespace Chess.Infrastructure.Services
         }
         
         
+        public async Task<int> GetWaitingPlayerListCount()
+            => _waitingPlayerList.Count;
+
         public async Task AddToWaitingList(PlayerInRoom playerInRoom)
         {
             _waitingPlayerList.Add(playerInRoom);
             await Task.CompletedTask;
         }
-        public int CountOpponent(int gameDuration)
-            => _waitingPlayerList.Where(x => x.GameDuration == gameDuration).ToList().Count;
+        public int CountOpponent(int gameDuration, int ratingELO, SearchingGameTypEnum searchingGameTyp)
+            => _waitingPlayerList.Where(x => x.GameDuration == gameDuration && x.SearchingGameTyp == searchingGameTyp).ToList().Count;
         
 
         public async Task RemoveCurrentPlayerFromWaitingList(string connectionId){
@@ -44,13 +50,18 @@ namespace Chess.Infrastructure.Services
                 await RemoveFromWaitingList(player);                
             }
         }
-        public async Task<PlayerInRoom> GetPlayerFromWaitingList(int gameDuration){
-            var player = _waitingPlayerList.Where(x => x.GameDuration == gameDuration).FirstOrDefault();
+        public async Task<PlayerInRoom> GetPlayerFromWaitingList(int gameDuration, int ratingELO, SearchingGameTypEnum searchingGameTyp){
+            var player = _waitingPlayerList.Where(x => x.GameDuration == gameDuration && x.SearchingGameTyp == searchingGameTyp).FirstOrDefault();
             if(player == null)
             {
                 throw new Exception($"Any player was not found in waiting list");
 
             }
+            return await Task.FromResult(player);
+        }
+
+        public async Task<PlayerInRoom> GetPlayerFromWaitingList(string connectionId){
+            var player = _waitingPlayerList.Where(x => x.ConnectionId == connectionId).FirstOrDefault();
             return await Task.FromResult(player);
         }
 
@@ -71,6 +82,9 @@ namespace Chess.Infrastructure.Services
         public async Task<string> GetRoomId(string connectionId)
         {
             var game = _currentMatches.Where(x => x.PlayerOne.ConnectionId == connectionId || x.PlayerTwo.ConnectionId == connectionId).FirstOrDefault();
+            if (game == null){
+                throw new Exception("Connection id was not found in current matches");
+            }
             return await Task.FromResult(game.RoomId);
         }
 
@@ -86,18 +100,39 @@ namespace Chess.Infrastructure.Services
             var chessMatch = await GetChessMatch(roomId);
             await _matchRepository.AddAsync(chessMatch.Match);
         }
+
+        public async Task<string> GetRandomColorPiece()
+        {
+            int r = random.Next(pieceColorList.Count);
+            return pieceColorList[r];
+        }
     }
+
+
+
 
 
     public class PlayerInRoom : Player{
         public int GameDuration { get; set; }
         public string ConnectionId { get; set; }
-        public PlayerInRoom(Guid playerId,string playerName, int gameDuration, string connectionId)
+        public SearchingGameTypEnum SearchingGameTyp { get; set; }
+        public PlayerInRoom(Guid playerId,string playerName, int gameDuration, string connectionId, SearchingGameTypEnum searchingGameTyp)
         {
             UserId = playerId;
             Username = playerName;
             GameDuration = gameDuration;
             ConnectionId = connectionId;
+            SearchingGameTyp = searchingGameTyp;
+        }
+
+        public PlayerInRoom(PlayerDto player, int gameDuration, string connectionId, SearchingGameTypEnum searchingGameTyp)
+        {
+            UserId = player.PlayerId;
+            Username = player.Username;
+            RatingElo = player.RatingElo;
+            GameDuration = gameDuration;
+            ConnectionId = connectionId;
+            SearchingGameTyp = searchingGameTyp;
         }
     }   
 

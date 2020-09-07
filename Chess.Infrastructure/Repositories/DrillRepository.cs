@@ -15,12 +15,15 @@ namespace Chess.Infrastructure.Repositories
         {
             _context = context;
         }
+        public async Task<Drill> GetAsync(int id) 
+            => await _context.Drills.Where(x=> x.Id == id).FirstOrDefaultAsync();
 
- 
+
+
+
         public async Task<IEnumerable<Drill>> GetAllByCategoryAsync(string category) 
             => await _context.Drills.ToListAsync();
 
-        public async Task<Drill> GetAsync(int id) 
-            => await _context.Drills.Where(x=> x.Id == id).FirstOrDefaultAsync();
+
     }
 }

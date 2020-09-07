@@ -35,8 +35,6 @@ namespace Chess.Infrastructure.Services
             }
             refRa = Ra;
             refRb = Rb;
-            Console.WriteLine("Ra " + Ra);
-            Console.WriteLine("Rb " + Rb);
         }
         private float CalcProbability(float rating1, float rating2)
         => 1.0f * 1.0f / (1 + 1.0f *  (float)(Math.Pow(10, 1.0f * (rating1 - rating2) / 400)));

@@ -17,6 +17,13 @@ const activateClassConst = "#move-history .active_move";
 const movesListClassConst = "#move-history span";
 
 
+
+const currentUserNameHTML = document.getElementById("chess_current_user_name");
+const currentUserELOHTML = document.getElementById("chess_current_user_elo");
+const opponentNameHTML = document.getElementById("chess_opponent_name");
+const opponentRatingEloHTML = document.getElementById("chess_opponent_ratingElo");
+
+
 var squareToHighlight = null;
 var colorToHighlight = null;
 
@@ -29,7 +36,7 @@ var incorrectMoveSquareColor = '255, 0, 51'
 var correctMoveSquareColor = '127, 255, 0'
 var hintSquareColour = '50, 168, 153'
 var normalSquareColour = '170, 170, 170';
-var normalSquareRgbaValue = '255,0,51';
+// var normalSquareRgbaValue = '255,0,51';
 
 function colourSquare (square, rgbValue) {
     var $square = $('#chessboard .square-' + square)
@@ -39,8 +46,6 @@ function colourSquare (square, rgbValue) {
     let colorRgba = 'rgba('+rgbValue+','+opacity+')';
     $square.css('background', colorRgba);
     // $square.css('backgroundColor',transparentClass);
-    
-
 }
 
   
@@ -299,6 +304,10 @@ nextDrillIcon.addEventListener("click",function(){
 });
 
 
+function updateOpponentInformationHTML(userName, ratingELO){
+    opponentNameHTML.textContent = userName;
+    opponentRatingEloHTML.textContent = ratingELO;
+}
 
 
 

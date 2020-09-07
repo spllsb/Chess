@@ -15,7 +15,8 @@ namespace Chess.Infrastructure.Mappers
                         .ForMember(x => x.PlayerId, opt => opt.MapFrom(y => y.Player.UserId))
                         .ForMember(x => x.Username, opt => opt.MapFrom(y => y.Player.Username))
                         .ForMember(x => x.Email, opt => opt.MapFrom(y => y.Player.Email))
-                        .ForMember(x => x.ClubId, opt => opt.MapFrom(y => y.Player.ClubId));
+                        .ForMember(x => x.ClubId, opt => opt.MapFrom(y => y.Player.ClubId))
+                        .ForMember(x => x.RatingElo, opt => opt.MapFrom(y => y.Player.RatingElo));
         
                     cfg.CreateMap<User,UserDto>();
                     cfg.CreateMap<Article,ArticleDto>();

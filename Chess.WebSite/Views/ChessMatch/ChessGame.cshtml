@@ -1,3 +1,5 @@
+@using Chess.Infrastructure.DTO
+@model PlayerDto
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <link rel="img" asp-href-include="~/lib/chessboardjs/img/chesspieces/wikipedia/*.png" />
@@ -41,7 +43,7 @@
                 <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div>
                 <div class="border__layout_usernameDetail">
                     <span id="chess_opponent_name">Jakis gracz1</span>
-                    <span>(ilosc punktow)</span>
+                    <span id="chess_opponent_rating">(ilosc punktow)</span>
                     <img src="https://unsplash.it/20/20" class="img-fluid">
                 </div>
                 <div class="ml-auto clock__component">
@@ -54,8 +56,8 @@
             <div class="border__layout_player d-flex p-2">
                 <div class="border__layout_img"><img src="https://unsplash.it/45/45"></div>
                 <div class="border__layout_usernameDetail">
-                    <span id="chess_my_name">@Context.User.Identity.Name</span>
-                    <span>(ilosc punktow)</span>
+                    <span id="chess_current_user_name">@Model.Username</span>
+                    <span id="chess_current_user_rating">(@Model.RatingElo)</span>
                     <img src="https://unsplash.it/20/20" class="img-fluid">
                 </div>
                 <div class="ml-auto clock__component">
@@ -114,6 +116,9 @@
     <script src="~/js/chess_game_v4.js"></script>
 
     <script>
+        const player_rating_elo = @Model.RatingElo;
+        const player_id = '@ViewBag.PlayerId';
+        const chess_game_duration = @ViewBag.ChessGameDuration;
         const chess_mod_selected = chess_mod.LIVE_GAME;
     </script>
 }
