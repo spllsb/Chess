@@ -5,6 +5,7 @@ using Chess.Core.Domain.Enum;
 using Chess.Infrastructure.Services;
 using Chess.Infrastructure.Settings;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
@@ -18,13 +19,16 @@ namespace Chess.Infrastructure.Hubs
         private readonly IUserService _userService;
         private readonly IELOProvider _eloProvider;
         private readonly IPlayerService _playerService;
+        private readonly ILogger _logger;
+
 
         public ChessMatchHub(IChessGameService chessGameService,
                             IOptions<ChessGameSettings> chessGameSettings,
                             IUserService userService,
                             IFileProvider fileProvider,
                             IELOProvider eLOProvider,
-                            IPlayerService playerService
+                            IPlayerService playerService,
+                            ILoggerFactory loggerFactory
                             )
         {
             _chessGameService = chessGameService;
@@ -33,11 +37,12 @@ namespace Chess.Infrastructure.Hubs
             _fileProvider = fileProvider;
             _eloProvider = eLOProvider;
             _playerService = playerService;
+            _logger = loggerFactory.CreateLogger<ChessMatchHub>();
         }
 
         public override async Task OnConnectedAsync() 
         {
-            Console.WriteLine("--> Connection Established " + Context.ConnectionId);
+            _logger.LogInformation(3, "--> Connection Established " + Context.ConnectionId);
             // await Clients.Client(this.Context.ConnectionId).SendAsync("ReceiveConnID", this.Context.ConnectionId);
             await base.OnConnectedAsync();
         }
@@ -65,8 +70,7 @@ namespace Chess.Infrastructure.Hubs
                     chessMatch.isSaved = true;
                 }
             }
-
-            Console.WriteLine($"[{this.Context.ConnectionId}] is closed");
+            _logger.LogInformation(3, $"[{this.Context.ConnectionId}] is closed");
             Console.WriteLine(exception);
             await base.OnDisconnectedAsync(exception);
         }
@@ -102,16 +106,16 @@ public async Task<string> SearchRandomChessGame(int gameDuration,
     float RaW = 0, RaD = 0, RaL = 0, RbW = 0, RbD = 0, RbL = 0;
     var currentPlayer = await _playerService
                         .GetAsync(Context.User.Identity.Name);
-    var currentPlayerInRoom = new PlayerInRoom(currentPlayer, 
-                                             gameDuration,
-                                             this.Context.ConnectionId, 
-                                             SearchingGameTypEnum.random);
+    var playerInRoom = new PlayerInRoom(currentPlayer, 
+                                            gameDuration,
+                                            this.Context.ConnectionId, 
+                                            SearchingGameTypEnum.random);
     Console.WriteLine("--> Player " + currentPlayer.Username +
                     "was added to room");
     if(_chessGameService.CountOpponent(gameDuration, 
                                     currentPlayer.RatingElo, 
                                     SearchingGameTypEnum.random) == 0){
-        await _chessGameService.AddToWaitingList(currentPlayerInRoom);
+        await _chessGameService.AddToWaitingList(playerInRoom);
         Console.WriteLine("--> " + currentPlayer.Username +
                         "was added to waiting list");
         return "Added to waiting list";
@@ -134,7 +138,7 @@ public async Task<string> SearchRandomChessGame(int gameDuration,
                                         room.Id.ToString());
         Task t2= Groups.AddToGroupAsync(opponent.ConnectionId.ToString(), 
                                         room.Id.ToString());
-        await _chessGameService.InitMatch(currentPlayerInRoom, opponent, 
+        await _chessGameService.InitMatch(playerInRoom, opponent, 
                                         room.Id.ToString());
         t1.Wait();
         t2.Wait();

@@ -9,16 +9,20 @@ using Chess.Infrastructure.Services;
 using Chess.Infrastructure.Settings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 
 namespace Chess.WebSite.Controllers
 {
     public class TournamentManagementController : WebControllerBase
     {
         private readonly ITournamentService _tournamentService;
+        private readonly ILogger _logger;
 
         public TournamentManagementController(ITournamentService tournamentService,
-            ICommandDispatcher commandDispatcher) : base(commandDispatcher)
+                                            ILoggerFactory loggerFactory,
+                                            ICommandDispatcher commandDispatcher) : base(commandDispatcher)
         {
+            _logger = loggerFactory.CreateLogger<TournamentManagementController>();
             _tournamentService = tournamentService;
         }
     // ITournamentService tournamentService,
@@ -29,10 +33,13 @@ namespace Chess.WebSite.Controllers
     // }
 
     // [HttpGet]
-        public async Task<IActionResult> Index(string message, string status)
+        public async Task<IActionResult> Index(TournamentMessageId? message = null)
         {
-            ViewBag.StatusCode = status;
-            ViewBag.Title = "Tournaments";
+            ViewData["StatusMessage"] =
+                message == TournamentMessageId.CreateTournamentSuccess ? "Turniej utworzony pomyślnie."
+                : message == TournamentMessageId.Error ? "Bład."
+                : "";
+            ViewBag.Title = "Zarządzaj turniejami";
             ViewBag.Message = message;
             var tournament = await _tournamentService.BrowseAsync();
 
@@ -63,9 +70,9 @@ namespace Chess.WebSite.Controllers
             {
                 await CommandDispatcher.DispatchAsync(command);
                 this.HttpContext.Response.StatusCode = 201;
-                return RedirectToAction("Index", new {message ="JUPI udalo sie utworzyc nowy turniej", status = "success"});
+                _logger.LogInformation(3,"Create tournament successfully");
+                return RedirectToAction(nameof(Index), new {Message = TournamentMessageId.CreateTournamentSuccess});
             }
-            ViewBag.Message = "NIe udalo sie stworzyc turnieju";
             return View();
         }
 
@@ -100,6 +107,11 @@ namespace Chess.WebSite.Controllers
                 throw new Exception("No input parameter");
             }
             return RedirectToAction("Index");
+        }
+        public enum TournamentMessageId
+        {
+            CreateTournamentSuccess,
+            Error
         }
     }
 }

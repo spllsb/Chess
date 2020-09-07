@@ -2,10 +2,7 @@
 @model IEnumerable<TournamentDto>
 
 <h1>@ViewBag.Title</h1>
-
-@if(@ViewBag.StatusCode == "success"){
-<h1 class="alert-success">@ViewBag.Message </h1>
-}
+<p class="text-success">@ViewData["StatusMessage"]</p>
 
 <!-- Tournaments -->
 <div class="card">
@@ -28,6 +25,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.MaxPlayers)
                     </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.RegisteredPlayersCount)
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -39,6 +39,10 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.MaxPlayers)
                         </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RegisteredPlayersCount)
+                        </td>
+
                         <td>
                             <a asp-action="Join" asp-route-tournamentId="@item.Id">Dołącz</a>
                         </td>

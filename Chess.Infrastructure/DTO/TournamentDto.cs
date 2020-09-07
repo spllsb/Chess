@@ -10,6 +10,7 @@ namespace Chess.Infrastructure.DTO
         public int MaxPlayers { get; set; }
         public int MinRank { get; set; }
         public int MaxRank { get; set; }
+        public int RegisteredPlayersCount {get; set;}
 
     }
 }

@@ -1,3 +1,4 @@
+using System.Linq;
 using AutoMapper;
 using Chess.Core.Domain;
 using Chess.Infrastructure.DTO;
@@ -9,15 +10,17 @@ namespace Chess.Infrastructure.Mappers
         public static IMapper Initialize()
                 => new MapperConfiguration(cfg =>
                 {
-                    cfg.CreateMap<Tournament,TournamentDto>();
+                    cfg.CreateMap<Tournament,TournamentDto>()
+                    .ForMember(x => x.RegisteredPlayersCount, o => o.MapFrom(x => x.Players.Count()));
                     cfg.CreateMap<Tournament,TournamentDetailsDto>();
+                        
                     cfg.CreateMap<PlayerTournamentParticipation,PlayerDto>()
                         .ForMember(x => x.PlayerId, opt => opt.MapFrom(y => y.Player.UserId))
                         .ForMember(x => x.Username, opt => opt.MapFrom(y => y.Player.Username))
                         .ForMember(x => x.Email, opt => opt.MapFrom(y => y.Player.Email))
                         .ForMember(x => x.ClubId, opt => opt.MapFrom(y => y.Player.ClubId))
                         .ForMember(x => x.RatingElo, opt => opt.MapFrom(y => y.Player.RatingElo));
-        
+
                     cfg.CreateMap<User,UserDto>();
                     cfg.CreateMap<Article,ArticleDto>();
                     cfg.CreateMap<Article,ArticleDetailsDto>();

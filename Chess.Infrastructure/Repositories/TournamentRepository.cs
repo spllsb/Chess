@@ -30,9 +30,13 @@ namespace Chess.Infrastructure.Repositories
         //Dodac paginację (np funkcje Take lub Skip)
         public async Task<Tournament> GetTournamentAsync(string name)
             => await _context.Tournaments.Where(x => x.Name == name).FirstOrDefaultAsync();
-        public async Task<IEnumerable<Tournament>> GetAllAsync()
+        // public async Task<IEnumerable<Tournament>> GetAllAsync()
         
-            => await _context.Tournaments.Take(10).ToListAsync();
+        //     => await _context.Tournaments.Take(10).ToListAsync();
+
+       public async Task<IEnumerable<Tournament>> GetAllAsync()
+        
+            => await _context.Tournaments.Take(10).Include(x => x.Players).ThenInclude(x=>x.Player).ToListAsync();
 
         public async Task AddAsync(Tournament tournament)
         {
@@ -52,7 +56,7 @@ namespace Chess.Infrastructure.Repositories
         }
 
         public IQueryable<Tournament> FindByCondition(Expression<Func<Tournament,bool>> expression)
-            => _context.Tournaments.Where(expression).AsNoTracking();
+            => _context.Tournaments.Where(expression).Take(10).Include(x => x.Players).AsNoTracking();
 
         public  Task<Tournament> GetDetailsTournament(Guid id)
         {

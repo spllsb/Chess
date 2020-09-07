@@ -23,7 +23,7 @@
                         Nazwa zawodnika
                     </th>
                     <th>
-                        Ranking
+                        Punkty rankingowe gracza
                     </th>
                 </tr>
             </thead>
@@ -33,6 +33,9 @@
                     <td>
                         <a asp-controller="Member" asp-action="Index" asp-route-username="@item.Username">@Html.DisplayFor(modelItem => item.Username)</a>
                     </td>
+                    <th class="text-center">
+                        @item.RatingElo
+                    </th>
                 </tr>
         }
             </tbody>
