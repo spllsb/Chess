@@ -1,7 +1,7 @@
 @using Chess.Infrastructure.DTO
 @model IEnumerable<TournamentDto>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-<h1>@ViewBag.Title</h1>
 <p class="text-success">@ViewData["StatusMessage"]</p>
 
 <!-- Tournaments -->
@@ -16,35 +16,37 @@
                 <input type="submit" value="Filter" />
             </p>
         </form>
-        <table class="table">
+        <table class="table text-center">
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Name)
+                        Nazwa
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.MaxPlayers)
+                        Użytkownicy
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.RegisteredPlayersCount)
+                        Ranking
+                    </th>
+                    <th>
+                        Rozpoczęcie turnieju
                     </th>
                 </tr>
             </thead>
             <tbody>
             @foreach (var item in Model) {
                     <tr>
-                        <td>
+                        <td class="text-left">
                             <a asp-action="Details" asp-route-tournamentId="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a> 
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.MaxPlayers)
+                            @Html.DisplayFor(modelItem => item.RegisteredPlayersCount) / @Html.DisplayFor(modelItem => item.MaxPlayers) 
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.RegisteredPlayersCount)
+                            @Html.DisplayFor(modelItem => item.MinRank) - @Html.DisplayFor(modelItem => item.MaxRank)
                         </td>
-
                         <td>
-                            <a asp-action="Join" asp-route-tournamentId="@item.Id">Dołącz</a>
+                            @Html.DisplayFor(modelItem => item.StartEvent)
                         </td>
                     </tr>
             }
@@ -53,4 +55,28 @@
     </div>
 </div>
 
-   
+
+
+
+
+
+@* <div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> *@
+

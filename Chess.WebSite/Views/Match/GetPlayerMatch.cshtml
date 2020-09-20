@@ -60,9 +60,9 @@
                         Typ gry
                     </td>
                     <td>
-                        <a asp-controller="Match" asp-action="GetPlayerMatch" asp-route-id="@item.FirstPlayerId">@Html.DisplayFor(modelItem => item.FirstPlayer.Username)</a>
+                        <a asp-controller="Match" asp-action="GetPlayerMatch" asp-route-id="@item.FirstPlayerId">@Html.DisplayFor(modelItem => item.FirstPlayer.UserName)</a>
                         <br>
-                        <a asp-controller="Match" asp-action="GetPlayerMatch" asp-route-id="@item.SecondPlayerId">@Html.DisplayFor(modelItem => item.SecondPlayer.Username)</a>
+                        <a asp-controller="Match" asp-action="GetPlayerMatch" asp-route-id="@item.SecondPlayerId">@Html.DisplayFor(modelItem => item.SecondPlayer.UserName)</a>
                     </td>
                     <td>
                         Wynik

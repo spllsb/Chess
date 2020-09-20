@@ -1,4 +1,48 @@
-<h1>Witaj na stronie chess</h1>
-
-
-
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Internetowy serwis szachowy</h1>
+    <blockquote class="blockquote text-center">
+        <p class="lead">„Mistrz szachowy uzewnętrznia swe idee przy tak wielkim wysiłku myślowym, że jego wewnętrzna wolność i niezależność – bez względu na twardość charakteru – nie może pozostać nie naruszona”.</p>
+        <footer class="blockquote-footer"><cite title="Source Title">Albert Einstein</cite></footer>
+    </blockquote>
+    
+    </div>
+    <div class="container">
+    <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Graj w szachy</h4>
+        </div>
+        <a class="nav-link" asp-area="" asp-controller="ChessMatch" asp-action="Index">
+        <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4">
+                <img class="img" style="height:240px" src="~/img/chess_game.svg.png">
+            </ul>
+        </div>
+        </a>
+        </div>
+        <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Rozwiązuj zadania</h4>
+        </div>
+        <a class="nav-link" asp-area="" asp-controller="Drills" asp-action="Index">
+        <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4">
+                <img class="img" style="height:210px" src="~/img/puzzlev3.png">
+            </ul>
+        </div>
+        </a>
+        </div>
+        <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Czytaj artykuły</h4>
+        </div>
+        <a class="nav-link" asp-area="" asp-controller="Article" asp-action="GetPreviewArticles">
+        <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4">
+                <img class="img" style="height:210px" src="~/img/article-svgrepo-com.svg">
+            </ul>
+        </div>
+        </a>
+        </div>
+    </div>
+</div>

@@ -19,10 +19,7 @@ html,body{
 .container {
     max-width: 1250px;
     margin: 30px auto 30px;
-    padding: 0 !important;
-    width: 90%;
     background-color: #fff;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.10), 0 3px 6px rgba(0,0,0,0.10);
 }
 
 a{
@@ -82,6 +79,7 @@ a{
         border-bottom: 1px solid black;
     }
 }
+
 
 
 
@@ -263,3 +261,16 @@ a{
     100% { opacity: 0; }
   }
   /*#endregion*/
+
+
+
+
+/*#region bootstrap modification*/
+.post__preview__list__element:first-child{
+  &.col-sm-6 {
+      -ms-flex: 0 0 100%;
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+}
+/*#endregion*/

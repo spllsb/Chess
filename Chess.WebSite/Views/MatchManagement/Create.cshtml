@@ -1,0 +1,44 @@
+@using Chess.Infrastructure.Commands.Match
+@model CreateMatch
+
+@{
+  Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="m-auto" style="width: 70%;">
+    <form asp-action="Create">
+        <h4>Utwórz mecz</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label control-label">Nazwa</label>
+            <div class="col-sm-10">
+                <input asp-for="FirstPlayerUserName" class="form-control" />
+                <span asp-validation-for="FirstPlayerUserName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label control-label">Nazwa</label>
+            <div class="col-sm-10">
+                <input asp-for="SecondPlayerUserName" class="form-control" />
+                <span asp-validation-for="SecondPlayerUserName" class="text-danger"></span>
+            </div>
+        </div>        
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label control-label">Data</label>
+            <div class="col-sm-10">
+                <input asp-for="BeginAt" type="datetime-local" class="form-control">
+                <span asp-validation-for="BeginAt" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label control-label">Data</label>
+            <div class="col-sm-10">
+                <input asp-for="DuringTime" type="number" class="form-control">
+                <span asp-validation-for="DuringTime" class="text-danger"></span>
+            </div>
+        </div>
+        <button class="btn btn-info btn-block" type="submit">Utwórz</button>
+    </form>
+</div>

@@ -19,16 +19,16 @@ namespace Chess.Infrastructure.Extensions
             return tournament;
         }
 
-        public static async Task<User> GetOrFailAsync(this IUserRepository repository, Guid id)
-        {
-            var user = await repository.GetAsync(id);
-            if(user == null)
-            {
-                throw new Exception($"User with id: '{id}' was not found exists");
-            }
+        // public static async Task<User> GetOrFailAsync(this IUserRepository repository, Guid id)
+        // {
+        //     var user = await repository.GetAsync(id);
+        //     if(user == null)
+        //     {
+        //         throw new Exception($"User with id: '{id}' was not found exists");
+        //     }
 
-            return user;
-        }
+        //     return user;
+        // }
 
         public static async Task<Player> GetOrFailAsync(this IPlayerRepository repository, Guid id)
         {

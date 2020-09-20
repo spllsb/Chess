@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Chess.Infrastructure.Services
 {
@@ -7,5 +8,6 @@ namespace Chess.Infrastructure.Services
         Task SaveFile(string filePath, string fileName, string content);
 
         Task <string> GetFileContent(string filePath, string fileName);
+        Task <string> UploadedFile(IFormFile profileImage, string uploadsFolder);
     }
 }

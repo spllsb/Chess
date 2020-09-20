@@ -1,0 +1,68 @@
+@using Chess.Infrastructure.DTO
+@model ClubDetailsDto
+
+@{
+  Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="d-flex">
+    <a class="p-3" asp-action="Details" asp-route-clubId="@Model.Id"><img class="img img-fluid" src="~/img/clubs/@Model.PictureName" style="width: 300px;"></a>
+    <div>
+        <div>
+            <h1>@Html.DisplayFor(modelItem => Model.Name)</h1>
+        </div>
+        <div>
+            <p>Aktualna liczna członków @Model.PlayersCount</p>      
+            <p>Data założenia: @Model.CreatedAt.ToString("MMMM dd, yyyy")</p>                  
+        </div>
+    </div>
+</div>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Szczegółowe informacje</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Klubowicze</a>
+  </li>
+
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <div class="font-size:2rem">
+          @Model.Information
+      </div>
+  </div>
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="card">
+            <div class="card-body">
+            <div>
+                @foreach (var item in Model.Players) {
+                    <div class="float-left p-2" style="width: 50%;">
+                        <div style="width: 400px">
+                            @await Html.PartialAsync("_PlayerWithAvatar",item)
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+  </div>
+ 
+
+
+@* 
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
+    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
+    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
+  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+</div> *@
+
+
+

@@ -1,0 +1,49 @@
+.genesis-header-message {
+    background-color: #000000;
+    padding: 24px 18px;
+    text-align: center;
+}
+
+.genesis-header-message__text {
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.genesis-header-message__button {
+    background-color: #FFFFFF;
+    display: inline-block;
+    padding: 8px 21px;
+    text-decoration: none;
+}
+
+@media only screen and (min-width: 440px) {
+    .genesis-header-message {
+        padding: 18px;
+        text-align: initial;
+    }
+
+    .genesis-header-message .wrap {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        max-width: 920px;
+    }
+
+    .genesis-header-message .wrap:before,
+    .genesis-header-message .wrap:after {
+        display: none;
+    }
+
+    .genesis-header-message__button {
+        display: block;
+        flex-shrink: 0;
+        margin-left: 20px;
+    }
+}
+
+
+@media only screen and (min-width: 1024px) {
+    .genesis-header-message__text p {
+        margin-bottom: 0;
+    }
+}

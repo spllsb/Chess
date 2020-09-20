@@ -1,0 +1,44 @@
+@using Chess.Infrastructure.DTO
+@model PlayerDto
+@{
+  Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<form asp-action="Edit" method="post" class="form-horizontal p-4">
+    <input asp-for="PlayerId" type="hidden"/>
+    <h4>@ViewBag.Title</h4>
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="UserName" class="control-label"></label>
+        <div >
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email" class="control-label"></label>
+        <div >
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="RatingElo" type="number" class="control-label"></label>
+        <div >
+            <input asp-for="RatingElo" type="number" class="form-control" />
+            <span asp-validation-for="RatingElo" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="AvatarImageName" class="control-label"></label>
+        <div >
+            <input asp-for="AvatarImageName" class="form-control" />
+            <span asp-validation-for="AvatarImageName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 text-center">
+            <button type="submit" class="btn btn-secondary">Zatwierdź</button>
+        </div>
+    </div>
+</form>

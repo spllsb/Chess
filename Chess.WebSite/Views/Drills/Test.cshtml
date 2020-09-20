@@ -1,0 +1,15 @@
+@using Chess.Infrastructure.DTO
+@model IEnumerable<DrillDto>
+
+
+@foreach (var item in @Model)
+{
+    @item.Id
+    <br>
+    @item.StartPosition
+    <br>
+    @item.Attempts
+    <br>
+    @item.CorrectlyAttempts
+    <br>
+}

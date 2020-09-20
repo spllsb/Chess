@@ -21,7 +21,7 @@ namespace Chess.Infrastructure.Repositories
             => await _context.Players.SingleOrDefaultAsync(x => x.UserId == id);
             
         public async Task<Player> GetAsync(string username)
-            => await _context.Players.SingleOrDefaultAsync(x => x.Username == username);
+            => await _context.Players.FirstAsync(x => x.UserName == username);
 
 
         public async Task<IEnumerable<Player>> GetAllAsync()
@@ -32,9 +32,10 @@ namespace Chess.Infrastructure.Repositories
             await _context.Players.AddAsync(Player);
             await _context.SaveChangesAsync();
         }
-        public Task UpdateAsync(Player Player)
+        public async Task UpdateAsync(Player Player)
         {
-            throw new NotImplementedException();
+            _context.Players.Update(Player);
+            await _context.SaveChangesAsync();
         }
         public async Task RemoveAsync(Guid id)
         {

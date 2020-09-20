@@ -1,0 +1,11 @@
+@using Chess.Infrastructure.DTO
+@model MatchDto
+@{
+  Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@Model.SecondPlayer.UserName
+@Model.FirstPlayer.UserName
+
+
+@Model.Result

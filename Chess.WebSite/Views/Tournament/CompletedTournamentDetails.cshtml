@@ -1,0 +1,50 @@
+@using Chess.Infrastructure.DTO
+@model TournamentDetailsDto
+
+
+<div class="p-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex">
+                <img class="img img-fluid" src="~/img/tournament.jpg" style="width: 200px;">
+                <div class="ml-3">
+                    <div>
+                        <h1>@Html.DisplayFor(modelItem => Model.Name)</h1>
+                    </div>
+                    <p>Ranking: @Model.MinRank - @Model.MaxRank</p>
+                    <p>Liczba uczesników: @Model.RegisteredPlayersCount</p>
+                    <p>Data rozpoczęcia: @Model.StartEvent</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Najlepsi zawodnicy turnieju
+        </div>
+        <div class="card-body">
+        @foreach (var item in Model.Players.OrderBy(x => x.Result).Take(5)) {
+        <div class="d-flex  m-2 border-bottom">
+            <h3 style="display: flex; align-items: center">#@item.Result</h3>
+            @await Html.PartialAsync("_PlayerWithAvatar",item)
+        </div>
+        }
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Uczestnicy
+        </div>
+        <div class="card-body">
+        <div>
+            @foreach (var item in Model.Players) {
+                <div class="float-left p-2" style="width: 50%; ">
+                    @await Html.PartialAsync("_PlayerWithAvatar",item)
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+

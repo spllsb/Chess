@@ -29,7 +29,7 @@ namespace Chess.Infrastructure.Repositories
             => await _context.Tournaments.Where(x => x.Name == name).Include(x => x.Players).ThenInclude(x=>x.Player).SingleOrDefaultAsync();
         //Dodac paginację (np funkcje Take lub Skip)
         public async Task<Tournament> GetTournamentAsync(string name)
-            => await _context.Tournaments.Where(x => x.Name == name).FirstOrDefaultAsync();
+            => await _context.Tournaments.Where(x => x.Name == name).Include(x => x.Players).ThenInclude(x=>x.Player).FirstOrDefaultAsync();
         // public async Task<IEnumerable<Tournament>> GetAllAsync()
         
         //     => await _context.Tournaments.Take(10).ToListAsync();

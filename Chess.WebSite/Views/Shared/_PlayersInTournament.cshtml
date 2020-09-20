@@ -1,0 +1,29 @@
+@using Chess.Infrastructure.DTO
+@model TournamentDetailsDto
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nazwa zawodnika
+            </th>
+            <th>
+                Punkty rankingowe gracza
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Players) {
+        <tr>
+            <td>
+                <a asp-controller="Member" asp-action="Index" asp-route-username="@item.UserName">@Html.DisplayFor(modelItem => item.UserName)</a>
+            </td>
+            <th class="text-center">
+               
+            </th>
+        </tr>
+}
+    </tbody>
+</table>

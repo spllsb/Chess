@@ -1,10 +1,13 @@
 @model Chess.Infrastructure.Commands.Message.SendMessage
 <link href="~/lib/chosen/css/chosen.min.css" rel="stylesheet" />
+@{
+  Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
 
-
-<div class="container">
+<area class="container">
+    <h1 class="text-center">Wyślij wiadomość do użytkowników turnieju: @ViewBag.TournamentName</h1>
     <div class="row">
-        <div class="col-12">
+        <div class="col-10 m-auto">
             <form asp-action="SendMessage">
                 <div class="form-group">
                     <label>Do</label>
@@ -26,12 +29,12 @@
                     <span asp-validation-for="Content" class="text-danger"></span>                    
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-primary btn-block" type="submit">Wyślij</button>
+                    <button class="btn btn-secondary btn-block" type="submit">Wyślij</button>
                 </div>
             </form>
         </div>
     </div>
-</div>
+</article>
 
 
 @section Scripts {

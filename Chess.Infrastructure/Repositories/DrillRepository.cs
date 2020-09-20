@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Chess.Core.Domain;
 using Chess.Core.Repositories;
@@ -15,10 +17,11 @@ namespace Chess.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<Drill> GetAsync(int id) 
-            => await _context.Drills.Where(x=> x.Id == id).FirstOrDefaultAsync();
+        public async Task<Drill> GetAsync(Guid id) 
+            => await _context.Drills.Where(x=> x.Id == id).Include(x => x.Players).AsNoTracking().FirstOrDefaultAsync();
 
-
+        public IQueryable<Drill> FindByCondition(Expression<Func<Drill,bool>> expression)
+            => _context.Drills.Where(expression).Include(x => x.Players).AsNoTracking();
 
 
         public async Task<IEnumerable<Drill>> GetAllByCategoryAsync(string category) 

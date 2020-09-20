@@ -1,0 +1,49 @@
+@using Chess.Infrastructure.DTO
+@model IEnumerable<PlayerDto>
+
+@{
+  Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1 class="text-center">@ViewBag.Title</h1>
+
+@if(@ViewBag.StatusCode == "success"){
+<h1 class="alert-success">@ViewBag.Message </h1>
+}
+
+<form asp-action="Index" method="get" class="m-4">
+    <p>
+        Szukaj użytkownika: <input type="text" name="SearchString">
+        <input type="submit" value="Szukaj" />
+    </p>
+</form>
+
+<div>
+    @foreach (var item in Model) {
+    <div class="row">
+        <div class="d-flex p-2 col-md-6">
+            <a asp-action="Details" asp-route-userName="@item.UserName"><img class="img img-fluid " src="~/img/users/@item.AvatarImageName" style="width: 150px;"></a>
+            <div class="ml-3">
+                <div>
+                    <h4><a class="text-muted" asp-action="Details" asp-route-playerId="@item.PlayerId">@Html.DisplayFor(modelItem => item.UserName)</a></h4>
+                </div>
+                <div>
+                    <span>
+                        Email: @item.Email | Ranking: @item.RatingElo
+                    </span>                        
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex">
+            <div class="m-auto">
+                <a class="text-muted" asp-action="SendMessage" asp-route-userName="@item.UserName"><i class="far fa-envelope fa-2x"></i></a>
+            </div>
+            <div class="m-auto">
+                <a class="text-muted" asp-action="Edit" asp-route-userName="@item.UserName">Edytuj</a> |
+                <a class="text-muted" asp-action="Details" asp-route-userName="@item.UserName">Szegóły</a> |
+                <a class="text-muted" asp-action="Delete" asp-route-userName="@item.UserName">Usuń</a>
+            </div>
+        </div>
+    </div>
+    }
+</div>

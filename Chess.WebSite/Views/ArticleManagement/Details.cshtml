@@ -1,0 +1,20 @@
+@using Chess.Infrastructure.DTO
+@model ArticleDetailsDto
+
+@{
+  Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+  <h1>@Html.DisplayFor(modelItem => Model.Title)</h1>
+<article >
+    <figure>
+        <img src="~/img/artykuł1.jpg" class="img img-fluid" />
+    </figure>
+    <header>
+        <h1>@Model.Title</h1>
+        <p><i class="far fa-newspaper"></i> @Html.DisplayFor(modelItem => Model.CreatedAt) | @Model.FullNameAuthor</p>
+    </header> 
+    <p>
+        @Html.DisplayFor(modelItem => Model.Content)
+    </p>
+</article>

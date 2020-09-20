@@ -10,14 +10,18 @@ namespace Chess.Core.Domain
         public Guid SecondPlayerId { get; protected set; }
         public Player SecondPlayer { get; protected set; }
         public DateTime BeginAt  { get; set; } = DateTime.Now;
-        // public MatchResultEnum Result { get; set; }
-        public DateTime EndAt { get; set; } = DateTime.Now;
+        public DateTime? EndAt { get; set; } = DateTime.Now;
         public DateTime CreateAt { get; set; }
         
         public string PgnFileName {get; set; } 
         public Guid TournamentId { get; set; } 
         public string Fen { get; set; }
         public string Result { get; set; } 
+        public int? FirstPlayerRating { get; set; }
+        public int? SecondPlayerRating { get; set; }
+        public int? Round { get; set; }
+        public int? Duration { get; set; }
+
 
         // public MatchStatistic Statistic { get; set; }
 
@@ -40,11 +44,23 @@ namespace Chess.Core.Domain
             SecondPlayerId = playerTwo;
             CreateAt = DateTime.Now;
         }
+        protected Match(Guid playerOne, Guid playerTwo, DateTime beginAt, int duration)
+        {
+            FirstPlayerId = playerOne;
+            SecondPlayerId = playerTwo;
+            BeginAt = beginAt;
+            Duration = duration;
+            CreateAt = DateTime.Now;
+        }
+
         public static Match Create(Player player)
             => new Match(player);
 
         public static Match Create(Guid playerOne, Guid playerTwo)
             => new Match(playerOne, playerTwo);
+
+        public static Match Create(Guid playerOne, Guid playerTwo, DateTime beginAt, int duration)
+            => new Match(playerOne, playerTwo, beginAt, duration);
         
         private void CheckPlayerExistInMatch(Player newPlayer)
         {
@@ -57,5 +73,6 @@ namespace Chess.Core.Domain
                 throw new Exception($"Player {newPlayer.UserId} is exists in match {this.Id}");
             }
         }
+
     }
 }

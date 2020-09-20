@@ -1,93 +1,87 @@
 @using Chess.Infrastructure.Commands.Tournament
 @model CreateTournament
 
+@{
+  Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
 
-@ViewBag.Information
-
-
-<div class="row">
-    <div class="col-md-8">
-        <form asp-action="Create">
-            <h4 >Utworz nowy turniej</h4>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">Nazwa</label>
-                <div class="col-sm-10">
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
+<div class="m-auto p-2" style="width: 70%;">
+    <form asp-action="Create" class="m-5">
+        <h4 class="text-center">Utworz nowy turniej</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label control-label">Nazwa</label>
+            <div class="col-sm-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">Nazwa Klubu</label>
-                <div class="col-sm-10">
-                    <select asp-for="ClubName" class="custom-select">
-                        <option value="">Wybierz klub</option>
-                        <option value="a">Wszystkie</option>
-                        <option value="a">AA</option>
-                        <option value="b">BB</option>
-                    </select>
-                    <span asp-validation-for="GameTyp" class="text-danger"></span>
-                </div>
+        </div>
+        @* <div class="form-group row">
+            <label class="col-sm-2 col-form-label control-label">Nazwa Klubu</label>
+            <div class="col-sm-10">
+                <select asp-for="ClubName" class="custom-select">
+                    <option value="">Wybierz klub</option>
+                    <option value="a">Wszystkie</option>
+                    <option value="a">AA</option>
+                    <option value="b">BB</option>
+                </select>
+                <span asp-validation-for="GameTyp" class="text-danger"></span>
             </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">Typ</label>
-                <div class="col-sm-10">
-                    <select asp-for="GameTyp" class="custom-select">
-                        <option value="">Wybierz typ gry</option>
-                        <option value="standard">Standard</option>
-                        <option value="ranked">Ranked</option>
-                    </select>
-                    <span asp-validation-for="GameTyp" class="text-danger"></span>
-                </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label control-label">Typ</label>
+            <div class="col-sm-10">
+                <select asp-for="GameTyp" class="custom-select">
+                    <option value="">Wybierz typ gry</option>
+                    <option value="standard">Standard</option>
+                    <option value="ranked">Ranked</option>
+                </select>
+                <span asp-validation-for="GameTyp" class="text-danger"></span>
             </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">Data</label>
-                <div class="col-sm-10">
-                    <input asp-for="StartEvent" type="datetime-local" class="form-control">
-                    <span asp-validation-for="StartEvent" class="text-danger"></span>
-                </div>
+        </div> *@
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label control-label">Data</label>
+            <div class="col-sm-10">
+                <input asp-for="StartEvent" type="datetime-local" class="form-control">
+                <span asp-validation-for="StartEvent" class="text-danger"></span>
             </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">Rundy</label>
-                <div class="col-sm-10">
-                    <input asp-for="RoundAmount" type="number" min="1" max="10" class="form-control">
-                    <span asp-validation-for="RoundAmount" class="text-danger"></span>
-                </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label control-label">Liczba rund</label>
+            <div class="col-sm-10">
+                <input asp-for="RoundAmount" type="number" min="1" max="10" class="form-control">
+                <span asp-validation-for="RoundAmount" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">Gracze</label>
-                <div class="col-sm-5">
-                    <input asp-for="MinPlayers" class="form-control" />
-                    <span asp-validation-for="MinPlayers" class="text-danger"></span>
-                </div>
-                <div class="col-sm-5">
-                    <input asp-for="MaxPlayers" class="form-control" />
-                    <span asp-validation-for="MaxPlayers" class="text-danger"></span>
-                </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label control-label">Liczba uczestników</label>
+            <div class="col-sm-5">
+                <input asp-for="MinPlayers" class="form-control" />
+                <span asp-validation-for="MinPlayers" class="text-danger"></span>
             </div>
-
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">Ranking</label>
-                <div class="col-sm-5">
-                    <input asp-for="MinRank" class="form-control" />
-                    <span asp-validation-for="MinRank" class="text-danger"></span>
-                </div>
-                <div class="col-sm-5">
-                    <input asp-for="MaxRank" class="form-control" />
-                    <span asp-validation-for="MaxRank" class="text-danger"></span>
-                </div>
+            <div class="col-sm-5">
+                <input asp-for="MaxPlayers" class="form-control" />
+                <span asp-validation-for="MaxPlayers" class="text-danger"></span>
             </div>
+        </div>
 
-            <button class="btn btn-info btn-block" type="submit">Utwórz</button>
-        </form>
-    </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label control-label">Ranking</label>
+            <div class="col-sm-5">
+                <input asp-for="MinRank" class="form-control" />
+                <span asp-validation-for="MinRank" class="text-danger"></span>
+            </div>
+            <div class="col-sm-5">
+                <input asp-for="MaxRank" class="form-control" />
+                <span asp-validation-for="MaxRank" class="text-danger"></span>
+            </div>
+        </div>
 
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
-
+        <button class="btn btn-secondary btn-block" type="submit">Utwórz</button>
+    </form>
+</div>
 
 
 

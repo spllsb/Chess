@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Chess.Core.Domain
 {
@@ -21,6 +22,7 @@ namespace Chess.Core.Domain
         public int MaxRank { get; protected set; }
         public int MinPlayers { get; protected set; }
         public DateTime UpdatedAt {get; private set;}
+        public string Status { get; protected set; }
         public virtual IEnumerable<PlayerTournamentParticipation> Players 
         { 
             get { return _players;} 
@@ -42,6 +44,16 @@ namespace Chess.Core.Domain
         {
             Name = name;
             MaxPlayers = maxPlayer;
+        }
+
+        public void Update(string name, DateTime startEvent, int minPlayer, int maxPlayer, int minRank, int maxRank){
+            Name = name;
+            StartEvent = startEvent;
+            MinPlayers = minPlayer;
+            MaxPlayers = maxPlayer;
+            MinRank = minRank;
+            MaxRank = maxRank;
+
         }
 
         // public void DeletePlayer(User deleteUser)

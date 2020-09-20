@@ -1,7 +1,11 @@
 @using Chess.Infrastructure.DTO
 @model IEnumerable<TournamentDto>
 
-<h1>@ViewBag.Title</h1>
+@{
+  Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1 class="text-center">@ViewBag.Title</h1>
 
 @if(@ViewBag.StatusCode == "success"){
 <h1 class="alert-success">@ViewBag.Message </h1>
@@ -9,38 +13,51 @@
 
 <!-- Tournaments -->
 
-<a asp-action="Create">Stwórz nowy turniej</a> 
-<table class="table">
+<a asp-action="Create" class="btn btn-secondary">Stwórz nowy turniej</a> 
+<form asp-controller="Tournament" asp-action="Index" method="get" class="m-4">
+    <p>
+        Turniej: <input type="text" name="SearchString">
+        <input type="submit" value="Szukaj" />
+    </p>
+</form>
+<table class="table text-center">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.Name) 
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MaxPlayers)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegisteredPlayersCount)
+            </th>
             <th class="text-center">
                 Wyślij wiadomość
             </th>
+            <th></th>
+
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="text-left">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MaxPlayers)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-name="@item.Name">Edytuj</a> |
-                <a asp-action="Details" asp-route-name="@item.Name">Szegóły</a> |
-                <a asp-action="Delete" asp-route-name="@item.Name">Usuń</a>
+                @Html.DisplayFor(modelItem => item.RegisteredPlayersCount)
             </td>
             <td class="text-center">
                 <a asp-action="SendMessage" asp-route-name="@item.Name"><i class="far fa-envelope fa-2x"></i></a>
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-name="@item.Name">Edytuj</a> |
+                <a asp-action="Details" asp-route-name="@item.Name">Szegóły</a> |
+                <a asp-action="Delete" asp-route-name="@item.Name">Usuń</a>
             </td>
         </tr>
 }

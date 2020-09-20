@@ -41,5 +41,13 @@ namespace Chess.Infrastructure.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task UpdateAsync(ArticleDto articleUpdate)
+        {
+            var article = await _articleRepository.GetOrFailAsync(articleUpdate.Id);
+            article.Update(articleUpdate.Title, articleUpdate.Content, articleUpdate.FullNameAuthor);
+            await _articleRepository.UpdateAsync(article);
+
+        }
     }
 }

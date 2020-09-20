@@ -32,20 +32,15 @@ namespace Chess.WebSite.Controllers
             _chessGameSettings = chessGameSettings.Value;
         }
 
-        public IActionResult Index()
-        {
-
-            return View();
-        }
-        public async Task<IActionResult> ChessGame(Guid id, int duration)
+        public async Task<IActionResult> Index()
         {
             var username = User.FindFirstValue(ClaimTypes.Name);
             var player = await _playerService.GetAsync(username);
-            ViewBag.ChessGameDuration = duration;
-            ViewBag.ChessGameId = id;
             ViewBag.PlayerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return View(player);
         }
+
+
         public IActionResult ChessGame_copy(Guid id, string duration)
         {
             ViewBag.ChessGameDuration = duration;

@@ -19,8 +19,9 @@ namespace Chess.WebSite.Views.Shared.Components.MatchList
             _matchService = matchService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(Guid id, string fromTable)
+        public async Task<IViewComponentResult> InvokeAsync(Guid id, string fromTable, bool addChessboard)
         {
+            ViewBag.AddChessboard = addChessboard;
             switch(fromTable)
             {
                 case "player":

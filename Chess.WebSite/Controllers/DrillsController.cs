@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Chess.Infrastructure.Commands;
 using Chess.Infrastructure.Services;
@@ -39,16 +40,26 @@ namespace Chess.WebSite.Controllers
             return View(drills);
         }
 
-        public async Task<IActionResult> GetChessDrill(int id)
+        public async Task<IActionResult> GetChessDrill(Guid? id)
         {
-            var drill = await _drillService.GetAsync(id);
-            System.Console.WriteLine(_drillSettings.FilePath);
+            ViewData["awardImgFileName"] = "puzzle.svg";
+            ViewData["awardContent"] = "Poprawnie rozwiązałeś pierwsze zadanie.";
 
+            var drill = id != null ?  await _drillService.GetAsync(id.Value) : await _drillService.GetRandomDrillAsync();
+            System.Console.WriteLine(drill.Id);
             var pgn = await _fileProvider.GetFileContent(_drillSettings.FilePath, drill.FileName);
             ViewBag.pgn = pgn.Replace(System.Environment.NewLine, "\\n");
-            // ViewBag.pgn = pgn.Replace(System.Environment.NewLine, "");
+
+            ViewBag.CorrectlyAttempts = drill.Attempts > 0 ? (100*drill.CorrectlyAttempts)/drill.Attempts : 0;
             return View(drill);
         }
+
+        public async Task<IActionResult> Test()
+        {
+            var drill = await _drillService.GetDrillAsync();
+            return View(drill);
+        }
+
     }
 
     public enum CategoryDrillsEnum {Gra1, Gra2, Gra3}

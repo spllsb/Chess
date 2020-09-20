@@ -1,0 +1,59 @@
+@using Chess.Infrastructure.DTO
+@model IEnumerable<TournamentDto>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<p class="text-success">@ViewData["StatusMessage"]</p>
+
+
+
+
+<!-- Tournaments -->
+<div class="card">
+    <div class="card-header">
+        Lista turniejów
+    </div>
+    <div class="card-body">
+        <form asp-controller="Tournament" asp-action="Index" method="get">
+            <p>
+                Turniej: <input type="text" name="SearchString">
+                <input type="submit" value="Filter" />
+            </p>
+        </form>
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th>
+                        Nazwa
+                    </th>
+                    <th>
+                        Liczba uczestników
+                    </th>
+                    <th>
+                        Ranking
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model) {
+                    <tr>
+                        <td class="text-left">
+                            <a asp-action="CompletedTournamentDetails" asp-route-tournamentId="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a> 
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RegisteredPlayersCount) 
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MinRank) - @Html.DisplayFor(modelItem => item.MaxRank)
+                        </td>
+                    </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+

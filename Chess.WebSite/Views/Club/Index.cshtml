@@ -1,0 +1,37 @@
+@using Chess.Infrastructure.DTO
+@model IEnumerable<ClubDto>
+
+<p class="text-success">@ViewData["StatusMessage"]</p>
+
+<div class="card">
+    <div class="card-header">
+        Lista klubów
+    </div>
+    <div class="card-body">
+        <form asp-controller="Club" asp-action="Index" method="get">
+            <p>
+                Szukaj klubu: <input type="text" name="SearchString">
+                <input type="submit" value="Szukaj" />
+            </p>
+        </form>
+        <div >
+            @foreach (var item in Model) {
+            <div class="d-flex p-2">
+                <a asp-action="Details" asp-route-clubId="@item.Id"><img class="img img-fluid" src="~/img/clubs/@item.PictureName" style="width: 150px;"></a>
+                <div class="ml-3">
+                    <div>
+                        <h4><a asp-action="Details" asp-route-clubId="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></h4>
+                    </div>
+                    <div>
+                        <span>
+                            Aktualna liczna członków @item.PlayersCount | Data utworzenia: @item.CreatedAt.ToString("MMMM dd, yyyy")
+                        </span>                        
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+
+   

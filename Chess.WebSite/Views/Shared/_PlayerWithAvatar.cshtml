@@ -1,0 +1,14 @@
+@using Chess.Infrastructure.DTO
+@model PlayerDto
+
+<div class="d-flex">
+    <div style="max-width:30%; height: auto">
+        <a asp-controller="Member" asp-action="Index" asp-route-username="@Model.UserName"><img class="img img-fluid img-thumbnail" style="max-width: 100%; height: auto" src="~/img/@Model.AvatarImageName"></a>
+    </div>
+    <div class="pl-2">
+        <div>
+            <span><a asp-controller="Member" asp-action="Index" asp-route-username="@Model.UserName">@Html.DisplayFor(modelItem => Model.UserName)</a></span>
+            <span>(@Html.DisplayFor(modelItem => Model.RatingElo))</span>
+        </div>
+    </div>
+</div>

@@ -14,5 +14,6 @@ namespace Chess.Infrastructure.Services
 
 
         Task AddCommentAsync(string author, string content);
+        Task UpdateAsync(ArticleDto articleDetailsDto);
     }
 }

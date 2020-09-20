@@ -67,29 +67,33 @@ namespace Chess.WebSite.Controllers
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 // var password = await _userManager.CheckPasswordAsync(user, model.Password);
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                // Console.WriteLine(result.Succeeded);
+                var aa = await _userManager.GetRolesAsync(user);
+
+                foreach (var item in aa)
+                {
+                    System.Console.WriteLine(item.ToString());
+                }
                 var authenticationProperties = new AuthenticationProperties();
                 if (_signInManager.SignInAsync(user, authenticationProperties, null).IsCompletedSuccessfully)
                 {
                     return RedirectToLocal(returnUrl);
                 }
                 
-                
-                // if (result.Succeeded)
-                // {
-                //     _logger.LogInformation(1, "User logged in.");
-                //     return RedirectToLocal(returnUrl);
-                // }
-                // if (result.IsLockedOut)
-                // {
-                //     _logger.LogWarning(2, "User account locked out.");
-                //     return View("Lockout");
-                // }
-                // else
-                // {
-                //     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                //     return View(model);
-                // }
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation(1, "User logged in.");
+                    return RedirectToLocal(returnUrl);
+                }
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning(2, "User account locked out.");
+                    return View("Lockout");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Niepoprawny login lub hasło");
+                    return View(model);
+                }
             }
 
             // If we got this far, something failed, redisplay form

@@ -14,11 +14,7 @@ html, body {
 .container {
   max-width: 1250px;
   margin: 30px auto 30px;
-  padding: 0 !important;
-  width: 90%;
   background-color: #fff;
-  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 a {
@@ -355,6 +351,15 @@ a:hover {
   100% {
     opacity: 0;
   }
+}
+
+/*#endregion*/
+/*#region bootstrap modification*/
+.post__preview__list__element:first-child.col-sm-6 {
+  -ms-flex: 0 0 100%;
+  -webkit-box-flex: 0;
+          flex: 0 0 100%;
+  max-width: 100%;
 }
 
 /*#endregion*/

@@ -10,6 +10,8 @@ using Chess.Infrastructure.IoC;
 using Chess.Infrastructure.Services;
 using Chess.Infrastructure.Settings;
 using Chess.WebSite.Framework;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -59,12 +61,24 @@ namespace Chess.WebSite
 
             services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
 
+            services.AddHangfire(config => 
+                config.UseSimpleAssemblyNameTypeSerializer()
+                .UseDefaultTypeSerializer()
+                .UseMemoryStorage());
+            services.AddHangfireServer();
+            services.AddSingleton<TestService>();
+            services.AddSingleton<ChessMatchHub>();
+
 
             services.AddTransient<IEmailSender, MessageSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, 
+                            IWebHostEnvironment env,
+                            IBackgroundJobClient backgroundJobClient,
+                            IRecurringJobManager recurringJobManager,
+                            IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -84,13 +98,23 @@ namespace Chess.WebSite
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseHangfireDashboard();
+            backgroundJobClient.Enqueue(() => Console.WriteLine("Hello Hangfire!!"));
+            recurringJobManager.AddOrUpdate(
+                "CreateScheduleChessgame",
+                () => serviceProvider.GetService<ChessMatchHub>().Test(),
+                "* * * * *"
+            );
             
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name:"default",
-                    pattern:"{controller=Tournament}/{action=Index}/{id?}"
+                    pattern:"{controller=Home}/{action=Index}/"
                 );
+                
                 endpoints.MapHub<ChessMatchHub>("/chessMatchHub");
                 endpoints.MapRazorPages();
             });

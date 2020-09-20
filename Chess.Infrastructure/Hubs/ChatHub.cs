@@ -8,7 +8,6 @@ namespace Chess.Infrastructure.Hubs
     {
         public override Task OnConnectedAsync() 
         {
-            Console.WriteLine("--> Connection Established " + Context.ConnectionId);
             Clients.Client(Context.ConnectionId).SendAsync("ReceiveConnID", Context.ConnectionId);
             return base.OnConnectedAsync();
         }

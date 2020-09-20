@@ -16,7 +16,7 @@
 const activateClassConst = "#move-history .active_move";
 const movesListClassConst = "#move-history span";
 
-
+var badMoveCounter=0;
 
 const currentUserNameHTML = document.getElementById("chess_current_user_name");
 const currentUserELOHTML = document.getElementById("chess_current_user_elo");
@@ -221,6 +221,7 @@ var drillMove = function(move){
     }
     else 
     {
+        badMoveCounter ++;
         squareToHighlight = move.to;
         colorToHighlight = incorrectMoveSquareColor;
         colourSquare(squareToHighlight, colorToHighlight);
@@ -235,6 +236,7 @@ var updateDrillStatus = function(){
     else if (drillIsComplete())
     {
         endDrill();
+        showAwardModal();
     }
 }
 

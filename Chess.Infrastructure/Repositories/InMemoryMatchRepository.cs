@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Chess.Core.Domain;
 using Chess.Core.Repositories;
@@ -9,17 +10,7 @@ namespace Chess.Infrastructure.Repositories
 {
     public class InMemoryMatchRepository : IMatchRepository
     {
-        private static ISet<Match> _matches = new HashSet<Match>
-        {
-            Match.Create(
-                new Player(new User("user1@email.com", "user3", "secert", "salt"))
-                // new Player(new User("user1@email.com", "user3", "secert", "salt"))
-                ),
-            Match.Create(
-                new Player(new User("user2@email.com", "user2", "secert2", "salt2"))
-                // new Player(new User("user1@email.com", "user3", "secert", "salt"))
-                )
-        };
+        private static ISet<Match> _matches = new HashSet<Match>();
         public async Task<IEnumerable<Match>> GetAllAsync()
             => await Task.FromResult(_matches);
         public async Task<Match> GetAsync(Guid id)
@@ -33,7 +24,10 @@ namespace Chess.Infrastructure.Repositories
         public async Task<IEnumerable<Match>> GetMatchByPlayerAsync(Guid playerId)
             => await Task.FromResult(_matches.Where(x => x.FirstPlayerId == playerId));
 
-        public Task<IEnumerable<Match>> GetMatchByTournamentAsync(Guid tournamentId)
+        public async Task<IEnumerable<Match>> GetMatchByTournamentAsync(Guid tournamentId)
+            => await Task.FromResult(_matches.Where(x => x.TournamentId == tournamentId));
+
+        public IQueryable<Match> FindByCondition(Expression<Func<Match, bool>> expression)
         {
             throw new NotImplementedException();
         }

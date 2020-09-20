@@ -22,6 +22,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
     <!-- Dzieki paczce, nie musimy się martwić o małe litery do postgresa -->
     <PackageReference Include="EFCore.NamingConventions" Version="1.0.0" /> 
+
+    <!--How use Hangfire https://www.youtube.com/watch?v=sQyY0xvJ4-o -->
+    <PackageReference Include="HangFire.Core" Version="1.7.12" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.12" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
     <!-- Operacje na plikach -->
     <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
     <PackageReference Include="JSDoc" Version="3.4.0" /> 

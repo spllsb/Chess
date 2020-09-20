@@ -20,6 +20,7 @@ namespace Chess.Infrastructure.Services
         private readonly IMapper _mapper;
         private static ISet<PlayerInRoom> _waitingPlayerList = new HashSet<PlayerInRoom>();
         private static ISet<ChessMatch> _currentMatches = new HashSet<ChessMatch>();
+        private static ISet<PlayerInRoom> _currentPlayer = new HashSet<PlayerInRoom>();
         
         public ChessGameService(IPlayerRepository playerRepository,
                                 IMatchRepository matchRepository,
@@ -32,16 +33,35 @@ namespace Chess.Infrastructure.Services
         
         
         public async Task<int> GetWaitingPlayerListCount()
-            => _waitingPlayerList.Count;
+            => await Task.FromResult(_waitingPlayerList.Count);
+
 
         public async Task AddToWaitingList(PlayerInRoom playerInRoom)
         {
             _waitingPlayerList.Add(playerInRoom);
             await Task.CompletedTask;
         }
+
         public int CountOpponent(int gameDuration, int ratingELO, SearchingGameTypEnum searchingGameTyp)
             => _waitingPlayerList.Where(x => x.GameDuration == gameDuration && x.SearchingGameTyp == searchingGameTyp).ToList().Count;
         
+
+        public async Task AddPlayerToCurrentPlayerList(PlayerInRoom playerInRoom){
+            _currentPlayer.Add(playerInRoom);
+            await Task.CompletedTask;
+        }
+        public async Task<PlayerInRoom> GetCurrentPlayer(string connectionId){
+            var player = _currentPlayer.FirstOrDefault(x => x.ConnectionId == connectionId);
+
+            if(player == null)
+            {
+                throw new Exception($"Any player was not found in current player list");
+
+            }
+            return await Task.FromResult(player);
+        }
+        public async Task<int> GetCurrentPlayerListCount()
+            => await Task.FromResult(_currentPlayer.Count);
 
         public async Task RemoveCurrentPlayerFromWaitingList(string connectionId){
             var player = _waitingPlayerList.Where(x => x.ConnectionId == connectionId).FirstOrDefault();
@@ -50,6 +70,7 @@ namespace Chess.Infrastructure.Services
                 await RemoveFromWaitingList(player);                
             }
         }
+
         public async Task<PlayerInRoom> GetPlayerFromWaitingList(int gameDuration, int ratingELO, SearchingGameTypEnum searchingGameTyp){
             var player = _waitingPlayerList.Where(x => x.GameDuration == gameDuration && x.SearchingGameTyp == searchingGameTyp).FirstOrDefault();
             if(player == null)
@@ -60,6 +81,7 @@ namespace Chess.Infrastructure.Services
             return await Task.FromResult(player);
         }
 
+
         public async Task<PlayerInRoom> GetPlayerFromWaitingList(string connectionId){
             var player = _waitingPlayerList.Where(x => x.ConnectionId == connectionId).FirstOrDefault();
             return await Task.FromResult(player);
@@ -68,6 +90,11 @@ namespace Chess.Infrastructure.Services
         public async Task RemoveFromWaitingList(PlayerInRoom player)
         {
             _waitingPlayerList.Remove(player);
+            await Task.CompletedTask;
+        }
+        public async Task RemoveCurrentPlayer(PlayerInRoom player)
+        {
+            _currentPlayer.Remove(player);
             await Task.CompletedTask;
         }
 
@@ -104,10 +131,21 @@ namespace Chess.Infrastructure.Services
         public async Task<string> GetRandomColorPiece()
         {
             int r = random.Next(pieceColorList.Count);
-            return pieceColorList[r];
+            return await Task.FromResult(pieceColorList[r]);
+        }
+
+        public async Task<int> GetCurrentMatchCount()
+        => await Task.FromResult(_currentMatches.Count());
+
+        public async Task<PlayerInRoom> GetCurrentPlayer(Guid playerId)
+        {
+            var currentPlayer = _currentPlayer.Where(x => x.UserId == playerId).FirstOrDefault();
+            if (currentPlayer == null){
+                throw new Exception($"Player {playerId} was not found in current player list");
+            }
+            return await Task.FromResult(currentPlayer);
         }
     }
-
 
 
 
@@ -116,23 +154,29 @@ namespace Chess.Infrastructure.Services
         public int GameDuration { get; set; }
         public string ConnectionId { get; set; }
         public SearchingGameTypEnum SearchingGameTyp { get; set; }
-        public PlayerInRoom(Guid playerId,string playerName, int gameDuration, string connectionId, SearchingGameTypEnum searchingGameTyp)
+        public PlayerStatusEnum Status { get; set; }
+        public string ActualRoomId { get; set; }
+        public PlayerInRoom(Guid playerId,string playerName, int gameDuration, string connectionId, SearchingGameTypEnum searchingGameTyp, PlayerStatusEnum status)
         {
             UserId = playerId;
-            Username = playerName;
+            UserName = playerName;
             GameDuration = gameDuration;
             ConnectionId = connectionId;
             SearchingGameTyp = searchingGameTyp;
+            Status = status;
         }
 
-        public PlayerInRoom(PlayerDto player, int gameDuration, string connectionId, SearchingGameTypEnum searchingGameTyp)
+        public PlayerInRoom(PlayerDto player, int gameDuration, string connectionId, SearchingGameTypEnum searchingGameTyp, PlayerStatusEnum status, string actualRoomId)
         {
             UserId = player.PlayerId;
-            Username = player.Username;
+            UserName = player.UserName;
             RatingElo = player.RatingElo;
+            AvatarImageName = player.AvatarImageName;
             GameDuration = gameDuration;
             ConnectionId = connectionId;
             SearchingGameTyp = searchingGameTyp;
+            Status = status;
+            ActualRoomId = actualRoomId;
         }
     }   
 

@@ -1,0 +1,61 @@
+@{
+  Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Zarządzanie zasobami:</h1>
+    <hr>
+    <div class="container">
+    <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Turnieje</h4>
+        </div>
+        <a class="nav-link" asp-area="" asp-controller="TournamentManagement" asp-action="Index">
+        <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4">
+                <img class="img img-fluid" style="height:240px" src="~/img/site/manage_tournament.svg">
+            </ul>
+        </div>
+        </a>
+        </div>
+        <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Kluby</h4>
+        </div>
+        <a class="nav-link" asp-area="" asp-controller="ClubManagement" asp-action="Index">
+        <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4">
+                <img class="img img-fluid" style="height:210px" src="~/img/site/manage_group.svg">
+            </ul>
+        </div>
+        </a>
+        </div>
+        <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Artykuły</h4>
+        </div>
+        <a class="nav-link" asp-area="" asp-controller="ArticleManagement" asp-action="Index">
+        <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4">
+                <img class="img img-fluid" style="height:210px" src="~/img/site/manage_article.jpg">
+            </ul>
+        </div>
+        </a>
+        </div>
+
+        <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Użytkownicy</h4>
+        </div>
+        <a class="nav-link" asp-area="" asp-controller="PlayerManagement" asp-action="Index">
+        <div class="card-body">
+            <ul class="list-unstyled mt-3 mb-4">
+                <img class="img img-fluid" style="height:210px" src="~/img/site/manage_user.svg">
+            </ul>
+        </div>
+        </a>
+        </div>
+    </div>
+</div>

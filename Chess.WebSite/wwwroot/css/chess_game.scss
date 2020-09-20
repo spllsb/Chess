@@ -17,14 +17,12 @@
 }
 
 
-.game__controls__wrapper {
 
-}
 
 
 
 .move-history{
-    height:500px;
+    height:600px;
     overflow: auto;
 }
 
@@ -41,22 +39,31 @@
     background-color: blue;
 }
 
-.game__controls__wrapper div{
-
-    font-size: 1em;
+.game-message-component{
+    font-size: 0.9em;
 }
 
 .active_move {
     background-color: rgb(204, 174, 135);
   }
   
+.border__layout_img{
+    width: 50px;
+}
 
 .border__layout_player{
     display: flex;
 }
 
 
-
+.section__black{
+    color: aliceblue;
+    background:#575757
+}
+.section__white{
+    color: black;
+    background: white;
+}
 
 
 // #vertical__move__list__component{

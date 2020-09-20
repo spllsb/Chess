@@ -18,5 +18,10 @@ namespace Chess.Infrastructure.Services
 
         Task<IEnumerable<MatchDto>> BrowseAsync();
 
+        Task <IEnumerable<MatchDto>> GetMatchStartingNowAsync();
+
+        Task CreateMatch(Guid firstPlayerId, Guid secondPlayerId, DateTime begin_at, int duringTime);
+
+        Task <IEnumerable<MatchDto>> PagedList(MatchParameters parameters);
     }
 }

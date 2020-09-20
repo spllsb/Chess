@@ -14,6 +14,7 @@ namespace Chess.WebSite.Views.Shared.Components.ChessBoard
         {
             ViewBag.BoardName = boardName;
             ViewBag.Fen = fen;
+            System.Console.WriteLine(fen);
             return View("ChessboardAsPicture");
         }
     

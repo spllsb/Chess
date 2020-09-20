@@ -17,7 +17,7 @@ namespace Chess.Infrastructure.Repositories
             _context = context;
         }
         public async Task<Article> GetAsync(Guid id)
-            => await _context.Articles.Include(x => x.Comments).SingleOrDefaultAsync(x => x.Id == id);
+            => await _context.Articles.Where(x => x.Id == id).Include(x => x.Comments).FirstAsync();
 
         public async Task<IEnumerable<Article>> GetAllAsync()
             => await _context.Articles.Take(10).ToListAsync();

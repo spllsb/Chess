@@ -9,3 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 });
+
+
+
+function showAwardModal(){
+    $("#awardModal").modal();
+}
+

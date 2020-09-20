@@ -10,10 +10,10 @@ namespace Chess.Core.Domain
 
         public Guid Id { get; protected set;}
         public string Title { get; protected set; }
-        public string Content { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public string FullNameAuthor { get; set; }
+        public string Content { get; protected set; }
+        public DateTime CreatedAt { get; protected set; }
+        public DateTime UpdatedAt { get; protected set; }
+        public string FullNameAuthor { get; protected set; }
 
         public IEnumerable<Comment> Comments
         { 
@@ -36,6 +36,14 @@ namespace Chess.Core.Domain
         public void AddComment(string author, string content)
         {
             _comments.Add(Comment.Create(author,content));
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void Update(string title, string content, string fullNameAuthor)
+        {
+            Title = title;
+            Content = content;
+            FullNameAuthor = fullNameAuthor;
             UpdatedAt = DateTime.UtcNow;
         }
     }

@@ -1,5 +1,15 @@
 "use strict";
 
+const  chessGameStatus = {
+    CREATE:"create",
+    IN_GAME:"in game",
+    END_GAME:"end game"
+  }
+const chessGameEndCause = {
+    CHECKMATE:"przez szach-mat",
+    LEAVE:"przez opuszczenie gry",
+    DRAW:"przez remis"
+}
 
 const activateClassConst = "#move-history .active_move";
 const movesListClassConst = "#move-history .move";
@@ -8,6 +18,7 @@ const movesListClassConst = "#move-history .move";
 var whiteSquareGrey = '#a9a9a9'
 var blackSquareGrey = '#696969'
 
+var chess_game_duration;
 
 
 var renderMoveHistory = function (moves) {
@@ -38,11 +49,11 @@ var renderMoveHistory = function (moves) {
 };
 
 var getRenderMoveFen = function (moves, index) {
-    chess_game.copy_game.reset();
+    chessGame.copy_game.reset();
     for (var i = 0; i <= index; i++) {
-        chess_game.copy_game.move(moves[i]);
+        chessGame.copy_game.move(moves[i]);
     }
-    return chess_game.copy_game.fen();
+    return chessGame.copy_game.fen();
 }
 
 var selectMove = function (e) {
@@ -53,12 +64,12 @@ var selectMove = function (e) {
     clearActiveMove(activateClassConst);
     setActiveMove(movesHtml, index);
     updateFENInChessboard(index);
-    console.log(chess_game.currentIndex);
+    console.log(chessGame.currentIndex);
 }
 
 
 var updateFENInChessboard = function (index){
-    chess_game.board.position(getRenderMoveFen(chess_game.game.history(), index));
+    chessGame.board.position(getRenderMoveFen(chessGame.game.history(), index));
 }
 
 var createHTMLElement = function(elementName, elementText){
@@ -81,7 +92,7 @@ var clearActiveMove = function(parent){
 }
 var setActiveMove = function (moves, index){
     moves[index].classList.add("active_move");
-    chess_game.currentIndex = index;
+    chessGame.currentIndex = index;
 }
 
 function greySquare (square) {
@@ -146,16 +157,20 @@ let config_chessGameSignalR = 0;
 const moveHistoryHTML =  document.getElementById('move-history');
 
 
+const currentUserAvatarHTML = document.getElementById("chess_current_user_avatar");
 const currentUserNameHTML = document.getElementById("chess_current_user_name");
 const currentUserRatingHTML = document.getElementById("chess_current_user_rating");
 const opponentNameHTML = document.getElementById("chess_opponent_name");
 const opponentRatingHTML = document.getElementById("chess_opponent_rating");
+const opponentAvatarHTML = document.getElementById("chess_opponent_avatar");
+
+const informationGameHtml = document.getElementById("game-information-component");
+
+const onlyRandomModElementHTML = document.querySelectorAll(".random_mod");
+
+const container_for_list_move_html_name = "";
 
 
-
-
-
-const container_for_list_move_html_name = "game__controls__wrapper";
 const new_move_design_class = "game__controls_move";
 const active_move_class_name = "active";
 const new_move_added_to_list_move_class_name = "div";
@@ -168,7 +183,7 @@ var chessGameId;
 //control game
 // const chess_mod_selected = chess_mod.DRILLS;
 // const chess_mod_selected = chess_mod.LIVE_GAME;
-const chess_searching_typ_selected = chess_searching_typ.RANDOM;
+// const chess_searching_typ_selected = chess_searching_typ.RANDOM;
 
 
 const config = {
@@ -182,8 +197,9 @@ const config = {
 
 //connect to signalRd
 var connection;
+
 //chess game
-var chess_game;
+var chessGame;
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -191,41 +207,68 @@ document.addEventListener('DOMContentLoaded', () => {
         case chess_mod.DRILLS:
             config.position = getStartPositionFromHTML();
             config.orientation = chessboard_piece_color.WHITE;
-            chess_game = new ChessGame('chessboard', config);
-            chess_game.game.load(config.position);
+            chessGame = new ChessGame('chessboard', config);
+            chessGame.game.load(config.position);
             break;
         case chess_mod.LIVE_GAME:
-            // chessGameId = document.getElementById("ChessGameId").textContent;
+            config_chessGameSignalR = 1;
+
+            connection = new signalR.HubConnectionBuilder()
+                        .withUrl(chessHub_connect_URL)
+                        .build();
+            initChessGameSignalR();
             switch(chess_searching_typ_selected){
                 case chess_searching_typ.RANDOM:
-
+                    onlyRandomModElementHTML.forEach(element => {
+                        element.classList.remove('d-none');
+                    });
                 break;
                 case chess_searching_typ.PARTICULAR:
-
+                    sessionStorage.setItem("roomId", "0d42ca40-8999-4b03-a375-f86c3e4f66ee");
+                    connection.start()
+                            .then( document.getElementById("chessboard").style.display = "")
+                            .catch(function (err) {
+                                return console.error(err.toString());
+                            }).then(function(){
+                                connection.invoke('AddUserToParticularChessGameRoom', sessionStorage.getItem("roomId"));
+                            });
                 break;
             }
-            initChessGameSignalR();
-            chess_game = new ChessGame('chessboard', config);
-            chess_game.game.load(config.position);
-        break;
+            chessGame = new ChessGame('chessboard',config);
+            chessGame.setGameDuration(chess_game_duration);
+            chessGame.setStatus(chessGameStatus.IN_GAME);
+            break;
 
         case chess_mod.GAME_REPEAT:
             config.draggable = false;
-            chess_game = new ChessGame('chessboard', config);
-            chess_game.game.load_pgn(pgn);
-            chess_game.board.position(chess_game.game.fen());
+            chessGame = new ChessGame('chessboard', config);
+            chessGame.game.load_pgn(pgn);
+            chessGame.board.position(chessGame.game.fen());
             initHTMLGameRepeat();
-            renderMoveHistory(chess_game.game.history());
+            renderMoveHistory(chessGame.game.history());
             break;
     }
 
 
-    $(window).resize(chess_game.board.resize);
+    $(window).resize(chessGame.board.resize);
 })
+
+function initSignalRRandomChess (chess_game_duration){
+    connection.start()
+        .then( function(){
+            connection.invoke('InitChessGame', 
+                            chess_game_duration);
+        })
+        .catch(function (err) {
+            return console.error(err.toString());
+        });
+}
+
+
 var initHTMLGameRepeat = function ()
 {
-    updateOpponentInformationHTML(chess_game.game.header().Black, chess_game.game.header().BlackElo);
-    updateCurrentUserInformationHTML(chess_game.game.header().White, chess_game.game.header().WhiteElo);
+    updateOpponentInformationHTML(chessGame.game.header().Black, chessGame.game.header().BlackElo);
+    updateCurrentUserInformationHTML(chessGame.game.header().White, chessGame.game.header().WhiteElo);
 }
 // function getStartPositionFromHTML()
 // {
@@ -252,7 +295,6 @@ class Move {
         this.to = to;
         this.display_move = display_move;
         this.orientation = orientation;
-        
     }
     /**
      * Move 
@@ -271,6 +313,28 @@ class ChessGame {
         this.board = Chessboard(html_id_name, config);
         this.moves_array = [];
         this.current_index = 0; 
+        this.status = chessGameStatus.CREATE;
+        this.endCause = "";
+        this.gameDuration = "";
+    }
+    setGameDuration(gameDuration){
+        this.gameDuration = gameDuration; 
+    }
+    getGameDuration(){
+        return this.gameDuration; 
+    }
+
+    setStatus(status) {
+        this.status = status;
+    }
+    getStatus(){
+        return this.status;
+    }
+    setEndCause(endCause) {
+        this.endCause = endCause;
+    }
+    getEndCause(){
+        return this.endCause;
     }
 }
 
@@ -285,36 +349,23 @@ class ChessGame {
 * @type {Player}
 */
 class Player{
-    constructor(playerName){
-        this.playerName = playerName;
-        // this.startOrientation = startOrientation;
+    constructor(username, ratingELO, avatarFileName, pieceColor){
+        this.username = username;
+        this.ratingELO = ratingELO;
+        this.avatarFileName = avatarFileName;
+        this.pieceColor = pieceColor;
         this.isYourMove = false;
         this.timeLeft = 0;
+        this.result=0;
     }
 }
+var playerOpponent;
+var player;
 
-    function initChessGameSignalR (){
-        config_chessGameSignalR = 1;
-
-    connection = new signalR.HubConnectionBuilder()
-                .withUrl(chessHub_connect_URL)
-                .build();
-    connection.start()
-    .then( document.getElementById("chessboard").style.display = "")
-    .catch(function (err) {
-        return console.error(err.toString());
-    }).then(function(){
-        connection.invoke('SearchRandomChessGame', chess_game_duration, player_id)
-            .then(function(message){
-            if (message == "Player found game"){
-                connection.invoke('SendCommunication',
-                                "Partia rozpoczęta",
-                                sessionStorage.getItem("roomId"));
-            }
-        })
-    });
+function initChessGameSignalR (){
+    
     connection.on("ReceiveCommunication", function (communication){
-        alert(communication);
+        addGameInformationMessage(communication);
     });
 
     connection.on("ReceiveRoom", function (roomId){
@@ -322,33 +373,73 @@ class Player{
     });
 
     connection.on("GetNewRatingELO", function(newEloForWin, newEloForDraw, newEloForLose){
-        alert(newEloForWin);
+        let deltaWin = newEloForWin - player_rating_elo;
+        let deltaWinDisplay = deltaWin > 0 ? "+" + deltaWin : deltaWin;
+        let deltaDraw = newEloForDraw - player_rating_elo;
+        let deltaDrawDisplay = deltaDraw > 0 ? "+" + deltaDraw : deltaDraw;
+        let deltaLose = newEloForLose - player_rating_elo;
+        let deltaLoseDisplay = deltaLose > 0 ? "+" + deltaLose : deltaLose;
+        var message = "Wygrana " + parseInt(deltaWinDisplay) + " | Remis " + parseInt(deltaDrawDisplay) + " | Przegrana " + parseInt(deltaLoseDisplay); 
+        addGameInformationMessage(message);
     });
     
 
     connection.on("GetColorPiece", function(message){
         config.orientation = message;
-        chess_game = new ChessGame('chessboard', config);
-        chess_game.game.load(config.position);
+        player = new Player(currentUserNameHTML.textContent, currentUserRatingHTML.textContent, currentUserAvatarHTML.src, message);
+
+        chessGame = new ChessGame('chessboard', config);
+        chessGame.game.load(config.position);
     });
     
-    connection.on("GetOpponentInformation", function(username, ratingELO){
-        updateOpponentInformationHTML(username, ratingELO);
+    connection.on("GetOpponentInformation", function(username, ratingELO, avatarFileName, pieceColor){
+        updateOpponentInformationHTML(username, ratingELO, avatarFileName);
+        let message_header = "<h5>Nowa gra</h5>";
+        let message_body_player_bottom = "<b> " + player_name + "</b>" + "(" + player_rating_elo + ")";
+        let message_body_player_top = "<b> " + username + "</b>" + "(" + ratingELO + ")";
+        let message = message_body_player_bottom + " vs " + message_body_player_top; 
+        addGameInformationMessage(message_header);
+        addGameInformationMessage(message);
+
+        playerOpponent = new Player(username, ratingELO, avatarFileName, pieceColor);
     });
     connection.on("ReceivePosition", updatePositionSignalR);
+
+    connection.on("InitializeChessGame", initChessGame);
 }
 
+function displayWinner(message)
+{
+    alert(message);
+}
 
-
-
+function initChessGame(){
+    config.onDrop = onDropSignalR;
+    chessGame = new ChessGame('chessboard', config);
+    chessGame.game.load(config.position);
+}
 
 function updatePositionSignalR (roomId, user, move) {
-    console.log("Info z signalR: " + roomId + '  ' + user)
-    chess_game.game.move(move);
-    chess_game.board.position(chess_game.game.fen());
+    chessGame.game.move(move);
+    chessGame.board.position(chessGame.game.fen());
     removeColorChessboard();
     colorChessboard(move.from, move.to);
-    renderMoveHistory(chess_game.game.history());
+    renderMoveHistory(chessGame.game.history());
+    manageTimer(user);
+}
+
+var addGameInformationMessage = function(message){
+    var tag = createHTMLTag("div","game-message-component");
+    tag.innerHTML = message;
+    informationGameHtml.append(tag);
+}
+
+function updatePositionSignalR (roomId, user, move) {
+    chessGame.game.move(move);
+    chessGame.board.position(chessGame.game.fen());
+    removeColorChessboard();
+    colorChessboard(move.from, move.to);
+    renderMoveHistory(chessGame.game.history());
     manageTimer(user);
 }
 
@@ -364,7 +455,8 @@ function manageTimer(user){
     }
 }
 
-function updateOpponentInformationHTML(userName, ratingELO){
+function updateOpponentInformationHTML(userName, ratingELO, avatarFileName){
+    opponentAvatarHTML.src = "/img/"+avatarFileName;
     opponentNameHTML.textContent = userName;
     opponentRatingHTML.textContent = ratingELO;
 }
@@ -375,15 +467,13 @@ function updateCurrentUserInformationHTML(userName, ratingELO){
 
 
 
-
-
 //#region chess function  
 
 //#region chess move function  
 
 
 function onSnapEnd() {
-    chess_game.board.position(chess_game.game.fen())
+    chessGame.board.position(chessGame.game.fen())
 }
 //#endregion chess function move 
 
@@ -399,14 +489,27 @@ function isDraggable() {
 
 function onDragStart (source, piece, position, orientation) {
     // do not pick up pieces if the game is over
-    if (chess_game.game.game_over()) return false;
+    if (chessGame.game.game_over()) return false;
     if (piece.search(config.orientation.substr(0,1))) return false;
   
   }
-
-function onDrop(source, target, orientation) {
+  function onDrop(source, target, orientation) {
     // see if the move is legal
-    var move = chess_game.game.move({
+    var move = chessGame.game.move({
+        from: source,
+        to: target,
+        promotion: 'q' // NOTE: always promote to a queen for example simplicity
+    });
+    // illegal move
+    
+    if (move === null) return 'snapback';
+    renderMoveHistory(chessGame.game.history());
+    updateStatus();
+}
+
+function onDropSignalR(source, target, orientation) {
+    // see if the move is legal
+    var move = chessGame.game.move({
         from: source,
         to: target,
         promotion: 'q' // NOTE: always promote to a queen for example simplicity
@@ -415,51 +518,103 @@ function onDrop(source, target, orientation) {
     
     if (move === null) return 'snapback';
 
-    
-    if(config_chessGameSignalR)
+    if(config_chessGameSignalR )
     {
         let session_roomId = sessionStorage.getItem("roomId");
         connection.invoke("SendPosition", session_roomId, move)
-        .then(function () {
-            connection.invoke("SaveInformationAboutGame", session_roomId, getPGN(), chess_game.game.fen());
-        })
-        .catch(function (err) {
-        return console.error(err.toString());})
-    }
+          .then(function () {
+                connection.invoke("SaveInformationAboutGame", 
+                                session_roomId, getPGN(), 
+                                chessGame.game.fen());
+            })
+            .catch(function (err) {
+                return console.error(err.toString());})
+            }
     else
     {
-        renderMoveHistory(chess_game.game.history());
+        renderMoveHistory(chessGame.game.history());
     }
     updateStatus();
 }
+
+// Do celów dokumentacyjnych
+// function onDrop(source, target, orientation) {
+//     // see if the move is legal
+//     var move = chessGame.game.move({
+//         from: source,
+//         to: target,
+//         promotion: 'q' // NOTE: always promote to a queen for example simplicity
+//     });
+//     // illegal move
+//     if (move === null) return 'snapback';
+//     connection.invoke("SendPosition", session_roomId, move)
+//               .then(function () {
+//         connection.invoke("SaveInformationAboutGame", 
+//                         session_roomId, getPGN(), 
+//                         chessGame.game.fen());
+//     })
+//         .catch(function (err) {
+//             return console.error(err.toString());
+//         });
+//     updateStatus();
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function endGame(){
     connection.invoke("EndGame", getPGN())
         .catch(function (err) {
             return console.error(err.toString());})
+    
+    getPGNModal();
+
 }
+
+
 
 function updateStatus () {
     var moveColor = 'White'
-    if (chess_game.game.turn() === 'b') {
-      moveColor = 'Black'
+    if (chessGame.game.turn() === 'b') {
+      moveColor = 'Black';      
     }
+
     // checkmate?
-    if (chess_game.game.in_checkmate()) {
-      status = 'Gra zakończona, ' + moveColor + ' jest zamatowany.';
+    if (chessGame.game.in_checkmate()) {
+      chessGame.setStatus(chessGameStatus.END_GAME);
+      chessGame.setEndCause(chessGameEndCause.CHECKMATE);
+      player.pieceColor.toUpperCase() === moveColor.toUpperCase() 
+                                        ? playerOpponent.result = 1 
+                                        : player.result = 1;
       endGame();
     }
     // draw?
-    else if (chess_game.game.in_draw()) {
-      status = 'Gra zakończona, remisowa pozycja';
+    else if (chessGame.game.in_draw()) {
+      chessGame.setStatus(chessGameStatus.END_GAME);
+      chessGame.setEndCause(chessGameEndCause.DRAW);
+      player.result = 0.5;
+      playerOpponent.result = 0.5;
       endGame();
     }
     // game still on
     else {
       status = moveColor + ' w ruchu'
       // check?
-      if (chess_game.game.in_check()) {
-        status += ', ' + moveColor + ' jest szachowny'
+      if (chessGame.game.in_check()) {
+        status += ', ' + moveColor + ' jest szachowany'
       }
     }
   }
@@ -468,7 +623,7 @@ function updateStatus () {
 
 
 function updateMoveInHTMLBoard(index) {
-    chess_game.board.position(chess_game.moves_array[index].fen);
+    chessGame.board.position(chessGame.moves_array[index].fen);
 }
 
 
@@ -481,24 +636,40 @@ function convertSeconds(s){
 }
 
 function preparePGN(){
-    chess_game.game.header('Site', 'Szachy.pl');
-    chess_game.game.header('Date', '2020.04.24');
-    chess_game.game.header('Event', 'Player vs Player');
-    chess_game.game.header('Round', '0');
-    chess_game.game.header('White', 'Player1');
-    chess_game.game.header('Black', 'Player10');
-    chess_game.game.header('Result', '*');
-    // chess_game.game.header('CurrentPosition', chess_game.moves_array[chess_game.current_active_index].fen);
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+    today = dd + '.' + mm + '.' + yyyy;
+
+    const currentUserNameHTML = document.getElementById("chess_current_user_name");
+    const currentUserRatingHTML = document.getElementById("chess_current_user_rating");
+    const opponentNameHTML = document.getElementById("chess_opponent_name");
+    const opponentRatingHTML = document.getElementById("chess_opponent_rating");
+    const opponentAvatarHTML = document.getElementById("chess_opponent_avatar");
+    
+
+    chessGame.game.header('Site', 'Szachy.pl');
+    chessGame.game.header('Date', today);
+    chessGame.game.header('Event', 'Player vs Player');
+    chessGame.game.header('Round', '0');
+    chessGame.game.header('White', 'Player1');
+    chessGame.game.header('Black', 'Player10');
+    chessGame.game.header('FEN', chessGame.game.fen());
+    chessGame.game.header('Result', '*');
+    // chessGame.game.header('CurrentPosition', chessGame.moves_array[chessGame.current_active_index].fen);
 }
 
+   
+
 function getPGN(){
-    console.log("Printing PGN");
     preparePGN();
     // separator for windows "\r\n"
     // separator for linux "\n"
-    return chess_game.game.pgn({ max_width: 5, newline_char: "\r\n" });
+    return chessGame.game.pgn({ max_width: 5, newline_char: "\r\n" });
 }
 
+const durationGameButton = document.getElementById("durationGameButton");
 
 const flipBoardIcon = document.querySelector(".fa-retweet");
 const downloadPGNIcon = document.querySelector(".fa-download");
@@ -508,7 +679,7 @@ const previousMoveIcon = document.querySelector(".fa-chevron-left");
 const nextMoveIcon = document.querySelector(".fa-chevron-right");
 
 downloadPGNIcon.addEventListener("click",function(){
-    document.getElementById("PGN").innerHTML = getPGN(); ;
+    getPGNModal();
 });
 
 shareIcon.addEventListener("click",function(){
@@ -517,7 +688,7 @@ shareIcon.addEventListener("click",function(){
 
 previousMoveIcon.addEventListener("click",function(){
     let movesHtml = document.querySelectorAll(movesListClassConst);
-    let currentIndex = chess_game.currentIndex;
+    let currentIndex = chessGame.currentIndex;
     let newIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : 0;
     console.log("Previous index: " + newIndex);
     clearActiveMove(activateClassConst);
@@ -527,7 +698,7 @@ previousMoveIcon.addEventListener("click",function(){
 
 nextMoveIcon.addEventListener("click",function(){
     let movesHtml = document.querySelectorAll(movesListClassConst);
-    let currentIndex = chess_game.currentIndex;
+    let currentIndex = chessGame.currentIndex;
     let newIndex = currentIndex + 1 < movesHtml.length ? currentIndex + 1 : currentIndex;
     console.log("Next index: " + newIndex);
     clearActiveMove(activateClassConst);
@@ -536,8 +707,8 @@ nextMoveIcon.addEventListener("click",function(){
 });
 
 flipBoardIcon.addEventListener("click",function(){
-    console.log('Board orientation is: ' + chess_game.board.orientation());
-    chess_game.board.flip();
+    console.log('Board orientation is: ' + chessGame.board.orientation());
+    chessGame.board.flip();
 
     // change orientation information about player 
     let att = document.getElementById("layout__main");
@@ -548,9 +719,29 @@ flipBoardIcon.addEventListener("click",function(){
         document.getElementById("layout__main").setAttribute("style", "flex-direction:column");
     }
 });
+durationGameButton.addEventListener("click",function(){
+    chess_game_duration = getDropdownValue("gameDurationDropdown");
+    initSignalRRandomChess(parseInt(chess_game_duration));
+    clock_top.dataset.timer = convertSeconds(chess_game_duration*60);
+    clock_bottom.dataset.timer = convertSeconds(chess_game_duration*60);
+
+    onlyRandomModElementHTML.forEach(element => {
+        element.classList.add('d-none');
+    });
+});
 
 
 
+var getDropdownValue = function(dropdownTagId){
+    var e = document.getElementById(dropdownTagId);
+    return e.options[e.selectedIndex].value;
+}
+
+
+
+
+const clock_top = document.getElementById("clock-top");
+const clock_bottom = document.getElementById("clock-bottom");
 
 var Stopwatch = function(elem, options) {
   
@@ -632,8 +823,31 @@ var Stopwatch = function(elem, options) {
 
     this.reset  = reset;
   };
-  const clock_opponent = new Stopwatch(document.getElementById("clock-top"));
-  const clock_my = new Stopwatch(document.getElementById("clock-bottom"));
 
- 
+
+
+function getPGNModal(){
+    $("#PGNModal").modal();
+    document.getElementById("fenInPgnModal").value = chessGame.game.fen();
+    document.getElementById("pgnInPgnModal").value = getPGN();
+}
+
+function getPGNModal(){
+    document.getElementById("liveGameModalCauseEnd").innerText = chessGame.getEndCause();
+
+    document.getElementById("liveGameModalFirstPlayerAvatar").src = player.avatarFileName;
+    document.getElementById("liveGameModalFirstPlayerName").innerText = player.username;
+
+    document.getElementById("liveGameModalResult").innerText = player.result + " - " + playerOpponent.result;
+    
+    document.getElementById("liveGameModalSecondPlayerAvatar").src = "/img/" + playerOpponent.avatarFileName;
+    document.getElementById("liveGameModalSecondPlayerName").innerText = playerOpponent.username;
+
+    // document.getElementById("liveGameModalNewRating").innerText = player.ratingELO + ;
+    document.getElementById("liveGameModalNextGameButton").innerText = "Zagraj nowe " + chessGame.getGameDuration() + " minuty";
+
+    liveGameModalFirstPlayerAvatar
+    $("#liveGameModal").modal();
+}
+
 

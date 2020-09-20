@@ -19,5 +19,9 @@ namespace Chess.Infrastructure.DTO
         public string Fen { get; set; }
         public string PgnFileName { get; set; }
         public string Result { get; set; }
+        public int Round { get; set; }
+
+        public int FirstPlayerRating { get; set; }
+        public int SecondPlayerRating { get; set; }
     }
 }

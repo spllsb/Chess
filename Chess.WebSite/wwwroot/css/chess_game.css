@@ -25,7 +25,7 @@
 }
 
 .move-history {
-  height: 500px;
+  height: 600px;
   overflow: auto;
 }
 
@@ -45,17 +45,31 @@
   background-color: blue;
 }
 
-.game__controls__wrapper div {
-  font-size: 1em;
+.game-message-component {
+  font-size: 0.9em;
 }
 
 .active_move {
   background-color: #ccae87;
 }
 
+.border__layout_img {
+  width: 50px;
+}
+
 .border__layout_player {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.section__black {
+  color: aliceblue;
+  background: #575757;
+}
+
+.section__white {
+  color: black;
+  background: white;
 }
 /*# sourceMappingURL=chess_game.css.map */

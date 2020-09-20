@@ -8,6 +8,7 @@ using Chess.Infrastructure.DTO;
 using Chess.Infrastructure.Settings;
 using Chess.Infrastructure.Extensions;
 using System.Linq;
+using Chess.Core.Domain.Enum;
 
 namespace Chess.Infrastructure.Services
 {
@@ -59,7 +60,7 @@ namespace Chess.Infrastructure.Services
 
         public async Task <IEnumerable<TournamentDto>> PagedList(TournamentParameters parameters)
         {
-            var tournaments = _tournamentRepository.FindByCondition(x => true);
+            var tournaments = _tournamentRepository.FindByCondition(x => x.Status == parameters.Status.ToString());
             SearchByName(ref tournaments, parameters.Name);
 
             var tournamentsAfterPagination =  tournaments
@@ -67,10 +68,8 @@ namespace Chess.Infrastructure.Services
                 .Take(parameters.PageSize)
                 .ToList();
             return _mapper.Map<IEnumerable<Tournament>,IEnumerable<TournamentDto>>(tournamentsAfterPagination);
-
         }
-    
-  
+
 
         private void SearchByName(ref IQueryable<Tournament> tournaments, string searchingName)
         {
@@ -79,10 +78,18 @@ namespace Chess.Infrastructure.Services
 
             tournaments = tournaments.Where(o => o.Name.ToLower().Contains(searchingName.Trim().ToLower()));
         }
+
+        public async Task UpdateAsync(TournamentDetailsDto tournamentDetailsDto)
+        {
+            var tournament = await _tournamentRepository.GetAsync(tournamentDetailsDto.Name);
+            tournament.Update(tournamentDetailsDto.Name, tournamentDetailsDto.StartEvent, tournamentDetailsDto.MinPlayers, tournamentDetailsDto.MaxPlayers, tournamentDetailsDto.MinRank, tournamentDetailsDto.MaxRank);
+            await _tournamentRepository.UpdateAsync(tournament);
+        }
     }
 
     public class TournamentParameters : QueryStringParameters
     {
         public string Name { get; set; }
+        public TournamentStatusEnum Status { get; set; }
     }
 }

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TEST</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/style.css"  />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div>
+            <a class="navbar-brand" asp-area="" asp-controller="Admin" asp-action="Index"> <img class="img" style="height: 55px;" src="~/img/test.svg"> Szachy - Panel administracyjny</a>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="TournamentManagement" asp-action="Index">Zarządzaj turniejami</a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="ClubManagement" asp-action="Index">Zarządzaj klubami</a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="ArticleManagement" asp-action="Index">Zarządzaj arykułami</a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="PlayerManagement" asp-action="Index">Zarządzaj użytkownikami</a></li>
+            </ul>
+            @await Html.PartialAsync("_LoginPartial")
+        </div>
+    </nav>
+</header>
+    
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer class="pt-4 my-md-5 pt-md-5 border-top">
+            <div class="row">
+            <div class="col-12 col-md">
+                <img class="mb-2" src="/docs/4.5/assets/brand/bootstrap-solid.svg" alt="" width="24" height="24">
+                <small class="d-block mb-3 text-muted">© 2018-2020</small>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Turnieje</h5>
+                <ul class="list-unstyled text-small">
+                <li><a class="text-muted" asp-area="" asp-controller="TournamentManagement" asp-action="Create">Utwórz</a></li>
+                <li><a class="text-muted" asp-area="" asp-controller="TournamentManagement" asp-action="Index">Przeglądaj</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Klub</h5>
+                <ul class="list-unstyled text-small">
+                <li><a class="text-muted" asp-area="" asp-controller="ClubManagement" asp-action="Create">Utwórz</a></li>
+                <li><a class="text-muted" asp-area="" asp-controller="ClubManagement" asp-action="Index">Przeglądaj</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Artykuły</h5>
+                <ul class="list-unstyled text-small">
+                <li><a class="text-muted" asp-area="" asp-controller="ArticleManagement" asp-action="Create">Utwórz</a></li>
+                <li><a class="text-muted" asp-area="" asp-controller="ArticleManagement" asp-action="Index">Przeglądaj</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Użytkownicy</h5>
+                <ul class="list-unstyled text-small">
+                <li><a class="text-muted" asp-area="" asp-controller="PlayerManagement" asp-action="Index">Przeglądaj</a></li>
+                </ul>
+            </div>
+            </div>
+        </footer>
+    </div>
+
+@await Html.PartialAsync("_AwardComplete")
+@await Html.PartialAsync("_PGNModal")
+
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        @* <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script> *@
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        @* https://fontawesome.com/start *@
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        @* <script src="https://use.fontawesome.com/2321be0ad8.js"></script> *@
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+
+@* https://svg-clipart.com/search.php?q=puzzle *@

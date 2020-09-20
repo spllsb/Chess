@@ -1,0 +1,50 @@
+@using Chess.Infrastructure.DTO
+@model IEnumerable<ClubDto>
+
+@{
+  Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1 class="text-center">@ViewBag.Title</h1>
+
+@if(@ViewBag.StatusCode == "success"){
+<h1 class="alert-success">@ViewBag.Message </h1>
+}
+
+<a asp-action="Create" class="btn btn-secondary">Stwórz nowy klub</a> 
+<form asp-controller="Club" asp-action="Index" method="get" class="m-4">
+    <p>
+        Szukaj klubu: <input type="text" name="SearchString">
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<div>
+    @foreach (var item in Model) {
+    <div class="row">
+        <div class="d-flex p-2 col-md-6">
+            <a asp-action="Details" asp-route-clubId="@item.Id"><img class="img img-fluid " src="~/img/clubs/@item.PictureName" style="width: 150px;"></a>
+            <div class="ml-3">
+                <div>
+                    <h4><a class="text-muted" asp-action="Details" asp-route-clubId="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></h4>
+                </div>
+                <div>
+                    <span>
+                        Aktualna liczna członków @item.PlayersCount | Data utworzenia: @item.CreatedAt.ToString("MMMM dd, yyyy")
+                    </span>                        
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex">
+            <div class="m-auto">
+                <a class="text-muted" asp-action="SendMessage" asp-route-name="@item.Name"><i class="far fa-envelope fa-2x"></i></a>
+            </div>
+            <div class="m-auto">
+                <a class="text-muted" asp-action="Edit" asp-route-clubId="@item.Id">Edytuj</a> |
+                <a class="text-muted" asp-action="Details" asp-route-clubId="@item.Id">Szegóły</a> |
+                <a class="text-muted" asp-action="Delete" asp-route-clubId="@item.Id">Usuń</a>
+            </div>
+        </div>
+    </div>
+    }
+</div>

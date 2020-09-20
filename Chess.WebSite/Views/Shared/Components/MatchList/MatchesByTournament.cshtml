@@ -3,46 +3,70 @@
 
 <div class="card">
     <div class="card-header">
-        Mecze turniejowe
+        Rozegrane partie
     </div>
     <div class="card-body">
         <table class="table">
-            <thead>
+            <thead class="text-center">
                 <tr>
-                    <th>
-                        PlayerId
+                    <th scope="col">
+                        Zawodnicy
                     </th>
-                    <th>
-                        Username
+                    <th scope="col">
+                        Data 
                     </th>
-                    <th></th>
+                    <th scope="col">
+                        Wynik spotkania
+                    </th>
+                    <th scope="col">
+                        Runda
+                    </th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="text-center"> 
                 @foreach (var item in Model)
                 {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.FirstPlayer.Username)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SecondPlayer.Username)
-                    </td>
-                    <td>
-                        <div style="width: 200px;">
-                            @await Component.InvokeAsync("ChessBoard",
-                            new {
-                                fen = @item.Fen,
-                                boardName = $"board_{@item.Id.ToString()}"
-                            });
+                        <div class="align-content-center">
+                            <p >
+                                @Html.DisplayFor(modelItem => item.FirstPlayer.UserName) (@Html.DisplayFor(modelItem => item.FirstPlayerRating))
+                            </p>
+                            <p>
+                                VS
+                            </p>
+                            <p>
+                                @Html.DisplayFor(modelItem => item.SecondPlayer.UserName) (@Html.DisplayFor(modelItem => item.SecondPlayerRating))
+                            </p>
                         </div>
-                        
                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BeginAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Result)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Round)
+                    </td>
+                    @if(@ViewBag.AddChessboard == true){
+                    <td>
+                        <a asp-controller="ChessMatch" asp-action="ChessGameRepeat" asp-route-path="@item.PgnFileName">
+                            <div style="width: 180px; height: auto;">
+                                @await Component.InvokeAsync("ChessBoard",
+                                new {
+                                    fen = @item.Fen,
+                                    boardName = $"board_{@item.Id.ToString()}"
+                                })
+                            </div>
+                        </a>
+                    </td>
+                    }
                 </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
-
 

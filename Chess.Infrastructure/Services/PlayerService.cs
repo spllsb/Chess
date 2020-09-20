@@ -39,10 +39,17 @@ namespace Chess.Infrastructure.Services
         public async Task<PlayerDto> GetAsync(string username)
         {
             var player = await _playerRepository.GetAsync(username);
+
             if(player == null)
             {
                 throw new Exception($"player with username: '{username}' was not found.");
             }
+            return _mapper.Map<Player,PlayerDto>(player);
+        }
+
+        public async Task<PlayerDto> GetAsync(Guid id)
+        {
+            var player = await _playerRepository.GetAsync(id);
             return _mapper.Map<Player,PlayerDto>(player);
         }
 
@@ -63,7 +70,14 @@ namespace Chess.Infrastructure.Services
             if (!players.Any() || string.IsNullOrWhiteSpace(searchingName))
                 return;
 
-            players = players.Where(o => o.Username.ToLower().Contains(searchingName.Trim().ToLower()));
+            players = players.Where(o => o.UserName.ToLower().Contains(searchingName.Trim().ToLower()));
+        }
+
+        public async Task UpdateAsync(PlayerDto updatePlayer)
+        {
+            var player = await _playerRepository.GetAsync(updatePlayer.PlayerId);
+            player.Update(updatePlayer.Email, updatePlayer.RatingElo, updatePlayer.AvatarImageName, updatePlayer.UserName);
+            await _playerRepository.UpdateAsync(player);
         }
     }
     public class PlayerParameters : QueryStringParameters

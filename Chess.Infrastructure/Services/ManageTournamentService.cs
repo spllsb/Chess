@@ -49,5 +49,9 @@ namespace Chess.Infrastructure.Services
 
         public async Task<IEnumerable<Guid>> GetPlayersFromTournament(Guid tournamentId)
         => await _context.PlayerTournamentParticipation.Where(x => x.TournamentId == tournamentId).Select(x=>x.PlayerId).ToListAsync();
+
+
+
+      
     }
 }

@@ -28,13 +28,13 @@
                     <td>
                         <div class="align-content-center">
                             <p >
-                                @Html.DisplayFor(modelItem => item.FirstPlayer.Username)
+                                @Html.DisplayFor(modelItem => item.FirstPlayer.UserName) (@Html.DisplayFor(modelItem => item.FirstPlayerRating))
                             </p>
                             <p>
                                 VS
                             </p>
                             <p>
-                                @Html.DisplayFor(modelItem => item.SecondPlayer.Username)
+                                @Html.DisplayFor(modelItem => item.SecondPlayer.UserName) (@Html.DisplayFor(modelItem => item.SecondPlayerRating))
                             </p>
                         </div>
                     </td>

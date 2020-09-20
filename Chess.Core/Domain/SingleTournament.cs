@@ -41,7 +41,7 @@ namespace Chess.Core.Domain
             var player = GetPlayerTournamentParticipation(newPlayer);
             if (player != null)
             {
-                throw new Exception($"User with id: '{newPlayer.UserId}' and username '{newPlayer.Username}' already exists for tournament. You can't add him again");
+                throw new Exception($"User with id: '{newPlayer.UserId}' and username '{newPlayer.UserName}' already exists for tournament. You can't add him again");
             }
             _players.Add(newPlayer);
         }

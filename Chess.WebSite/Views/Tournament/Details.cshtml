@@ -1,56 +1,86 @@
 @using Chess.Infrastructure.DTO
 @model TournamentDetailsDto
 
-
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Informacje o turnieju</h5>
-    <h6 class="card-subtitle mb-2 text-muted">Szczegóły</h6>
-    <p class="card-text">Tu będzie opis szczegółów gry  </p>
-  </div>
-</div>
-
-
-<div class="card">
-    <div class="card-header">
-        Zapisanie gracze
+<div class="p-3">
+    <div class="d-flex">
+        <a asp-action="Details" asp-route-clubId="@Model.Id"><img class="img img-fluid" src="~/img/tournament.jpg" style="width: 200px;"></a>
+        <div>
+            <div>
+                <h1>@Html.DisplayFor(modelItem => Model.Name)</h1>
+            </div>
+        </div>
     </div>
-    <div class="card-body">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Nazwa zawodnika
-                    </th>
-                    <th>
-                        Punkty rankingowe gracza
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-        @foreach (var item in Model.Players) {
-                <tr>
-                    <td>
-                        <a asp-controller="Member" asp-action="Index" asp-route-username="@item.Username">@Html.DisplayFor(modelItem => item.Username)</a>
-                    </td>
-                    <th class="text-center">
-                        @item.RatingElo
-                    </th>
-                </tr>
-        }
-            </tbody>
-        </table>
+    <div class="row">
+        <div class="col-6">
+            <div class="border-bottom d-flex">
+                <span>Czas trwania</span>      
+                <span class="ml-auto">@Model.RegisteredPlayersCount</span>      
+            </div>
+            <div class="border-bottom d-flex">
+                <span>Ranking</span>      
+                <span class="ml-auto">@Model.MinRank - @Model.MaxRank</span>      
+            </div>
+            <div class="border-bottom d-flex">
+                <span>Czas trwania</span>      
+                <span class="ml-auto">@Model.RegisteredPlayersCount</span>      
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="border-bottom d-flex">
+                <span>Liczba graczy</span>      
+                <span class="ml-auto">@Model.RegisteredPlayersCount / @Model.MaxPlayers</span>      
+            </div>
+            <div class="border-bottom d-flex">
+                <span>Średnia rankingowa</span>      
+                <span class="ml-auto">@Model.RegisteredPlayersCount</span>      
+            </div>
+            <div class="border-bottom d-flex">
+                <span>Liczba rozegranych meczy</span>      
+                <span class="ml-auto">@Model.RegisteredPlayersCount</span>      
+            </div>
+        </div>
     </div>
+    <div class="card">
+        <div class="card-header">
+            Zapisani gracze
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Nazwa zawodnika
+                        </th>
+                        <th>
+                            Punkty rankingowe gracza
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+            @foreach (var item in Model.Players) {
+                    <tr>
+                        <td>
+                            <a asp-controller="Member" asp-action="Index" asp-route-username="@item.UserName">@Html.DisplayFor(modelItem => item.UserName)</a>
+                        </td>
+                        <th class="text-center">
+                            @item.RatingElo
+                        </th>
+
+                    </tr>
+            }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @await Component.InvokeAsync("MatchList",
+    new {
+        id = @Model.Id,
+        fromTable = "Tournament",
+        addChessboard = false
+    });
+
 </div>
-
-
-@await Component.InvokeAsync("MatchList",
-new {
-    id = @Model.Id,
-    fromTable = "tournament"
-});
-
-
     
 @* <div class="card">
     <div class="card-header text-center">

@@ -1,0 +1,69 @@
+@using Chess.Infrastructure.DTO
+@model IEnumerable<MatchDto>
+@{
+  Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        Rozegrane partie
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead class="text-center">
+                <tr>
+                    <th scope="col">
+                        Zawodnicy
+                    </th>
+                    <th scope="col">
+                        Data 
+                    </th>
+                    <th scope="col">
+                        Wynik spotkania
+                    </th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody class="text-center"> 
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        <div class="align-content-center">
+                            <p >
+                                @Html.DisplayFor(modelItem => item.FirstPlayer.UserName) (@Html.DisplayFor(modelItem => item.FirstPlayerRating))
+                            </p>
+                            <p>
+                                VS
+                            </p>
+                            <p>
+                                @Html.DisplayFor(modelItem => item.SecondPlayer.UserName) (@Html.DisplayFor(modelItem => item.SecondPlayerRating))
+                            </p>
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BeginAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Result)
+                    </td>
+                    <td>
+                        <a asp-controller="ChessMatch" asp-action="ChessGameRepeat" asp-route-path="@item.PgnFileName">
+                            <div style="width: 180px;">
+                                @await Component.InvokeAsync("ChessBoard",
+                                new {
+                                    fen = @item.Fen,
+                                    boardName = $"board_{@item.Id.ToString()}"
+                                })
+                            </div>
+                        </a>
+                        
+                    </td>
+                    
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

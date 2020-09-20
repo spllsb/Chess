@@ -1,8 +1,13 @@
+using System;
+using System.Collections.Generic;
+
 namespace Chess.Core.Domain
 {
     public class Drill
     {
-        public int Id { get; protected set; }
+        private ISet<PlayerDrillParticipation> _players = new HashSet<PlayerDrillParticipation>();
+
+        public Guid Id { get; protected set; }
         public string Name { get; protected set; }
         public string Description { get; protected set; }
         public string Category { get; protected set; }
@@ -16,6 +21,11 @@ namespace Chess.Core.Domain
             Name = name;
             Description = description;
             Category = category;
+        }
+        public virtual IEnumerable<PlayerDrillParticipation> Players 
+        { 
+            get { return _players;} 
+            set { _players = new HashSet<PlayerDrillParticipation>(value);} 
         }
     }
 }

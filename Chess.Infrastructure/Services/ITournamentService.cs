@@ -14,5 +14,6 @@ namespace Chess.Infrastructure.Services
         Task<IEnumerable<TournamentDto>> BrowseAsync();
         Task <IEnumerable<TournamentDto>> PagedList(TournamentParameters parameters);
         Task CreateAsync(string name,int maxPlayers);
+        Task UpdateAsync(TournamentDetailsDto tournamentDetailsDto);
     }
 }

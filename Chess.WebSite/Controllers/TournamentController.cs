@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Chess.Core.Domain;
+using Chess.Core.Domain.Enum;
 using Chess.Infrastructure.Commands;
 using Chess.WebSite.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -24,20 +25,48 @@ namespace Chess.Infrastructure.Services
 
         public async Task<IActionResult> Index(string message, string status, string searchString)
         {
+            ViewBag.Title = "Turnieje";
+
             ViewBag.StatusCode = status;
-            ViewBag.Title = searchString;
             ViewBag.Message = message;
-
-            var a = new TournamentParameters();
-            a.Name = searchString;
-
-
-            var tournaments = await _tournamentService.PagedList(a);         
+            var parameters = new TournamentParameters();
+            parameters.Name = searchString;
+            parameters.Status  = TournamentStatusEnum.created; 
+            var tournaments = await _tournamentService.PagedList(parameters);         
             return View(tournaments);
         }
 
+
+
+
+        public async Task<IActionResult> CompletedTournament()
+        {
+            ViewBag.Title = "Zakończone turnieje";
+            
+            var parameters = new TournamentParameters();
+            parameters.Status  = TournamentStatusEnum.complete; 
+            var tournaments = await _tournamentService.PagedList(parameters);   
+
+            return View(tournaments);
+        }
+
+
+
+
+
    
         public async Task<IActionResult> Details(Guid tournamentId)
+        {
+            var tournamentDetails = await _tournamentService.GetAsync(tournamentId);
+            if(tournamentDetails == null)
+            {
+                return NotFound();
+            }
+            return View(tournamentDetails);
+        }
+
+
+        public async Task<IActionResult> CompletedTournamentDetails(Guid tournamentId)
         {
             var tournamentDetails = await _tournamentService.GetAsync(tournamentId);
             if(tournamentDetails == null)
