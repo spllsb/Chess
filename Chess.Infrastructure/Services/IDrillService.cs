@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Chess.Core.Domain.Enum;
 using Chess.Infrastructure.DTO;
 
 namespace Chess.Infrastructure.Services
@@ -11,5 +12,7 @@ namespace Chess.Infrastructure.Services
         Task<DrillDto> GetAsync(Guid id);
         Task <IEnumerable<DrillDto>> GetDrillAsync();
         Task <DrillDto> GetRandomDrillAsync();
+
+        Task AddPlayed(Guid drillId, Guid playerId, DrillResultTypeEnum result);
     }
 }

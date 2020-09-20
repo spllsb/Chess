@@ -93,6 +93,7 @@
     <script src="~/js/chess_drill.js"></script>
 
     <script>
+        const drillId = "@Model.Id";
         const pgn = ('@Html.Raw(ViewBag.PGN)');
         const chess_mod_selected = chess_mod.DRILLS;
         const inputFen = "@Model.StartPosition";

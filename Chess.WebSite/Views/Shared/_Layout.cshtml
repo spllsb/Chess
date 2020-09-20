@@ -77,8 +77,11 @@
             </div>
         </footer>
     </div>
-
-@await Html.PartialAsync("_AwardComplete")
+    
+@if (@ViewData["awardContent"] != null)
+{
+    @await Html.PartialAsync("_AwardComplete")
+}
 @await Html.PartialAsync("_PGNModal")
 
     <environment names="Development">

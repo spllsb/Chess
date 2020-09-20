@@ -1,0 +1,15 @@
+GET http://localhost:5000/articles/
+
+###
+
+POST http://localhost:5000/articles/ HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Super stro",
+    "content": "asdjaisfjfai asjdp asdp asijd ",
+    "fullnameauthor": "Juzio"
+}
+
+###
+GET http://localhost:5000/articles/0d78f06a-c8ea-4495-828d-6a2bae99d6b4

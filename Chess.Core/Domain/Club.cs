@@ -6,12 +6,12 @@ namespace Chess.Core.Domain
     public class Club
     {
         private ISet<Player> _players = new HashSet<Player>();
-        public Guid Id { get; set; }
-        public string Name { get; set; }    
-        public string ContactEmail { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public string PictureName { get; set; }
-        public string Information { get; set; }
+        public Guid Id { get; protected set; }
+        public string Name { get; protected set; }    
+        public string ContactEmail { get; protected set; }
+        public DateTime CreatedAt { get; protected set; } = DateTime.UtcNow;
+        public string PictureName { get; protected set; }
+        public string Information { get; protected set; }
     
 
         protected Club()

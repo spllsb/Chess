@@ -1,5 +1,7 @@
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Chess.Core.Domain.Enum;
 using Chess.Infrastructure.Commands;
 using Chess.Infrastructure.Services;
 using Chess.Infrastructure.Settings;
@@ -13,14 +15,18 @@ namespace Chess.WebSite.Controllers
         private readonly IDrillService _drillService;
         private readonly IFileProvider _fileProvider;
         private readonly DrillSettings _drillSettings;
+        private readonly DrillAwardService _chessGameAwardService;
+
         public DrillsController(IDrillService drillService,
                                 IFileProvider fileProvider,
                                 IOptions<DrillSettings> drillSettings,
+                                IAwardImpService chessGameAwardService,
                                 ICommandDispatcher commandDispatcher) : base(commandDispatcher)
         {
             _drillSettings = drillSettings.Value;
             _fileProvider = fileProvider;
             _drillService = drillService;
+            _chessGameAwardService = (DrillAwardService)chessGameAwardService;
         }
 
         public IActionResult Index()
@@ -42,8 +48,11 @@ namespace Chess.WebSite.Controllers
 
         public async Task<IActionResult> GetChessDrill(Guid? id)
         {
-            ViewData["awardImgFileName"] = "puzzle.svg";
-            ViewData["awardContent"] = "Poprawnie rozwiązałeś pierwsze zadanie.";
+            var drillAward = await _chessGameAwardService.GetAwardDto("konto@gmail.com");
+            if(drillAward != null){
+                ViewData["awardImgFileName"] = drillAward.FileName;
+                ViewData["awardContent"] = drillAward.Comment;
+            }
 
             var drill = id != null ?  await _drillService.GetAsync(id.Value) : await _drillService.GetRandomDrillAsync();
             System.Console.WriteLine(drill.Id);
@@ -60,6 +69,16 @@ namespace Chess.WebSite.Controllers
             return View(drill);
         }
 
+
+
+        [HttpPost]
+        public async Task SaveDrill(string Result, string DrillId){
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userIdGuid = new Guid(userId);
+            var drillIdGuid = new Guid(DrillId);
+            DrillResultTypeEnum result = Result == "1" ? DrillResultTypeEnum.CORRECT : DrillResultTypeEnum.INCORRECT;
+            await _drillService.AddPlayed(drillIdGuid, userIdGuid, result);
+        }
     }
 
     public enum CategoryDrillsEnum {Gra1, Gra2, Gra3}

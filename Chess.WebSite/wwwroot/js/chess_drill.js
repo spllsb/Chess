@@ -227,15 +227,19 @@ var drillMove = function(move){
         colourSquare(squareToHighlight, colorToHighlight);
     }
 }
-
+var result = 0;
 
 var updateDrillStatus = function(){
     if (colorToHighlight == incorrectMoveSquareColor){
         endDrill();
+        var result = 0;
+        sendResultToServer();
     }
     else if (drillIsComplete())
     {
         endDrill();
+        result = "1";
+        sendResultToServer();
         showAwardModal();
     }
 }
@@ -359,3 +363,18 @@ var stopTimer = function(){
 //     h1.textContent = "00:00:00";
 //     seconds = 0; minutes = 0; hours = 0;
 // }
+
+
+
+function sendResultToServer() {
+    $.ajax({
+        url: "/Drills/SaveDrill",
+        type: "POST",
+        data: {Result: result, DrillId: drillId},
+        success: function (data) {
+        },
+        failure: function (response) {
+            alert(response)
+        }
+    });
+}

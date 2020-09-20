@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Chess.Core.Domain.Enum;
 
 namespace Chess.Core.Domain
 {
@@ -26,6 +28,16 @@ namespace Chess.Core.Domain
         { 
             get { return _players;} 
             set { _players = new HashSet<PlayerDrillParticipation>(value);} 
+        }
+
+        public void AddPlayerAttempt(PlayerDrillParticipation player)
+        {
+            var playerr = Players.SingleOrDefault(x => x.Id == player.PlayerId);
+            if(playerr != null)
+            {
+                throw new Exception($"Player with id: '{player.PlayerId}' already exists for drill: {Name}.");
+            }
+            _players.Add(player);
         }
     }
 }

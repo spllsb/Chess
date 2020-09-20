@@ -12,5 +12,7 @@ namespace Chess.Core.Repositories
         Task<IEnumerable<Drill>> GetAllByCategoryAsync(string category);
         Task <Drill> GetAsync(Guid id);
         IQueryable<Drill> FindByCondition(Expression<Func<Drill,bool>> expression);
+
+        Task Update(Drill drill);
     }
 }

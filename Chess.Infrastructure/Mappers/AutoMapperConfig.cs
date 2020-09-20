@@ -1,6 +1,7 @@
 using System.Linq;
 using AutoMapper;
 using Chess.Core.Domain;
+using Chess.Core.Domain.Enum;
 using Chess.Infrastructure.DTO;
 
 namespace Chess.Infrastructure.Mappers
@@ -33,14 +34,20 @@ namespace Chess.Infrastructure.Mappers
                     cfg.CreateMap<Comment,CommentDto>();
 
                     cfg.CreateMap<Match,MatchDto>();
+                    cfg.CreateMap<Award,AwardDto>()
+                        .ForMember(x => x.IsComplite, opt => opt.MapFrom(y => y.Players.Count() > 0));
                     cfg.CreateMap<Player,PlayerDto>()
                         .ForMember(x => x.PlayerId, opt => opt.MapFrom(y => y.UserId));
                     cfg.CreateMap<Drill,DrillDto>()
                         .ForMember(x => x.Attempts, opt => opt.MapFrom(y => y.Players.Count()))
-                        .ForMember(x => x.CorrectlyAttempts, opt => opt.MapFrom( y => y.Players.Where( z => z.Result == "1").Count()));
+                        .ForMember(x => x.CorrectlyAttempts, opt => opt.MapFrom( y => y.Players.Where( z => z.Result == DrillResultTypeEnum.CORRECT.ToString()).Count()));
                     cfg.CreateMap<Club,ClubDto>()
                         .ForMember(x => x.PlayersCount, opt => opt.MapFrom(y => y.Players.Count()));
                     cfg.CreateMap<Club,ClubDetailsDto>();
+
+                    cfg.CreateMap<Player,PlayerDetailsDto>()
+                        .ForMember(x => x.ResolveDrillsCount, opt => opt.MapFrom(y => y.Drills.Count()))
+                        .ForMember(x => x.CorrectResolveDrillsCount, opt => opt.MapFrom(y => y.Drills.Where(z => z.Result == DrillResultTypeEnum.CORRECT.ToString()).Count()));
                 })
                 .CreateMapper();
     }

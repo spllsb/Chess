@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Chess.Core.Domain;
+using Chess.Core.Domain.Enum;
 using Chess.Core.Repositories;
 using Chess.Infrastructure.DTO;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,19 @@ namespace Chess.Infrastructure.Services
             var drillsList = await drills.ToListAsync();
             int r = random.Next(drillsList.Count);
             return _mapper.Map<Drill, DrillDto>(drillsList[r]);
+        }
+
+        public async Task AddAsync(Guid drillId, Guid playerId){
+
+        }
+
+        public async Task AddPlayed(Guid drillId, Guid playerId, DrillResultTypeEnum result)
+        {
+            var playerDrill = PlayerDrillParticipation.Create(playerId,drillId,result);
+            var drill = await _drillRepository.GetAsync(drillId);
+            drill.AddPlayerAttempt(playerDrill);
+            await _drillRepository.Update(drill);
+            
         }
     }
 }

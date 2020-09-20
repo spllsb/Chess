@@ -69,8 +69,8 @@ namespace Chess.WebSite
             services.AddSingleton<TestService>();
             services.AddSingleton<ChessMatchHub>();
 
-
             services.AddTransient<IEmailSender, MessageSender>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -27,6 +27,12 @@ namespace Chess.Infrastructure.Repositories
         public async Task<IEnumerable<Drill>> GetAllByCategoryAsync(string category) 
             => await _context.Drills.ToListAsync();
 
+        public async Task Update(Drill drill)
+        {
+            _context.Drills.Update(drill);
+            await _context.SaveChangesAsync();
+        }
 
+        
     }
 }

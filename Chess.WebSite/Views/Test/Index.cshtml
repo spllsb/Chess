@@ -1,0 +1,30 @@
+<div>
+    asdasdasd
+</div>
+
+
+<form asp-controller="BookDetails" asp-action="BookDetail" id="bookForm" method="post">
+    @Html.AntiForgeryToken()
+
+    <!-- all my other form controls would be somewhere in here -->
+
+    <button id="btnSave" type="submit" class="btn btn-primary">Save</button>
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        function test() {
+            $.ajax({
+                url: "/Test/GetTest",
+                type: "POST",
+                data: {Test: "test"},
+                success: function (data) {
+                    alert("asdsadasda");
+                },
+                failure: function (response) {
+                    alert(response)
+                }
+            });
+        }
+    </script>
+}

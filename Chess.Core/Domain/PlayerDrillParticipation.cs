@@ -1,4 +1,5 @@
 using System;
+using Chess.Core.Domain.Enum;
 
 namespace Chess.Core.Domain
 {
@@ -20,7 +21,16 @@ namespace Chess.Core.Domain
             PlayerId = playerId;
             DrillId = drillId;
         }
+        protected PlayerDrillParticipation(Guid playerId, Guid drillId, DrillResultTypeEnum result)
+        {
+            PlayerId = playerId;
+            DrillId = drillId;
+            Result = result.ToString();
+        }
         public static PlayerDrillParticipation Create(Guid playerId, Guid drillId)
             => new PlayerDrillParticipation(playerId, drillId);
+
+        public static PlayerDrillParticipation Create(Guid playerId, Guid drillId, DrillResultTypeEnum result)
+            => new PlayerDrillParticipation(playerId, drillId, result);
     }
 }

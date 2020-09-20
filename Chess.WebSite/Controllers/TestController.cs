@@ -16,16 +16,22 @@ namespace Chess.WebSite.Controllers
         private readonly ITournamentGeneratorService _testService;
         private readonly IMatchService _matchService;
         private readonly ILogger _logger;
+        private readonly IAwardService _awardService;
+        private readonly DrillAwardService _chessGameAwardService;
 
         public TestController(ITournamentGeneratorService testService,
                             ICommandDispatcher commandDispatcher,
                             IMatchService matchService,
                             RoleManager<IdentityRole> roleMgr,
+                            IAwardService awardService,
+                            IAwardImpService chessGameAwardService,
                             UserManager<ApplicationUser> userManager) : base(commandDispatcher)
         {
             _testService = testService;
             _matchService = matchService;
             roleManager = roleMgr;
+            _awardService = awardService;
+            _chessGameAwardService = (DrillAwardService)chessGameAwardService;
             _userManager = userManager;
         }
 
@@ -55,8 +61,24 @@ namespace Chess.WebSite.Controllers
             // else
             //     return Content(chkUser.ToString());
 
-           return Content("ok");
+            var aa = await _awardService.GetAllAsync();
+            var bb = await _awardService.GetAllByCategoryAsync("Puzzle");
+            var cc = await _awardService.GetAsync("Żółtodziób w puzzle");
+
+
+            var dd = await _chessGameAwardService.GetAwardDto("konto@gmail.com");
+    
+            System.Console.WriteLine(await _chessGameAwardService.CheckAwardByUser("Żółtodziób w puzzle","konto@gmail.com"));
+           return View();
         }
+
+    
+        [HttpPost]
+        public async Task GetTest(string Test){
+            System.Console.WriteLine(Test);
+        }
+
+
 
     }
 }

@@ -47,6 +47,24 @@ namespace Chess.Infrastructure.Services
             return _mapper.Map<Player,PlayerDto>(player);
         }
 
+
+        public async Task<PlayerDetailsDto> GetDetailsAsync(string username)
+        {
+            var player = await _playerRepository.GetAsync(username);
+
+            if(player == null)
+            {
+                throw new Exception($"player with username: '{username}' was not found.");
+            }
+
+            foreach (var item in player.Drills)
+            {
+                System.Console.WriteLine(item.PlayerId);
+                System.Console.WriteLine(item.Result);
+            }
+            return _mapper.Map<Player,PlayerDetailsDto>(player);
+        }
+
         public async Task<PlayerDto> GetAsync(Guid id)
         {
             var player = await _playerRepository.GetAsync(id);

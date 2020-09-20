@@ -61,9 +61,7 @@ namespace Chess.Infrastructure.Services
         public async Task UpdateAsync(ClubDetailsDto clubDetailsDto)
         {
             var club = await _clubRepository.GetAsync(clubDetailsDto.Name);
-            club.Name = clubDetailsDto.Name;
-            club.ContactEmail = clubDetailsDto.ContactEmail;
-            club.Information = clubDetailsDto.Information;
+            club.Upadate(club.Name,club.ContactEmail,club.PictureName, club.Information);
             await _clubRepository.UpdateAsync(club);
         }
 

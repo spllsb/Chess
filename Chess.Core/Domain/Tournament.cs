@@ -9,6 +9,7 @@ namespace Chess.Core.Domain
     public class Tournament
     {
         private ISet<PlayerTournamentParticipation> _players = new HashSet<PlayerTournamentParticipation>();
+        
         // private ISet<Match> _matches = new HashSet<Match>();
 
         public Guid Id { get; protected set;}

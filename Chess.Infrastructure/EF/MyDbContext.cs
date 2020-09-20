@@ -19,6 +19,7 @@ namespace Chess.Infrastructure.EF
         public virtual DbSet<PlayerTournamentParticipation> PlayerTournamentParticipation {get; set;}
         public virtual DbSet<PlayerDrillParticipation> PlayerDrillParticipation {get; set;}
         public virtual DbSet<Club> Clubs { get; set; }
+        public virtual DbSet<Award> Awards { get; set; }
 
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
